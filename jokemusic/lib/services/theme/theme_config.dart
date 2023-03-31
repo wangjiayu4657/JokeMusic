@@ -11,12 +11,13 @@ class ThemeConfig {
   //默认主题
   static const normalTextColor = Colors.black54;
   static final ThemeData normalTheme = ThemeData(
-    primarySwatch: Colors.pink,
+    primarySwatch: Colors.orange,
     primaryColor: Colors.redAccent,
     splashColor: Colors.transparent,
     canvasColor: Colors.white,
     textTheme: normalTextTheme,
     textButtonTheme:buttonTheme,
+    highlightColor: Colors.transparent,
     bottomSheetTheme: const BottomSheetThemeData(backgroundColor: Colors.black12),
     elevatedButtonTheme: elevatedButtonThemeData
   );

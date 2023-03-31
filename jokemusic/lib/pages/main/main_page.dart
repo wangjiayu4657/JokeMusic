@@ -29,7 +29,7 @@ class _MainPageState extends State<MainPage> {
       alignment: Alignment.center,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 15),
+          padding: const EdgeInsets.only(top: 10),
           child: BottomNavigationBar(
             items: MainConfig.items,
             unselectedFontSize: 14,
