@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'pages/main/main_page.dart';
+import 'services/routes/router_config.dart';
+import 'services/theme/theme_config.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,10 +15,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MainPage()
+      debugShowCheckedModeBanner: false,
+      theme: ThemeConfig.normalTheme,
+      darkTheme: ThemeConfig.darkTheme,
+      initialRoute: MainPage.routeName,
+      onGenerateRoute: RouterConfig.onGenerateRoute,
+      onUnknownRoute: RouterConfig.onUnknownRoute,
     );
   }
 }

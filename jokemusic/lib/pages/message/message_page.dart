@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MessagePage extends StatefulWidget {
+  static const String routeName = "/MessagePage";
   const MessagePage({Key? key}) : super(key: key);
 
   @override
