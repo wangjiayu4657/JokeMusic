@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../../widgets/user_item_header.dart';
+import '../../../widgets/user_item_footer.dart';
 
 //首页 - 关注
 class HomeFocus extends StatefulWidget {
@@ -11,6 +13,16 @@ class HomeFocus extends StatefulWidget {
 class _HomeFocusState extends State<HomeFocus> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return ListView.builder(
+       itemCount: 10,
+       itemBuilder: (context,idx) {
+         return const UserItemFooter();
+       }
+    );
   }
+
+  Widget buildListViewItem() {
+    return Text("");
+  }
+
 }
