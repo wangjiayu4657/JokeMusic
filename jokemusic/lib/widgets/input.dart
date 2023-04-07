@@ -1,0 +1,119 @@
+import 'package:flutter/material.dart';
+
+import 'code_button.dart';
+import '../tools/extension/int_extension.dart';
+import '../tools/extension/color_extension.dart';
+
+enum BorderType {
+  noBorder, //无边框
+  outlineBorder, //四周都有边框
+  underlineBorder //底部有边框
+}
+
+//输入框
+class Input extends StatefulWidget {
+  const Input({
+    Key? key,
+    this.leading,
+    this.trailing,
+    this.hintStyle,
+    this.borderType = BorderType.noBorder,
+    this.borderWidth = 1,
+    Color? borderColor,
+    this.placeholder,
+    this.autofocus,
+    this.keyboardType,
+    this.obscureText,
+    this.contentPadding,
+    double? textOffset,
+    this.maxLines = 1,
+    this.valueChanged,
+    // this.callback
+  }) : borderColor = ColorExtension.lineColor,
+       textOffset = textOffset ?? 0,
+       super(key: key);
+
+  ///输入框前面的组件
+  final Widget? leading;
+  ///输入框末尾的组件
+  final Widget? trailing;
+  ///占位符字体样式
+  final TextStyle? hintStyle;
+  ///边框风格
+  final BorderType? borderType;
+  ///边框宽度
+  final double? borderWidth;
+  ///边框颜色
+  final Color borderColor;
+  ///输入文本是否为密码
+  final bool? obscureText;
+  ///占位符
+  final String? placeholder;
+  ///是否自动聚焦
+  final bool? autofocus;
+  ///键盘样式
+  final TextInputType? keyboardType;
+  ///文本输入时的回调
+  final ValueChanged? valueChanged;
+  ///内容内边距
+  final EdgeInsets? contentPadding;
+  ///文本垂直对齐偏移量,取值范围: -1.0 ~ 1.0
+  final double textOffset;
+  ///最大行数,默认为1行
+  final int? maxLines;
+
+  @override
+  State<Input> createState() => _InputState();
+}
+
+class _InputState extends State<Input> {
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      style: const TextStyle(textBaseline: TextBaseline.alphabetic),
+      keyboardType: widget.keyboardType,
+      obscureText: widget.obscureText ?? false,
+      onChanged: widget.valueChanged,
+      cursorColor: Colors.black12,
+      maxLines: widget.maxLines,
+      autofocus: widget.autofocus ?? false,
+      textAlignVertical: TextAlignVertical(y: widget.textOffset),
+      decoration: InputDecoration(
+        hintText: widget.placeholder,
+        hintStyle: widget.hintStyle ?? const TextStyle(color: Colors.black26),
+        prefixIconColor: Colors.black54,
+        focusColor: Colors.black54,
+        prefixIcon: widget.leading,
+        suffix: widget.trailing,
+        prefixIconConstraints: BoxConstraints(minWidth: 34.px),
+        border: buildBorder(),
+        enabledBorder: buildBorder(),
+        focusedBorder: buildBorder(),
+        disabledBorder: buildBorder(),
+        contentPadding: widget.contentPadding ?? EdgeInsets.zero
+      ),
+    );
+  }
+
+  ///构建边框
+  InputBorder buildBorder() {
+    if(widget.borderType == BorderType.noBorder){
+      return buildOutlineBorder(0,Colors.transparent);
+    } else if(widget.borderType == BorderType.outlineBorder){
+      return buildOutlineBorder(widget.borderWidth ?? 1,widget.borderColor);
+    } else {
+      return buildUnderLineBorder(widget.borderWidth ?? 0.5,widget.borderColor);
+    }
+  }
+
+  //构建四周边框
+  OutlineInputBorder buildOutlineBorder(double width,Color color) {
+    return OutlineInputBorder(borderSide: BorderSide(width: width,color: color));
+  }
+
+  //构建底部边框
+  UnderlineInputBorder buildUnderLineBorder(double width,Color color) {
+    return UnderlineInputBorder(borderSide: BorderSide(width: width, color: color));
+  }
+}

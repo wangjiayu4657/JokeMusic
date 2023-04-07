@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../../tools/extension/int_extension.dart';
 
-class UserItemFooter extends StatelessWidget {
-  const UserItemFooter({
+class OperationTool extends StatelessWidget {
+  const OperationTool(
+      {
     Key? key,
     this.color,
     this.height = 40,

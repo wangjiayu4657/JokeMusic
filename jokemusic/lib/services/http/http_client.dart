@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:jokemusic/tools/share/device_manager.dart';
 import 'http_config.dart';
 
 class HttpClient {
@@ -12,12 +13,23 @@ class HttpClient {
 
   static Future<T> request<T> ({
     required String url,
-    String method = "get",
+    String method = "post",
     Map<String,dynamic>? params,
     Interceptor? interceptor
   }) async {
 
-    final Options options = Options(method: method);
+    Map<String,dynamic> headers = {
+      "project_token":"BBA5BF6858194BCCA6EE6EA5903E8878",
+      "token":"",
+      "uk": DeviceManager.uk,
+      "channel":"cretin_open_api",
+      "app": DeviceManager.app,
+      "device": DeviceManager.device
+    };
+
+    debugPrint("headers === $headers");
+
+    final Options options = Options(method: method,headers: headers);
 
     //添加全局拦截器
     Interceptor globalInterceptor = InterceptorsWrapper(
@@ -39,8 +51,8 @@ class HttpClient {
     if(interceptor != null) {
       interceptors.add(interceptor);
     }
-    dio.interceptors.addAll(interceptors);
 
+    dio.interceptors.addAll(interceptors);
     try {
       Response response = await dio.request(url, queryParameters: params, options: options);
       return response.data;

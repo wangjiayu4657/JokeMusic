@@ -9,7 +9,7 @@ class ThemeConfig {
   static final double largeFontSize = 18.px;
 
   //默认主题
-  static const normalTextColor = Colors.black54;
+  static const normalTextColor = Colors.black87;
   static final ThemeData normalTheme = ThemeData(
     primarySwatch: Colors.orange,
     primaryColor: Colors.redAccent,
@@ -26,9 +26,12 @@ class ThemeConfig {
     bodyText1: TextStyle(fontSize: normalFontSize, color: normalTextColor,fontWeight: FontWeight.bold),
     bodyText2: TextStyle(fontSize: normalFontSize, color: normalTextColor), //默认使用
 
-    headline1: TextStyle(fontSize: largeFontSize, color: normalTextColor),
-    headline2: TextStyle(fontSize: mediumFontSize, color: normalTextColor),
-    headline3: TextStyle(fontSize: smallFontSize, color: normalTextColor),
+    headline1: TextStyle(fontSize: largeFontSize, color: normalTextColor, fontWeight: FontWeight.bold),
+    headline2: TextStyle(fontSize: largeFontSize, color: normalTextColor),
+    headline3: TextStyle(fontSize: mediumFontSize, color: normalTextColor, fontWeight: FontWeight.bold),
+    headline4: TextStyle(fontSize: mediumFontSize, color: normalTextColor),
+    headline5: TextStyle(fontSize: smallFontSize, color: normalTextColor, fontWeight: FontWeight.bold),
+    headline6: TextStyle(fontSize: smallFontSize, color: normalTextColor),
   );
 
   //暗黑主题

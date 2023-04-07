@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../../widgets/operation_tool.dart';
 import '../../../widgets/user_item_header.dart';
-import '../../../widgets/user_item_footer.dart';
+// import '../../../widgets/operation_tool.dart';
+import '../../../widgets/list_video_item.dart';
 
 //首页 - 关注
 class HomeFocus extends StatefulWidget {
@@ -15,14 +17,22 @@ class _HomeFocusState extends State<HomeFocus> {
   Widget build(BuildContext context) {
     return ListView.builder(
        itemCount: 10,
+       shrinkWrap: true,
        itemBuilder: (context,idx) {
-         return const UserItemFooter();
+         return buildListViewItem();
        }
     );
   }
 
   Widget buildListViewItem() {
-    return Text("");
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: const[
+        UserItemHeader(),
+        // ListVideoItem(),
+        // OperationTool()
+      ],
+    );
   }
 
 }

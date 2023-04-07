@@ -7,12 +7,14 @@ class UserItemHeader extends StatelessWidget {
     this.height = 60,
     this.iconSize = 48,
     this.color,
+    this.right,
     this.onTap,
   }) : super(key: key);
 
   final double? height;
   final double? iconSize;
   final Color? color;
+  final Widget? right;
   final GestureTapCallback? onTap;
 
   @override
@@ -77,7 +79,7 @@ class UserItemHeader extends StatelessWidget {
   Widget buildUserItemHeaderMore() {
     return SizedBox(
       width: 60.px,
-      child: IconButton(
+      child: right ?? IconButton(
          onPressed: onTap,
          icon: const Icon(Icons.more_horiz)
       ),
