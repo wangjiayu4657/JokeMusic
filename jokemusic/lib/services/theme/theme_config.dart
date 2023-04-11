@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
 
@@ -11,10 +12,11 @@ class ThemeConfig {
   //默认主题
   static const normalTextColor = Colors.black87;
   static final ThemeData normalTheme = ThemeData(
-    primarySwatch: Colors.orange,
-    primaryColor: Colors.redAccent,
+    primarySwatch: Colors.red,
+    primaryColor: Colors.white,
     splashColor: Colors.transparent,
     canvasColor: Colors.white,
+    appBarTheme: appBarTheme,
     textTheme: normalTextTheme,
     textButtonTheme:buttonTheme,
     highlightColor: Colors.transparent,
@@ -23,15 +25,25 @@ class ThemeConfig {
   );
 
   static final TextTheme normalTextTheme = TextTheme(
-    bodyText1: TextStyle(fontSize: normalFontSize, color: normalTextColor,fontWeight: FontWeight.bold),
-    bodyText2: TextStyle(fontSize: normalFontSize, color: normalTextColor), //默认使用
+    labelSmall: TextStyle(fontSize: 12.px, color: normalTextColor),
+    labelMedium: TextStyle(fontSize: 14.px, color: normalTextColor),
+    labelLarge: TextStyle(fontSize: 16.px, color: normalTextColor),
 
-    headline1: TextStyle(fontSize: largeFontSize, color: normalTextColor, fontWeight: FontWeight.bold),
-    headline2: TextStyle(fontSize: largeFontSize, color: normalTextColor),
-    headline3: TextStyle(fontSize: mediumFontSize, color: normalTextColor, fontWeight: FontWeight.bold),
-    headline4: TextStyle(fontSize: mediumFontSize, color: normalTextColor),
-    headline5: TextStyle(fontSize: smallFontSize, color: normalTextColor, fontWeight: FontWeight.bold),
-    headline6: TextStyle(fontSize: smallFontSize, color: normalTextColor),
+    bodySmall: TextStyle(fontSize: 12.px, color: normalTextColor),
+    bodyMedium: TextStyle(fontSize: 14.px, color: normalTextColor),
+    bodyLarge: TextStyle(fontSize: 16.px, color: normalTextColor),
+
+    titleSmall: TextStyle(fontSize: 12.px,  color: normalTextColor),
+    titleMedium: TextStyle(fontSize: 14.px, color: normalTextColor, fontWeight: FontWeight.bold),
+    titleLarge: TextStyle(fontSize: 18.px, color: normalTextColor),
+
+    headlineSmall: TextStyle(fontSize: 12.px, color: normalTextColor),
+    headlineMedium: TextStyle(fontSize: 16.px, color: normalTextColor),
+    headlineLarge: TextStyle(fontSize: 20.px, color: normalTextColor),
+
+    displaySmall: TextStyle(fontSize: 16.px, color: normalTextColor),
+    displayMedium: TextStyle(fontSize: 20.px, color: normalTextColor),
+    displayLarge: TextStyle(fontSize: 24.px, color: normalTextColor)
   );
 
   //暗黑主题
@@ -42,15 +54,33 @@ class ThemeConfig {
     canvasColor: const Color.fromARGB(1, 255, 254, 222),
     textTheme:  darkTextTheme,
   );
-  static final TextTheme darkTextTheme = TextTheme(
-    bodyText1: TextStyle(fontSize: normalFontSize, color: darkTextColor,fontWeight: FontWeight.bold),
-    bodyText2: TextStyle(fontSize: normalFontSize, color: darkTextColor),
 
-    headline1: TextStyle(fontSize: largeFontSize, color: darkTextColor),
-    headline2: TextStyle(fontSize: mediumFontSize, color: darkTextColor),
-    headline3: TextStyle(fontSize: smallFontSize, color: darkTextColor),
+  static final TextTheme darkTextTheme = TextTheme(
+    labelSmall: TextStyle(fontSize: 12.px, color: darkTextColor),
+    labelMedium: TextStyle(fontSize: 14.px, color: darkTextColor),
+    labelLarge: TextStyle(fontSize: 16.px, color: darkTextColor),
+
+    bodySmall: TextStyle(fontSize: 12.px, color: darkTextColor),
+    bodyMedium: TextStyle(fontSize: 14.px, color: darkTextColor),
+    bodyLarge: TextStyle(fontSize: 16.px, color: darkTextColor),
+
+    titleSmall: TextStyle(fontSize: 12.px,  color: darkTextColor),
+    titleMedium: TextStyle(fontSize: 14.px, color: darkTextColor),
+    titleLarge: TextStyle(fontSize: 18.px, color: darkTextColor),
+
+    headlineSmall: TextStyle(fontSize: 12.px, color: darkTextColor),
+    headlineMedium: TextStyle(fontSize: 16.px, color: darkTextColor),
+    headlineLarge: TextStyle(fontSize: 20.px, color: darkTextColor),
+
+    displaySmall: TextStyle(fontSize: 16.px, color: darkTextColor),
+    displayMedium: TextStyle(fontSize: 20.px, color: darkTextColor),
+    displayLarge: TextStyle(fontSize: 24.px, color: darkTextColor)
   );
 
+  static const AppBarTheme appBarTheme = AppBarTheme(
+    foregroundColor: Colors.white,
+    systemOverlayStyle: SystemUiOverlayStyle.light
+  );
 
   static TextButtonThemeData buttonTheme = TextButtonThemeData(
     style: ButtonStyle(

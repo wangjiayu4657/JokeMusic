@@ -8,6 +8,10 @@ class UserItemHeader extends StatelessWidget {
     this.iconSize = 48,
     this.color,
     this.right,
+    this.title,
+    this.subTitle,
+    this.titleStyle,
+    this.subTitleStyle,
     this.onTap,
   }) : super(key: key);
 
@@ -15,6 +19,10 @@ class UserItemHeader extends StatelessWidget {
   final double? iconSize;
   final Color? color;
   final Widget? right;
+  final String? title;
+  final String? subTitle;
+  final TextStyle? titleStyle;
+  final TextStyle? subTitleStyle;
   final GestureTapCallback? onTap;
 
   @override
@@ -30,7 +38,6 @@ class UserItemHeader extends StatelessWidget {
   Widget buildUserItemHeader() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
       children:  [
         buildUserItemHeaderIconAndInfo(),
         buildUserItemHeaderMore()
@@ -52,13 +59,10 @@ class UserItemHeader extends StatelessWidget {
 
   //构建图标组件
   Widget buildUserItemHeaderIcon() {
-    return Padding(
-      padding: EdgeInsets.only(left: 15.px),
-      child: SizedBox(
-          width: iconSize,
-          height: iconSize,
-          child: const CircleAvatar(backgroundImage: AssetImage("assets/images/placeholder.png"))
-      ),
+    return SizedBox(
+        width: iconSize,
+        height: iconSize,
+        child: const CircleAvatar(backgroundImage: AssetImage("assets/images/sources/avatar.png"))
     );
   }
 
@@ -68,17 +72,17 @@ class UserItemHeader extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("丛林中的仙子",style: TextStyle(fontSize: 14.px)),
+        Text(title ?? "丛林中的仙子",style: titleStyle),
         SizedBox(height: 4.px),
-        Text("不是我不笑, 一笑粉就掉!",style: TextStyle(fontSize: 12.px))
+        Text(subTitle ?? "不是我不笑, 一笑粉就掉!",style: subTitleStyle)
       ],
     );
   }
 
-  //构建更多(...)组件
+  //构建右侧组件
   Widget buildUserItemHeaderMore() {
     return SizedBox(
-      width: 60.px,
+      width: 30.px,
       child: right ?? IconButton(
          onPressed: onTap,
          icon: const Icon(Icons.more_horiz)

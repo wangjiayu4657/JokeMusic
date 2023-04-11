@@ -19,8 +19,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeConfig.normalTheme,
       darkTheme: ThemeConfig.darkTheme,
-      home: const LoginPage(),
-      // initialRoute: MainPage.routeName,
+      // home: const LoginPage(),
+      initialRoute: MainPage.routeName,
       onGenerateRoute: RouterConfig.onGenerateRoute,
       onUnknownRoute: RouterConfig.onUnknownRoute,
     );

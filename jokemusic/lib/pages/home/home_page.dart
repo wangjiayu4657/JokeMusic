@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jokemusic/pages/home/widgets/home_search.dart';
 
+import 'widgets/home_search.dart';
 import 'widgets/home_navigation_bar.dart';
 import 'widgets/home_focus.dart';
 import 'widgets/home_recommend.dart';
