@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jokemusic/pages/login/login_page.dart';
 
 import '../../widgets/vertical_item.dart';
 import '../../widgets/user_item_header.dart';
@@ -41,7 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
         subTitleStyle: TextStyle(fontSize: 12.px, color: Colors.black87),
         backgroundColor: Colors.transparent,
         right: IconButton(
-          onPressed: (){},
+          onPressed: () => Navigator.pushNamed(context, LoginPage.routeName),
           icon: const Icon(Icons.arrow_forward_ios, color: Colors.black45),
         ),
       ),
@@ -157,5 +158,5 @@ class _ProfilePageState extends State<ProfilePage> {
        icon: Image.asset("assets/images/sources/$imgName.png", width: 30.px)
     );
   }
-
+  
 }

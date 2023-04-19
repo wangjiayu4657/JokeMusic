@@ -1,19 +1,21 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:jokemusic/tools/extension/object_extension.dart';
 
+import '../../services/storage/storage.dart';
+import 'viewModels/login_view_model.dart';
 import '../../widgets/input.dart';
 import '../../widgets/code_button.dart';
-import '../../services/http/http_client.dart';
+// import '../../services/http/http_client.dart';
 import '../../services/theme/theme_config.dart';
 import '../../tools/share/const_config.dart';
-import '../../tools/share/device_manager.dart';
+// import '../../tools/share/device_manager.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
+// import '../../tools/extension/object_extension.dart';
+
 
 class LoginPage extends StatefulWidget {
+  static const String routeName = "/LoginPage";
   const LoginPage({Key? key}) : super(key: key);
 
   @override
@@ -21,36 +23,37 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
+  //用户名
+  String? _userName;
+  //密码/验证码
+  String? _password;
   //是否为验证码登录
   bool _isCodeLogin = false;
   //登录按钮是否能交互
   bool _isLoginBtnEnable = false;
 
-  String? phone;
-  String? pwd;
+  late final LoginViewModel _viewModel = LoginViewModel();
 
-  @override
-  void initState() {
-    super.initState();
-
-    DeviceManager.deviceInfo();
+  //验证码请求
+  void codeRequest() {
+    _viewModel.codeRequest(phone: _userName);
   }
-  
-  void loginRequest() {
-    if(phone == null) {
-      showToast("请输入账户名");
-      return;
-    }
-    if(pwd == null) {
-      showToast("请输入密码");
-      return;
-    }
 
-    final params = {"phone": phone, "psw": pwd};
-    HttpClient.request(url: "/user/login/psw",params: params).then((value){
-      debugPrint("value === $value");
-    });
+  //登录请求
+  void loginRequest() {
+    if(_isCodeLogin) {
+      _viewModel.loginCodeRequest(
+        userName: _userName,
+        code: _password,
+        callback: () => Navigator.pop(context)
+      );
+    } else {
+      _viewModel.loginRequest(
+        userName: _userName,
+        password: _password,
+        callback: () => Navigator.pop(context)
+      );
+    }
   }
 
   @override
@@ -69,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
       leading: IconButton(
         onPressed: () => Navigator.pop(context),
         iconSize: 30.px,
-        icon: const Icon(Icons.close),
+        icon: const Icon(Icons.close,color: Colors.black26),
       ),
       backgroundColor: Colors.white,
       shadowColor: Colors.transparent,
@@ -109,9 +112,9 @@ class _LoginPageState extends State<LoginPage> {
         placeholder: "请输入手机号码",
         textOffset: 0.1,
         valueChanged: (phoneNum) {
-          phone = phoneNum;
+          _userName = phoneNum;
           setState(() {
-            _isLoginBtnEnable = phone != null && pwd != null;
+            _isLoginBtnEnable = _userName != null && _password != null;
           });
         },
       ),
@@ -135,9 +138,9 @@ class _LoginPageState extends State<LoginPage> {
               placeholder: _isCodeLogin ? "请输入密码" : "请输入验证码",
               textOffset: 0.1,
               valueChanged: (password) {
-                pwd = password;
+                _password = password;
                 setState(() {
-                  _isLoginBtnEnable = phone != null && pwd != null;
+                  _isLoginBtnEnable = _userName != null && _password != null;
                 });
               },
             ),
@@ -156,13 +159,11 @@ class _LoginPageState extends State<LoginPage> {
         Container(
           width: 2.px,
           height: 15.px,
-          color: Colors.black26,
+          color: Colors.black12,
         ),
         SizedBox(
           width: 120.px,
-          child: CodeButton(second: 5, callback: () {
-
-          })
+          child: CodeButton(second: 5, phone: _userName, callback: codeRequest)
         )
       ],
     );
@@ -205,15 +206,22 @@ class _LoginPageState extends State<LoginPage> {
   Widget buildLoginToolPwdOrCodeLogin() {
     return TextButton(
       onPressed: () => setState(() => _isCodeLogin = !_isCodeLogin),
-      child: Text( _isCodeLogin ? "验证码登录" : "密码登录")
+      child: Text( _isCodeLogin ? "验证码登录" : "密码登录",style: const TextStyle(color: Colors.orangeAccent))
     );
   }
 
   //构建登录工具 - 问题组件
   Widget buildLoginToolQuestion() {
     return TextButton(
-      onPressed: (){},
-      child: const Text("遇到问题?")
+      onPressed: (){
+        showModalBottomSheet(
+          context: context,
+          // constraints: BoxConstraints(minHeight: 180.px),
+          builder: (context){
+            return buildBottomSheet();
+        });
+      },
+      child: const Text("遇到问题?", style: TextStyle(color: Colors.orangeAccent))
     );
   }
 
@@ -291,4 +299,42 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  //构建底部弹窗
+  Widget buildBottomSheet() {
+    return Container(
+        padding: EdgeInsets.symmetric(vertical: 15.px),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8.px)
+        ),
+        child: buildBottomSheetList(),
+    );
+  }
+
+  //构建底部弹窗列表
+  Widget buildBottomSheetList() {
+    List<String> items = ["选择您遇到的问题","忘记密码","联系客服","我要反馈","取消"];
+    return ListView.separated(
+        shrinkWrap: true,
+        itemCount: items.length,
+        itemBuilder: (context,idx){
+          return ListTile(
+            onTap: () => debugPrint("idx === $idx"),
+            visualDensity: const VisualDensity(vertical: -4),
+            title: Text(
+              items[idx],
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.black87,
+                fontSize: idx == 0 ? 18.px : 16.px,
+                fontWeight: idx == 0 ? FontWeight.bold : FontWeight.normal
+              ),
+            ),
+          );
+        },
+        separatorBuilder: (context,idx){
+          return Divider(thickness: idx == 3 ? 10.px : 1.px,color: ColorExtension.lineColor);
+        },
+    );
+  }
 }

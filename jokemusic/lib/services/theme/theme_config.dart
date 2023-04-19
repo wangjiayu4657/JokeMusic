@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import '../../tools/extension/int_extension.dart';
-import '../../tools/extension/color_extension.dart';
+
 
 class ThemeConfig {
   static final double smallFontSize = 12.px;
@@ -15,10 +16,13 @@ class ThemeConfig {
     primarySwatch: Colors.red,
     primaryColor: Colors.white,
     splashColor: Colors.transparent,
+    splashFactory: NoSplash.splashFactory,
     canvasColor: Colors.white,
     appBarTheme: appBarTheme,
     textTheme: normalTextTheme,
     textButtonTheme:buttonTheme,
+    buttonTheme: buttonThemeData,
+    hoverColor: Colors.transparent,
     highlightColor: Colors.transparent,
     bottomSheetTheme: const BottomSheetThemeData(backgroundColor: Colors.black12),
     elevatedButtonTheme: elevatedButtonThemeData
@@ -83,20 +87,34 @@ class ThemeConfig {
   );
 
   static TextButtonThemeData buttonTheme = TextButtonThemeData(
-    style: ButtonStyle(
-      backgroundColor: MaterialStateProperty.resolveWith((states){
-        return states.contains(MaterialState.pressed) ? Colors.black12 : Colors.transparent;
-      }),
-      textStyle: MaterialStateProperty.all<TextStyle>(TextStyle(fontSize: 15.px))
-    )
+    style: TextButton.styleFrom(
+        primary: Colors.white,
+        splashFactory: NoSplash.splashFactory
+    ),
+    // style: ButtonStyle(
+    //   backgroundColor: MaterialStateProperty.resolveWith((states){
+    //     return states.contains(MaterialState.pressed) ? Colors.transparent : Colors.transparent;
+    //   }),
+    //   textStyle: MaterialStateProperty.all<TextStyle>(TextStyle(fontSize: 15.px))
+    // )
   );
 
   static ElevatedButtonThemeData elevatedButtonThemeData = ElevatedButtonThemeData(
-    style: ButtonStyle(
-      backgroundColor: MaterialStateProperty.resolveWith((states){
-        return states.contains(MaterialState.pressed) ? Colors.black12 : Colors.transparent;
-      }),
-      textStyle: MaterialStateProperty.all<TextStyle>(TextStyle(fontSize: 15.px))
-    )
+    style: ElevatedButton.styleFrom(
+        onPrimary: Colors.white,
+        splashFactory: NoSplash.splashFactory
+    ),
+
+    // style: ButtonStyle(
+    //   backgroundColor: MaterialStateProperty.resolveWith((states){
+    //     return states.contains(MaterialState.pressed) ? Colors.transparent : Colors.transparent;
+    //   }),
+    //   textStyle: MaterialStateProperty.all<TextStyle>(TextStyle(fontSize: 15.px))
+    // )
+  );
+
+  static ButtonThemeData buttonThemeData = const ButtonThemeData(
+    highlightColor: Colors.transparent,
+    splashColor: Colors.transparent,
   );
 }

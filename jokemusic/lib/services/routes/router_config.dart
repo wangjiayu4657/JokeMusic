@@ -6,6 +6,7 @@ import '../../pages/video/video_page.dart';
 import '../../pages/publish/publish_page.dart';
 import '../../pages/message/message_page.dart';
 import '../../pages/Profile/profile_page.dart';
+import '../../pages/login/login_page.dart';
 import '../../pages/others/unknown_page.dart';
 
 
@@ -17,6 +18,7 @@ class RouterConfig {
     PublishPage.routeName: (ctx) => const PublishPage(),
     MessagePage.routeName: (ctx) => const MessagePage(),
     ProfilePage.routeName: (ctx) => const ProfilePage(),
+    LoginPage.routeName: (ctx) => const LoginPage(),
   };
 
   //统一处理

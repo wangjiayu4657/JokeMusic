@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'main_config.dart';
 
+import 'main_config.dart';
 
 class MainPage extends StatefulWidget {
   static const String routeName = "/MainPage";
@@ -11,7 +11,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-   late  int _currentIndex = 0;
+  late  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {

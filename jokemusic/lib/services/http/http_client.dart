@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:jokemusic/services/storage/storage.dart';
 import 'package:jokemusic/tools/share/device_manager.dart';
 import 'http_config.dart';
 
@@ -17,10 +18,12 @@ class HttpClient {
     Map<String,dynamic>? params,
     Interceptor? interceptor
   }) async {
+    String? token = await Storage.fetchString("token");
+    print("token1 ==== $token");
 
     Map<String,dynamic> headers = {
       "project_token":"BBA5BF6858194BCCA6EE6EA5903E8878",
-      "token":"",
+      "token": token,
       "uk": DeviceManager.uk,
       "channel":"cretin_open_api",
       "app": DeviceManager.app,

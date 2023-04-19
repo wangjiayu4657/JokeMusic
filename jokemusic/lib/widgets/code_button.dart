@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:jokemusic/tools/extension/object_extension.dart';
 
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
@@ -14,6 +15,7 @@ class CodeButton extends StatefulWidget {
     bool? isStartTime,
     String? startTitle,
     String? endTitle,
+    this.phone,
     this.callback
   }) : second = second ?? 59,
        isEnable = isEnable ?? true,
@@ -29,6 +31,8 @@ class CodeButton extends StatefulWidget {
   final String startTitle;
   ///倒计时结束时的标题
   final String endTitle;
+  ///手机号码
+  final String? phone;
   ///按钮使能
   final bool isEnable;
   ///是否开始计时
@@ -65,7 +69,12 @@ class _CodeButtonState extends State<CodeButton> {
   }
 
   void onPressed() {
-    if(widget.callback != null) widget.callback!();
+    if(widget.phone == null){
+      showToast("手机号码不能为空");
+      return;
+    }
+
+    widget.callback?.call();
     if(widget.isStartTime) initTimer();
   }
   
