@@ -6,7 +6,7 @@ class UserItemHeader extends StatelessWidget {
     Key? key,
     this.height = 60,
     this.iconSize = 48,
-    this.color,
+    this.backgroundColor,
     this.right,
     this.title,
     this.subTitle,
@@ -17,7 +17,7 @@ class UserItemHeader extends StatelessWidget {
 
   final double? height;
   final double? iconSize;
-  final Color? color;
+  final Color? backgroundColor;
   final Widget? right;
   final String? title;
   final String? subTitle;
@@ -29,7 +29,7 @@ class UserItemHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: height,
-      color: color,
+      color: backgroundColor,
       child: buildUserItemHeader(),
     );
   }

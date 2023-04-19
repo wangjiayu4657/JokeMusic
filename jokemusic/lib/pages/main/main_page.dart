@@ -32,6 +32,7 @@ class _MainPageState extends State<MainPage> {
           padding: const EdgeInsets.only(top: 10),
           child: BottomNavigationBar(
             items: MainConfig.items,
+            elevation: 0.0,
             unselectedFontSize: 14,
             currentIndex: _currentIndex,
             type: BottomNavigationBarType.fixed,
