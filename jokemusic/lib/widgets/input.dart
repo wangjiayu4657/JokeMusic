@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'code_button.dart';
 import '../tools/extension/int_extension.dart';
@@ -27,6 +28,7 @@ class Input extends StatefulWidget {
     this.contentPadding,
     double? textOffset,
     this.maxLines = 1,
+    this.maxLength,
     this.valueChanged,
     // this.callback
   }) : borderColor = ColorExtension.lineColor,
@@ -61,13 +63,14 @@ class Input extends StatefulWidget {
   final double textOffset;
   ///最大行数,默认为1行
   final int? maxLines;
+  ///最大字符数(字符串长度)
+  final int? maxLength;
 
   @override
   State<Input> createState() => _InputState();
 }
 
 class _InputState extends State<Input> {
-
   @override
   Widget build(BuildContext context) {
     return TextField(
@@ -77,6 +80,7 @@ class _InputState extends State<Input> {
       onChanged: widget.valueChanged,
       cursorColor: Colors.black12,
       maxLines: widget.maxLines,
+      maxLength: widget.maxLength,
       autofocus: widget.autofocus ?? false,
       textAlignVertical: TextAlignVertical(y: widget.textOffset),
       decoration: InputDecoration(
@@ -87,6 +91,7 @@ class _InputState extends State<Input> {
         prefixIcon: widget.leading,
         suffix: widget.trailing,
         prefixIconConstraints: BoxConstraints(minWidth: 34.px),
+        counterText: '',
         border: buildBorder(),
         enabledBorder: buildBorder(),
         focusedBorder: buildBorder(),

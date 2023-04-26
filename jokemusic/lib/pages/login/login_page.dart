@@ -29,6 +29,8 @@ class _LoginPageState extends State<LoginPage> {
   String? _password;
   //是否为验证码登录
   bool _isCodeLogin = false;
+  //验证码按钮是否可点
+  bool _isCodeBtnEnable = false;
   //登录按钮是否能交互
   bool _isLoginBtnEnable = false;
 
@@ -111,9 +113,11 @@ class _LoginPageState extends State<LoginPage> {
       child: Input(
         placeholder: "请输入手机号码",
         textOffset: 0.1,
+        maxLength: 11,
         valueChanged: (phoneNum) {
           _userName = phoneNum;
           setState(() {
+            _isCodeBtnEnable = _userName?.length == 11;
             _isLoginBtnEnable = _userName != null && _password != null;
           });
         },
@@ -135,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
         children: [
            Expanded(
             child: Input(
-              placeholder: _isCodeLogin ? "请输入密码" : "请输入验证码",
+              placeholder: _isCodeLogin ? "请输入验证码" : "请输入密码",
               textOffset: 0.1,
               valueChanged: (password) {
                 _password = password;
@@ -145,7 +149,7 @@ class _LoginPageState extends State<LoginPage> {
               },
             ),
           ),
-          if(!_isCodeLogin) buildCodeButton()
+          if(_isCodeLogin) buildCodeButton()
         ],
       ),
     );
@@ -163,7 +167,12 @@ class _LoginPageState extends State<LoginPage> {
         ),
         SizedBox(
           width: 120.px,
-          child: CodeButton(second: 5, phone: _userName, callback: codeRequest)
+          child: CodeButton(
+            second: 5,
+            phone: _userName,
+            style: _isCodeBtnEnable ? TextStyle(fontSize: 14.px, color: Colors.orangeAccent) : TextStyle(fontSize: 14.px,color: Colors.black26),
+            callback: codeRequest
+          )
         )
       ],
     );
@@ -206,7 +215,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget buildLoginToolPwdOrCodeLogin() {
     return TextButton(
       onPressed: () => setState(() => _isCodeLogin = !_isCodeLogin),
-      child: Text( _isCodeLogin ? "验证码登录" : "密码登录",style: const TextStyle(color: Colors.orangeAccent))
+      child: Text( _isCodeLogin ? "密码登录" : "验证码登录",style: const TextStyle(color: Colors.orangeAccent))
     );
   }
 

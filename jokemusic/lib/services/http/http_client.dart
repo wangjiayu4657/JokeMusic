@@ -1,14 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:jokemusic/services/storage/storage.dart';
-import 'package:jokemusic/tools/share/device_manager.dart';
+
 import 'http_config.dart';
+import '../../services/storage/storage.dart';
+import '../../tools/share/device_manager.dart';
 
 class HttpClient {
   static final baseOptions = BaseOptions(
     baseUrl: HttpConfig.baseUrl,
     contentType: 'application/json',
-    connectTimeout: HttpConfig.timeout
+    connectTimeout: const Duration(seconds: HttpConfig.timeout)
   );
   static Dio dio = Dio(baseOptions);
 
@@ -19,8 +20,6 @@ class HttpClient {
     Interceptor? interceptor
   }) async {
     String? token = await Storage.fetchString("token");
-    print("token1 ==== $token");
-
     Map<String,dynamic> headers = {
       "project_token":"BBA5BF6858194BCCA6EE6EA5903E8878",
       "token": token,
@@ -30,7 +29,7 @@ class HttpClient {
       "device": DeviceManager.device
     };
 
-    debugPrint("headers === $headers");
+    // debugPrint("headers === $headers");
 
     final Options options = Options(method: method,headers: headers);
 

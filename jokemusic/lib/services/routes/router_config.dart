@@ -8,6 +8,7 @@ import '../../pages/message/message_page.dart';
 import '../../pages/Profile/profile_page.dart';
 import '../../pages/login/login_page.dart';
 import '../../pages/others/unknown_page.dart';
+import '../../pages/profile/setting/setting_page.dart';
 
 
 class RouterConfig {
@@ -19,6 +20,7 @@ class RouterConfig {
     MessagePage.routeName: (ctx) => const MessagePage(),
     ProfilePage.routeName: (ctx) => const ProfilePage(),
     LoginPage.routeName: (ctx) => const LoginPage(),
+    SettingPage.routeName: (ctx) => const SettingPage(),
   };
 
   //统一处理

@@ -10,12 +10,13 @@ class CodeButton extends StatefulWidget {
   const CodeButton({
     Key? key,
     int? second,
+    this.phone,
     this.height,
-    bool? isEnable,
+    this.style,
     bool? isStartTime,
     String? startTitle,
     String? endTitle,
-    this.phone,
+    bool? isEnable,
     this.callback
   }) : second = second ?? 59,
        isEnable = isEnable ?? true,
@@ -26,17 +27,20 @@ class CodeButton extends StatefulWidget {
 
   ///倒计时的秒数
   final int second;
+  ///手机号码
+  final String? phone;
+  ///按钮高度
   final double? height;
+  ///是否开始计时
+  final bool isStartTime;
   ///起始时的标题
   final String startTitle;
   ///倒计时结束时的标题
   final String endTitle;
-  ///手机号码
-  final String? phone;
   ///按钮使能
   final bool isEnable;
-  ///是否开始计时
-  final bool isStartTime;
+  ///文本样式
+  final TextStyle? style;
   ///回调
   final VoidCallback? callback;
 
@@ -85,7 +89,7 @@ class _CodeButtonState extends State<CodeButton> {
       padding: EdgeInsets.symmetric(horizontal: 10.px),
       child: TextButton(
         onPressed: _isEnable ? onPressed : null,
-        child: Text(codeTitle,style: TextStyle(color: Colors.black26,fontSize: 14.px))
+        child: Text(codeTitle, style: widget.style ?? TextStyle(color: Colors.black26,fontSize: 14.px))
       ),
     );
   }

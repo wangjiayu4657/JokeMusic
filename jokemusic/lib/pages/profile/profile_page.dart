@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:jokemusic/pages/login/login_page.dart';
 
+import '../../pages/login/login_page.dart';
 import '../../widgets/vertical_item.dart';
 import '../../widgets/user_item_header.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
+import '../../pages/profile/setting/setting_page.dart';
 
 class ProfilePage extends StatefulWidget {
   static const String routeName = "/ProfilePage";
@@ -19,12 +20,18 @@ class _ProfilePageState extends State<ProfilePage> {
   List<String> titles = ["我的客服","审核中","审核失败","分享给朋友","意见反馈","赏个好评","设置"];
   List<String> images = ["customer","auditing","audit_failure","share","feedback","praise","setting"];
 
+  void handlerItemClick(int tag) {
+    if(tag == 6) {
+      Navigator.pushNamed(context, SettingPage.routeName);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: buildAppBarTitle(),
         elevation: 0,
+        title: buildAppBarTitle(),
         backgroundColor: ColorExtension.lineColor,
       ),
       body: buildBody(),
@@ -49,7 +56,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-
   //构建内容
   Widget buildBody() {
     return Container(
@@ -58,8 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
         shrinkWrap: true,
         itemCount: titles.length + 1,
         itemBuilder: (ctx,idx) {
-          if(idx == 0) return buildListHeader();
-          return buildListItem(idx: idx - 1);
+          return idx == 0 ? buildListHeader() : buildListItem(idx: idx - 1);
         },
         separatorBuilder: (ctx, idx) {
           if(idx == 1 || idx == 3) return Divider(color: Colors.transparent,thickness: 12.px);
@@ -72,8 +77,13 @@ class _ProfilePageState extends State<ProfilePage> {
   //构建列表item组件
   Widget buildListItem({int idx = 0}) {
     return Container(
-      color: Colors.white,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: buildBorderRadius(idx)
+      ),
+      margin: EdgeInsets.symmetric(horizontal: 15.px),
       child: ListTile(
+        onTap: () => handlerItemClick(idx),
         leading: Image.asset("assets/images/sources/profile_${images[idx]}@3x.png", width: 20.px),
         title: Text(titles[idx], style: TextStyle(fontSize: 16.px, fontWeight: FontWeight.normal)),
         trailing: Icon(Icons.arrow_forward_ios,size: 18.px),
@@ -83,6 +93,20 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  //处理圆角问题
+  BorderRadius buildBorderRadius(int idx) {
+    if(idx == 0) {
+      return BorderRadius.circular(8.px);
+    } else if(idx == 1 || idx == 3){
+      return BorderRadius.vertical(top: Radius.circular(8.px));
+    } else if(idx == 2 || idx == 6){
+      return BorderRadius.vertical(bottom: Radius.circular(8.px));
+    } else {
+      return BorderRadius.zero;
+    }
+  }
+
+  //构建表头组件
   Widget buildListHeader() {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -97,6 +121,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  //构建表头-信息组件
   Widget buildListHeaderInfo() {
     return Container(
       height: 48.px,
@@ -114,6 +139,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  //构建表头-操作组件
   Widget buildListHeaderOperations() {
     return Container(
       height: 88.px,
@@ -136,7 +162,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  //构建
+  //构建表头-图片组件
   Widget buildListHeaderIcon() {
     return SizedBox(
       height: 128.px,

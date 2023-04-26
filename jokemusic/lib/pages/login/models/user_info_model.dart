@@ -11,7 +11,7 @@ class UserInfoModel {
     required this.inviteCode,
   });
 
-  String userId;
+  int userId;
   String nickname;
   String avatar;
   String signature;

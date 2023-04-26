@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'pages/main/main_page.dart';
-import 'services/routes/router_config.dart';
+import 'services/routes/router_config.dart' as config;
 import 'services/theme/theme_config.dart';
-import 'pages/login/login_page.dart';
+// import 'pages/login/login_page.dart';
 import 'tools/share/device_manager.dart';
 
 void main() {
@@ -25,8 +25,8 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeConfig.darkTheme,
       // home: const LoginPage(),
       initialRoute: MainPage.routeName,
-      onGenerateRoute: RouterConfig.onGenerateRoute,
-      onUnknownRoute: RouterConfig.onUnknownRoute,
+      onGenerateRoute: config.RouterConfig.onGenerateRoute,
+      onUnknownRoute: config.RouterConfig.onUnknownRoute,
     );
   }
 }
