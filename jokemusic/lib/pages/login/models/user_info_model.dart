@@ -1,25 +1,34 @@
 class UserInfoModel {
   UserInfoModel({
-    required this.userId,
-    required this.nickname,
-    required this.avatar,
-    required this.signature,
-    required this.birthday,
-    required this.sex,
-    required this.userPhone,
-    required this.invitedCode,
-    required this.inviteCode,
+     this.userId,
+     this.nickname,
+     this.avatar,
+     this.signature,
+     this.birthday,
+     this.sex,
+     this.userPhone,
+     this.inviteCode,
+     this.invitedCode,
   });
 
-  int userId;
-  String nickname;
-  String avatar;
-  String signature;
-  String birthday;
-  String sex;
-  String userPhone;
-  String invitedCode;
-  String inviteCode;
+  ///用户id
+  int? userId;
+  ///昵称
+  String? nickname;
+  ///用户头像
+  String? avatar;
+  ///用户签名
+  String? signature;
+  ///用户生日
+  String? birthday;
+  ///用户性别
+  String? sex;
+  ///用户手机号
+  String? userPhone;
+  ///用户邀请码
+  String? inviteCode;
+  ///用户被邀请码
+  String? invitedCode;
 
   factory UserInfoModel.fromJson(Map<String, dynamic> json) => UserInfoModel(
     userId: json["userId"],
@@ -29,8 +38,8 @@ class UserInfoModel {
     birthday: json["birthday"],
     sex: json["sex"],
     userPhone: json["userPhone"],
-    invitedCode: json["invitedCode"],
     inviteCode: json["inviteCode"],
+    invitedCode: json["invitedCode"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -41,7 +50,7 @@ class UserInfoModel {
     "birthday": birthday,
     "sex": sex,
     "userPhone": userPhone,
-    "invitedCode": invitedCode,
     "inviteCode": inviteCode,
+    "invitedCode": invitedCode,
   };
 }

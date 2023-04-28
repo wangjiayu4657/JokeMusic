@@ -7,7 +7,7 @@ import '../../widgets/vertical_item.dart';
 import '../../widgets/user_item_header.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
-import '../../pages/profile/setting/setting_page.dart';
+import 'setting_page.dart';
 
 class ProfilePage extends StatefulWidget {
   static const String routeName = "/ProfilePage";

@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 
 import 'package:package_info_plus/package_info_plus.dart';
 
-import 'setting_model.dart';
-import '../../../tools/extension/int_extension.dart';
-import '../../../tools/extension/color_extension.dart';
+import 'user_info_page.dart';
+import 'models/setting_model.dart';
+import '../../tools/extension/int_extension.dart';
+import '../../tools/extension/color_extension.dart';
 
 class SettingPage extends StatefulWidget {
   static const String routeName = "/setting";
@@ -44,7 +45,7 @@ class _SettingPageState extends State<SettingPage> {
     final userModel = SettingModel.initModel(section: 0, title: "用户相关", names: users);
 
     //通用
-    const generals = ["推送开关","视频自动播放","数据网络直接播放视频","清楚缓存"];
+    const generals = ["推送开关","视频自动播放","数据网络直接播放视频","清除缓存"];
     final generalModel = SettingModel.initModel(section: 1, title: "通用", names: generals);
 
     //其他设置
@@ -61,6 +62,41 @@ class _SettingPageState extends State<SettingPage> {
   Future<void> _initPackageInfo() async {
     final info = await PackageInfo.fromPlatform();
     setState(() => _packageInfo = info);
+  }
+
+  ///处理列表item的点击事件
+  void handlerItemSelected({int section = 0, int row = 0}){
+    switch (section){
+      case 0:
+        if(row == 0) {                    //用户信息
+          Navigator.pushNamed(context, UserInfoPage.routeName);
+        } else {                          //账号安全
+
+        }
+        break;
+      case 1:
+        if(row == 0){                     //推送开关
+
+        } else if(row == 3){              //清除缓存
+
+        }
+        break;
+      case 2:
+        if(row == 0){                     //给我评分
+
+        } else if(row == 1){              //检查更新
+
+        } else if(row == 2){              //用户服务协议
+
+        } else if(row == 3) {             //隐私政策
+
+        } else {                          //关于我们
+
+        }
+        break;
+      default:
+        break;
+    }
   }
 
   @override
@@ -113,6 +149,7 @@ class _SettingPageState extends State<SettingPage> {
        itemCount: model?.list?.length ?? 0,
        itemBuilder: (context,idx){
          return ListTile(
+           onTap: () => handlerItemSelected(section:model?.section ?? 0, row: idx),
            title: Text(model?.list?[idx].name ?? "",style: TextStyle(fontSize: 16.px, fontWeight: FontWeight.normal)),
            visualDensity: const VisualDensity(vertical: -4),
            trailing: buildListItemBodyTrailing(idx: idx, section: model?.section ?? 0),
