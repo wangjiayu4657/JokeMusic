@@ -20,58 +20,47 @@ class _SettingPageState extends State<SettingPage> {
   List<SettingModel> _list = [];   //数据源
   bool _autoPlay = false;          //视频自动播放
   bool _dataPlay = false;          //使用数据网络直接播放视频
-  var packageInfo = PackageInfo(
-      appName: "appName",
-      packageName: "packageName",
-      version: "version",
-      buildNumber: "buildNumber"
+  var _packageInfo = PackageInfo(
+    appName: "Unknown",
+    packageName: "Unknown",
+    version: "Unknown",
+    buildNumber: "Unknown",
+    buildSignature: "Unknown",
+    installerStore: "Unknown"
   );
 
   @override
   void initState() {
     super.initState();
 
-    initData();
+    _initData();
+    _initPackageInfo();
   }
 
   ///初始化数据
-  void initData() {
+  void _initData() {
     //用户相关
-    List<SettingItemModel> userItems = const [
-      SettingItemModel(idx: 0,name: "用户信息"),
-      SettingItemModel(idx: 1,name: "账号安全"),
-    ];
-    final userModel = SettingModel(title: "用户相关",list: userItems,section: 0);
+    const users = ["用户信息", "账号安全"];
+    final userModel = SettingModel.initModel(section: 0, title: "用户相关", names: users);
 
     //通用
-    List<SettingItemModel> generalItems = const[
-      SettingItemModel(idx: 0,name: "推送开关"),
-      SettingItemModel(idx: 1,name: "视频自动播放"),
-      SettingItemModel(idx: 2,name: "数据网络直接播放视频"),
-      SettingItemModel(idx: 3,name: "清楚缓存"),
-    ];
-    final generalModel = SettingModel(title: "通用",list: generalItems,section: 1);
+    const generals = ["推送开关","视频自动播放","数据网络直接播放视频","清楚缓存"];
+    final generalModel = SettingModel.initModel(section: 1, title: "通用", names: generals);
 
     //其他设置
-    List<SettingItemModel> otherItems = const[
-      SettingItemModel(idx: 0,name: "给我评分"),
-      SettingItemModel(idx: 1,name: "检查更新"),
-      SettingItemModel(idx: 2,name: "用户服务协议"),
-      SettingItemModel(idx: 3,name: "隐私政策"),
-      SettingItemModel(idx: 4,name: "关于我们"),
-    ];
-    final otherModel = SettingModel(title: "其他设置", list: otherItems,section: 2);
+    const others = ["给我评分","检查更新","用户服务协议","隐私政策","关于我们"];
+    final otherModel = SettingModel.initModel(section: 2, title: "其他设置", names: others);
 
     //退出登录
-    const logoutModel = SettingModel(title: "退出登录",section: 3);
+    final logoutModel = SettingModel(section: 3, title: "退出登录");
 
     _list = [userModel,generalModel,otherModel,logoutModel];
   }
 
   ///初始化packageInfo组件
-  void initPackageInfo() async {
+  Future<void> _initPackageInfo() async {
     final info = await PackageInfo.fromPlatform();
-    setState(() => packageInfo = info);
+    setState(() => _packageInfo = info);
   }
 
   @override
@@ -131,20 +120,6 @@ class _SettingPageState extends State<SettingPage> {
        },
        separatorBuilder: (context,idx) => Divider(color: ColorExtension.lineColor, thickness: 1.px),
    );
-
-    // return ListView.builder(
-    //   itemCount: model?.list?.length,
-    //   shrinkWrap: true,
-    //   padding: EdgeInsets.only(bottom: 10.px),
-    //   physics: const NeverScrollableScrollPhysics(),
-    //   itemBuilder: (context,idx){
-    //     return ListTile(
-    //       title: Text(model?.list?[idx].name ?? "",style: TextStyle(fontSize: 16.px, fontWeight: FontWeight.normal)),
-    //       visualDensity: const VisualDensity(vertical: -4),
-    //       trailing: buildListItemBodyTrailing(idx: idx, section: model?.section ?? 0),
-    //     );
-    //   }
-    // );
   }
 
   ///构建列表item组件-内容-尾部小组件
@@ -154,7 +129,7 @@ class _SettingPageState extends State<SettingPage> {
         buildListItemBodyTrailingText(idx == 0 ? "未开启" : "502.80KB") :
         buildListItemBodyTrailingSwitch(idx);
     } else if(section == 2){
-      return idx == 1 ? buildListItemBodyTrailingText("v1.0.0") : Icon(Icons.arrow_forward_ios, size: 18.px);
+      return idx == 1 ? buildListItemBodyTrailingText(_packageInfo.version) : Icon(Icons.arrow_forward_ios, size: 18.px);
     }
     return Icon(Icons.arrow_forward_ios, size: 18.px);
   }

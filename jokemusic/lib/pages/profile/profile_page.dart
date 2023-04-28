@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:share_plus/share_plus.dart';
+
 import '../../pages/login/login_page.dart';
 import '../../widgets/vertical_item.dart';
 import '../../widgets/user_item_header.dart';
@@ -20,9 +22,32 @@ class _ProfilePageState extends State<ProfilePage> {
   List<String> titles = ["我的客服","审核中","审核失败","分享给朋友","意见反馈","赏个好评","设置"];
   List<String> images = ["customer","auditing","audit_failure","share","feedback","praise","setting"];
 
+  // Future<void> share() async {
+  //   print("开始分享");
+  //   await FlutterShare.share(
+  //     title: "分享标题",
+  //     text: "分享内容",
+  //     linkUrl: "分享链接: https://flutter.dev/",
+  //     chooserTitle: "选择标题"
+  //   );
+  // }
+
+  Future<void> share() async {
+    await Share.shareXFiles(
+      [XFile("path")],
+    );
+  }
+
   void handlerItemClick(int tag) {
-    if(tag == 6) {
-      Navigator.pushNamed(context, SettingPage.routeName);
+    switch(tag){
+      case 3:
+        print("分享给朋友");
+        share();
+        break;
+      case 6: Navigator.pushNamed(context, SettingPage.routeName);
+        break;
+      default:
+        break;
     }
   }
 
@@ -62,6 +87,7 @@ class _ProfilePageState extends State<ProfilePage> {
       color: ColorExtension.lineColor,
       child: ListView.separated(
         shrinkWrap: true,
+        padding: EdgeInsets.only(bottom: 15.px),
         itemCount: titles.length + 1,
         itemBuilder: (ctx,idx) {
           return idx == 0 ? buildListHeader() : buildListItem(idx: idx - 1);

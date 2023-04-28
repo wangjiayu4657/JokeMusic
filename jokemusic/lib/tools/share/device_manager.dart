@@ -12,12 +12,12 @@ class DeviceManager {
     DeviceInfoPlugin device = DeviceInfoPlugin();
     if (Platform.isAndroid) {
       AndroidDeviceInfo androidInfo = await device.androidInfo;
-      debugPrint('Running on ${androidInfo.model}'); // e.g. "Moto G (4)"
+      // debugPrint('Running on ${androidInfo.model}'); // e.g. "Moto G (4)"
       androidDevice =  androidInfo;
     } else if (Platform.isIOS) {
       IosDeviceInfo iosInfo = await device.iosInfo;
-      debugPrint("iosInfo == $iosInfo");
-      debugPrint('Running on ${iosInfo.utsname.machine}'); // e.g. "iPod7,1"
+      // debugPrint("iosInfo == $iosInfo");
+      // debugPrint('Running on ${iosInfo.utsname.machine}'); // e.g. "iPod7,1"
       iosDevice = iosInfo;
     }
   }

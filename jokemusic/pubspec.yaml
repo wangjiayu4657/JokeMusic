@@ -37,6 +37,7 @@ dependencies:
   dio: ^5.1.1                                       #网络请求
   event_bus: ^2.0.0                                 #事件总线
   provider: ^6.0.2                                  #状态管理
+  share_plus: ^6.3.3                                #分享组件
   video_player: ^2.6.1                              #视频播放器
   image_picker: ^0.8.5+3                            #图片选择器
   grouped_list: ^5.1.2                              #分组列表
