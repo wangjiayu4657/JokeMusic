@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jokemusic/pages/profile/account_safe_page.dart';
 
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -71,7 +72,7 @@ class _SettingPageState extends State<SettingPage> {
         if(row == 0) {                    //用户信息
           Navigator.pushNamed(context, UserInfoPage.routeName);
         } else {                          //账号安全
-
+          Navigator.pushNamed(context, AccountSafePage.routeName);
         }
         break;
       case 1:

@@ -10,6 +10,7 @@ import '../../pages/login/login_page.dart';
 import '../../pages/others/unknown_page.dart';
 import '../../pages/profile/setting_page.dart';
 import '../../pages/profile/user_info_page.dart';
+import '../../pages/profile/account_safe_page.dart';
 
 
 class RouterConfig {
@@ -23,6 +24,7 @@ class RouterConfig {
     LoginPage.routeName: (ctx) => const LoginPage(),
     SettingPage.routeName: (ctx) => const SettingPage(),
     UserInfoPage.routeName: (ctx) => const UserInfoPage(),
+    AccountSafePage.routeName: (ctx) => const AccountSafePage(),
   };
 
   //统一处理

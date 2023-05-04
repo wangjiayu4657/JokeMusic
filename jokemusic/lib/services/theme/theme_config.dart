@@ -88,29 +88,16 @@ class ThemeConfig {
 
   static TextButtonThemeData buttonTheme = TextButtonThemeData(
     style: TextButton.styleFrom(
-        primary: Colors.white,
-        splashFactory: NoSplash.splashFactory
+      foregroundColor: Colors.white,
+      splashFactory: NoSplash.splashFactory
     ),
-    // style: ButtonStyle(
-    //   backgroundColor: MaterialStateProperty.resolveWith((states){
-    //     return states.contains(MaterialState.pressed) ? Colors.transparent : Colors.transparent;
-    //   }),
-    //   textStyle: MaterialStateProperty.all<TextStyle>(TextStyle(fontSize: 15.px))
-    // )
   );
 
   static ElevatedButtonThemeData elevatedButtonThemeData = ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-        onPrimary: Colors.white,
-        splashFactory: NoSplash.splashFactory
+      foregroundColor: Colors.white,
+      splashFactory: NoSplash.splashFactory
     ),
-
-    // style: ButtonStyle(
-    //   backgroundColor: MaterialStateProperty.resolveWith((states){
-    //     return states.contains(MaterialState.pressed) ? Colors.transparent : Colors.transparent;
-    //   }),
-    //   textStyle: MaterialStateProperty.all<TextStyle>(TextStyle(fontSize: 15.px))
-    // )
   );
 
   static ButtonThemeData buttonThemeData = const ButtonThemeData(
