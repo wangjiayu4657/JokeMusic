@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 extension ColorExtension on Color {
   //线条颜色
-  static const Color bgColor = Color.fromRGBO(230, 230, 230, 0.5);
+  static Color bgColor = ColorExtension.hex("#F7F7F7");
   static const Color lineColor = Color.fromRGBO(233, 233, 233, 0.5);
   static MaterialColor primarySwatch = mapMaterialColor(Colors.white);
 

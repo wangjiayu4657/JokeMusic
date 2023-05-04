@@ -47,7 +47,9 @@ class ThemeConfig {
 
     displaySmall: TextStyle(fontSize: 16.px, color: normalTextColor),
     displayMedium: TextStyle(fontSize: 20.px, color: normalTextColor),
-    displayLarge: TextStyle(fontSize: 24.px, color: normalTextColor)
+    displayLarge: TextStyle(fontSize: 24.px, color: normalTextColor),
+
+
   );
 
   //暗黑主题

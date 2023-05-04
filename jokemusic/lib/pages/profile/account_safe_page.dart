@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'reset_password_page.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
+
 
 class AccountSafePage extends StatefulWidget {
   static const String routeName = "/accountSafe";
@@ -14,6 +16,14 @@ class AccountSafePage extends StatefulWidget {
 class _AccountSafePageState extends State<AccountSafePage> {
 
  final  List<String> _list = ["当前绑定手机号","重置密码","修改密码","绑定QQ","绑定新浪微博","注销账号"];
+
+
+
+  void handlerItemSelected(int idx) {
+    if(idx == 1){
+        Navigator.pushNamed(context, ResetPasswordPage.routeName);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +54,7 @@ class _AccountSafePageState extends State<AccountSafePage> {
     return Container(
       color: Colors.white,
       child: ListTile(
-        onTap: () => debugPrint(_list[idx]),
+        onTap: () => handlerItemSelected(idx),
         title:Text(_list[idx],style: TextStyle(fontSize: 16.px, fontWeight: FontWeight.normal)),
         trailing: buildListItemTrailing(idx)
       ),

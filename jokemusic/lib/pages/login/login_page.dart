@@ -125,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  ///构建账号输入组件
+  ///构建密码输入组件
   Widget buildPassword() {
     return Container(
       height: 44.px,

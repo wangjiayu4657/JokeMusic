@@ -15,8 +15,8 @@ enum BorderType {
 class Input extends StatefulWidget {
   const Input({
     Key? key,
-    this.leading,
-    this.trailing,
+    this.prefixIcon,
+    this.suffixIcon,
     this.hintStyle,
     this.borderType = BorderType.noBorder,
     this.borderWidth = 1,
@@ -30,15 +30,14 @@ class Input extends StatefulWidget {
     this.maxLines = 1,
     this.maxLength,
     this.valueChanged,
-    // this.callback
   }) : borderColor = ColorExtension.lineColor,
        textOffset = textOffset ?? 0,
        super(key: key);
 
   ///输入框前面的组件
-  final Widget? leading;
+  final Widget? prefixIcon;
   ///输入框末尾的组件
-  final Widget? trailing;
+  final Widget? suffixIcon;
   ///占位符字体样式
   final TextStyle? hintStyle;
   ///边框风格
@@ -74,22 +73,23 @@ class _InputState extends State<Input> {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      style: const TextStyle(textBaseline: TextBaseline.alphabetic),
+      style: const TextStyle(textBaseline: TextBaseline.alphabetic,height: 1.25),
       keyboardType: widget.keyboardType,
       obscureText: widget.obscureText ?? false,
       onChanged: widget.valueChanged,
       cursorColor: Colors.black12,
+      cursorHeight: 15.px,
       maxLines: widget.maxLines,
       maxLength: widget.maxLength,
       autofocus: widget.autofocus ?? false,
       textAlignVertical: TextAlignVertical(y: widget.textOffset),
       decoration: InputDecoration(
         hintText: widget.placeholder,
-        hintStyle: widget.hintStyle ?? const TextStyle(color: Colors.black26),
+        hintStyle: widget.hintStyle ?? TextStyle(fontSize: 15.px, color: Colors.black26, fontWeight: FontWeight.normal),
         prefixIconColor: Colors.black54,
         focusColor: Colors.black54,
-        prefixIcon: widget.leading,
-        suffix: widget.trailing,
+        prefixIcon: widget.prefixIcon,
+        suffixIcon: widget.suffixIcon,
         prefixIconConstraints: BoxConstraints(minWidth: 34.px),
         counterText: '',
         border: buildBorder(),
@@ -104,7 +104,7 @@ class _InputState extends State<Input> {
   ///构建边框
   InputBorder buildBorder() {
     if(widget.borderType == BorderType.noBorder){
-      return buildOutlineBorder(0,Colors.transparent);
+      return buildOutlineBorder(1,Colors.transparent);
     } else if(widget.borderType == BorderType.outlineBorder){
       return buildOutlineBorder(widget.borderWidth ?? 1,widget.borderColor);
     } else {

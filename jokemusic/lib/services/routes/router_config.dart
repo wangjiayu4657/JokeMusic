@@ -11,6 +11,7 @@ import '../../pages/others/unknown_page.dart';
 import '../../pages/profile/setting_page.dart';
 import '../../pages/profile/user_info_page.dart';
 import '../../pages/profile/account_safe_page.dart';
+import '../../pages/profile/reset_password_page.dart';
 
 
 class RouterConfig {
@@ -25,6 +26,7 @@ class RouterConfig {
     SettingPage.routeName: (ctx) => const SettingPage(),
     UserInfoPage.routeName: (ctx) => const UserInfoPage(),
     AccountSafePage.routeName: (ctx) => const AccountSafePage(),
+    ResetPasswordPage.routeName: (ctx) => const ResetPasswordPage()
   };
 
   //统一处理
