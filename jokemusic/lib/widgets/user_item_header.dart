@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../tools/extension/int_extension.dart';
 
+///用户信息头部组件
 class UserItemHeader extends StatelessWidget {
   const UserItemHeader({
     Key? key,
@@ -34,7 +35,7 @@ class UserItemHeader extends StatelessWidget {
     );
   }
 
-  //构建用户信息头组件
+  ///构建用户信息头组件
   Widget buildUserItemHeader() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -45,7 +46,7 @@ class UserItemHeader extends StatelessWidget {
     );
   }
 
-  //构建图标和信息组件
+  ///构建图标和信息组件
   Widget buildUserItemHeaderIconAndInfo() {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -57,7 +58,7 @@ class UserItemHeader extends StatelessWidget {
     );
   }
 
-  //构建图标组件
+  ///构建图标组件
   Widget buildUserItemHeaderIcon() {
     return SizedBox(
         width: iconSize,
@@ -66,7 +67,7 @@ class UserItemHeader extends StatelessWidget {
     );
   }
 
-  //构建信息组件
+  ///构建信息组件
   Widget buildUserItemHeaderInfo() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -79,7 +80,7 @@ class UserItemHeader extends StatelessWidget {
     );
   }
 
-  //构建右侧组件
+  ///构建右侧组件
   Widget buildUserItemHeaderMore() {
     return SizedBox(
       width: 30.px,

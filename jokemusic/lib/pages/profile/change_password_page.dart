@@ -5,34 +5,27 @@ import '../../tools/extension/color_extension.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../widgets/input.dart';
 import '../../widgets/user_notice.dart';
-import '../../widgets/code_button.dart';
 import '../../widgets/custom_bottom_sheet.dart';
 
-
-class ResetPasswordPage extends StatefulWidget {
-  static const String routeName = "/reset_password";
-  const ResetPasswordPage({Key? key}) : super(key: key);
-
+class ChangePasswordPage extends StatefulWidget {
+  static const String routeName = "/change_password";
+  const ChangePasswordPage({Key? key}) : super(key: key);
 
   @override
-  State<ResetPasswordPage> createState() => _ResetPasswordPageState();
+  State<ChangePasswordPage> createState() => _ChangePasswordPageState();
 }
 
-class _ResetPasswordPageState extends State<ResetPasswordPage> {
+class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
-  String? _code;
-  String? _phone;
-  String? _password;
+  String? _oldPwd;
+  String? _newPwd;
+  String? _surePwd;
   bool _obscureText = false;
 
-  bool get isCodeBtnEnable {
-    return (_phone != null) && (_phone?.length == 11);
-  }
-
   bool get isResetBtnEnable {
-    return _phone?.isNotEmpty == true &&
-           _code?.isNotEmpty == true &&
-           _password?.isNotEmpty == true;
+    return _oldPwd?.isNotEmpty == true &&
+           _newPwd?.isNotEmpty == true &&
+           _surePwd?.isNotEmpty == true;
   }
 
   void codeBtnClick() {
@@ -73,13 +66,13 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("重置密码", style: ThemeConfig.normalTextTheme.displayLarge),
+          Text("修改密码", style: ThemeConfig.normalTextTheme.displayLarge),
           SizedBox(height: 30.px),
-          buildAccount(),
-          SizedBox(height: 15.px),
-          buildCode(),
+          buildOldPassword(),
           SizedBox(height: 15.px),
           buildNewPassword(),
+          SizedBox(height: 15.px),
+          buildSureNewPassword(),
           SizedBox(height: 25.px),
           buildResetButton(),
           SizedBox(height: 5.px),
@@ -90,7 +83,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
   }
 
   ///构建账号输入组件
-  Widget buildAccount() {
+  Widget buildOldPassword() {
     return Container(
       height: 44.px,
       padding: EdgeInsets.only(left: 15.px),
@@ -99,68 +92,14 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
         borderRadius: BorderRadius.circular(22.px)
       ),
       child: Input(
-        placeholder: "请输入手机号码",
+        placeholder: "请输入旧密码",
         textOffset: 0.05,
         maxLength: 11,
-        valueChanged: (phoneNum) {
-          _phone = phoneNum;
+        valueChanged: (oldPwd) {
+          _oldPwd = oldPwd;
           setState(() {});
         },
       ),
-    );
-  }
-
-  ///构建验证码组件
-  Widget buildCode() {
-    return Container(
-      height: 44.px,
-      padding: EdgeInsets.only(left: 15.px),
-      decoration: BoxDecoration(
-        color: ColorExtension.bgColor,
-        borderRadius: BorderRadius.circular(22.px)
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(child: buildCodeInput()),
-          buildCodeButton()
-        ],
-      ),
-    );
-  }
-
-  ///构建验证码输入组件
-  Widget buildCodeInput() {
-    return Input(
-      placeholder: "请输入验证码",
-      textOffset: 0.05,
-      valueChanged: (code) {
-        _code = code;
-        setState(() {});
-      },
-    );
-  }
-
-  ///构建验证码按钮组件
-  Widget buildCodeButton() {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          width: 2.px,
-          height: 15.px,
-          color: Colors.black12,
-        ),
-        SizedBox(
-          width: 130.px,
-          child: CodeButton(
-            second: 5,
-            phone: _phone,
-            style: TextStyle(fontSize: 15.px,color: Colors.black26),
-            callback: isCodeBtnEnable ? codeBtnClick : null
-          )
-        )
-      ],
     );
   }
 
@@ -173,12 +112,32 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
         color: ColorExtension.bgColor,
         borderRadius: BorderRadius.circular(22.px)
       ),
-      child: buildNewPasswordInput(),
+      child: Input(
+        placeholder: "请输入新密码(6~18)",
+        textOffset: 0.05,
+        valueChanged: (newPwd) {
+          _newPwd = newPwd;
+          setState(() {});
+        },
+      ),
     );
   }
 
-  ///构建新密码输入组件
-  Widget buildNewPasswordInput() {
+  ///构建确认新密码组件
+  Widget buildSureNewPassword() {
+    return Container(
+      height: 44.px,
+      padding: EdgeInsets.only(left: 15.px),
+      decoration: BoxDecoration(
+        color: ColorExtension.bgColor,
+        borderRadius: BorderRadius.circular(22.px)
+      ),
+      child: buildSureNewPasswordInput(),
+    );
+  }
+
+  ///构建确认新密码输入组件
+  Widget buildSureNewPasswordInput() {
     return Input(
       placeholder: "请输入新密码(长度6~18)",
       textOffset: 0.05,
@@ -193,14 +152,15 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
           child: Image.asset("assets/images/normal/${_obscureText ? "eye_off.png" : "eye_on.png"}")
         )
       ),
-      valueChanged: (password) {
-        _password = password;
+      valueChanged: (surePwd) {
+        print("surePwd == $surePwd");
+        _surePwd = surePwd;
         setState(() {});
       },
     );
   }
 
-  ///构建登录按钮组件
+  ///构建修改按钮组件
   Widget buildResetButton() {
     return Container(
       height: 44.px,
@@ -216,7 +176,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
             return states.contains(MaterialState.disabled) ? Colors.black12 : Colors.orangeAccent;
           })
         ),
-        child: Text("重  置", style: ThemeConfig.normalTextTheme.displaySmall?.copyWith(color: Colors.white))
+        child: Text("确认修改", style: ThemeConfig.normalTextTheme.displaySmall?.copyWith(color: Colors.white))
       ),
     );
   }

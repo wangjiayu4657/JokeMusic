@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jokemusic/pages/profile/account_safe_page.dart';
 
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -8,7 +7,9 @@ import 'user_info_page.dart';
 import 'models/setting_model.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
+import '../../pages/profile/account_safe_page.dart';
 
+///我的-设置页
 class SettingPage extends StatefulWidget {
   static const String routeName = "/setting";
   const SettingPage({Key? key}) : super(key: key);

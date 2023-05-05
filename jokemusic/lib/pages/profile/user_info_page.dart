@@ -6,6 +6,7 @@ import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
 import '../../pages/login/models/user_info_model.dart';
 
+///我的-设置-用户信息页
 class UserInfoPage extends StatefulWidget {
   static const String routeName = "/userInfo";
   const UserInfoPage({Key? key}) : super(key: key);

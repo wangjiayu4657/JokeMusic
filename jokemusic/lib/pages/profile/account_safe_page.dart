@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
 import 'reset_password_page.dart';
+import '../../widgets/input.dart';
+import '../../widgets/custom_button.dart';
+import '../../pages/profile/change_password_page.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
 
-
+///我的-设置-账号与安全页
 class AccountSafePage extends StatefulWidget {
-  static const String routeName = "/accountSafe";
+  static const String routeName = "/account_safe";
   const AccountSafePage({Key? key}) : super(key: key);
 
   @override
@@ -18,10 +21,28 @@ class _AccountSafePageState extends State<AccountSafePage> {
  final  List<String> _list = ["当前绑定手机号","重置密码","修改密码","绑定QQ","绑定新浪微博","注销账号"];
 
 
-
   void handlerItemSelected(int idx) {
-    if(idx == 1){
-        Navigator.pushNamed(context, ResetPasswordPage.routeName);
+    List<String> routeNames = [
+      "",
+      ResetPasswordPage.routeName,
+      ChangePasswordPage.routeName,
+      "",
+      "",
+      ""
+    ];
+
+    if(idx == 5){
+      showDialog(
+        context: context,
+        builder: (context){
+          return buildAlert();
+        }
+      );
+      return;
+    }
+
+    if(idx < routeNames.length){
+      Navigator.pushNamed(context, routeNames[idx]);
     }
   }
 
@@ -84,6 +105,107 @@ class _AccountSafePageState extends State<AccountSafePage> {
         Text(text ?? "", style: TextStyle(color: color)),
         Icon(Icons.arrow_forward_ios, size: 18.px ,color: Colors.black26),
       ],
+    );
+  }
+
+  ///构建弹窗组件
+  Widget buildAlert() {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: (){
+        Navigator.pop(context);
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: GestureDetector(
+          onTap: (){},
+          child: Center(
+            child: Container(
+              padding: EdgeInsets.only(bottom: 15.px),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(8.px))
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  buildAlertHeader(),
+                  Container(color: ColorExtension.lineColor, height: 1.px),
+                  buildAlertContent(),
+                  SizedBox(height: 10.px),
+                  buildAlertInput(),
+                  SizedBox(height: 10.px),
+                  buildAlertCancellationButton()
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  ///构建弹窗-头部组件
+  Widget buildAlertHeader() {
+    return Container(
+      height: 64.px,
+      // color: Colors.redAccent,
+      padding: EdgeInsets.symmetric(horizontal: 20.px),
+      child: Stack(
+        alignment: AlignmentDirectional.center,
+        children: [
+          Align(
+            alignment: Alignment.center,
+            child: Text("注销账户", style: TextStyle(color: Colors.black87, fontSize: 18.px))
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.close))
+          )
+        ],
+      ),
+    );
+  }
+
+  ///构建弹窗-内容组件
+  Widget buildAlertContent() {
+    return Padding(
+      padding: EdgeInsets.only(top: 15.px, left: 20.px, bottom: 5.px, right: 20.px),
+      child: Text("警告: 账户一旦被注销, 将无法在使用此账号进行登录与注册, 且此账号下的所有数据将会变成僵尸数据, 无法找回, 您只能使用新的账号进行注册使用! 请谨慎操作~",
+        style: TextStyle(color: Colors.redAccent, fontSize: 14.px),
+      ),
+    );
+  }
+
+  ///构建弹窗-输入组件
+  Widget buildAlertInput() {
+    return Container(
+      height: 48.px,
+      margin: EdgeInsets.symmetric(horizontal: 20.px),
+      padding: EdgeInsets.symmetric(horizontal: 15.px),
+      decoration: BoxDecoration(
+        color: ColorExtension.bgColor,
+        borderRadius: BorderRadius.circular(24.px)
+      ),
+      child: Input(
+        placeholder: "请输入当前账号的密码",
+        textOffset: 0.1,
+        valueChanged: (text){},
+      ),
+    );
+  }
+
+  ///构建弹窗-注销按钮组件
+  Widget buildAlertCancellationButton() {
+    return Container(
+      height: 68.px,
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(vertical: 10.px,horizontal: 20.px),
+      child: CustomButton(
+        onPressed: (){ debugPrint('注销'); },
+        title: "考虑好了, 注销~", disableColor: Colors.orangeAccent
+      )
     );
   }
 }

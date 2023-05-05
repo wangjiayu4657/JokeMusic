@@ -78,6 +78,11 @@ class _CodeButtonState extends State<CodeButton> {
       return;
     }
 
+    if(widget.phone?.length != 11){
+      showToast("手机号码格式不正确");
+      return;
+    }
+
     widget.callback?.call();
     if(widget.isStartTime) initTimer();
   }

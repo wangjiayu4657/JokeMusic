@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'package:share_plus/share_plus.dart';
 
+import 'setting_page.dart';
 import '../../pages/login/login_page.dart';
 import '../../widgets/vertical_item.dart';
 import '../../widgets/user_item_header.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
-import 'setting_page.dart';
 
+///我的
 class ProfilePage extends StatefulWidget {
   static const String routeName = "/ProfilePage";
   const ProfilePage({Key? key}) : super(key: key);

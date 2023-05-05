@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
+import 'package:jokemusic/widgets/custom_bottom_sheet.dart';
 
-// import '../../services/storage/storage.dart';
 import 'viewModels/login_view_model.dart';
+import '../../widgets/user_notice.dart';
 import '../../widgets/input.dart';
 import '../../widgets/code_button.dart';
-// import '../../services/http/http_client.dart';
 import '../../services/theme/theme_config.dart';
 import '../../tools/share/const_config.dart';
-// import '../../tools/share/device_manager.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
-// import '../../tools/extension/object_extension.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -30,9 +27,12 @@ class _LoginPageState extends State<LoginPage> {
   //是否为验证码登录
   bool _isCodeLogin = false;
   //验证码按钮是否可点
-  bool _isCodeBtnEnable = false;
+  bool get isCodeBtnEnable => _userName?.length == 11;
   //登录按钮是否能交互
-  bool _isLoginBtnEnable = false;
+  bool get isLoginBtnEnable {
+    return _userName != null && _password != null;
+  }
+
 
   late final LoginViewModel _viewModel = LoginViewModel();
 
@@ -88,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("验证码登录", style: ThemeConfig.normalTextTheme.headline1),
+          Text("验证码登录", style: ThemeConfig.normalTextTheme.displayLarge),
           SizedBox(height: 30.px),
           buildAccount(),
           SizedBox(height: 15.px),
@@ -116,10 +116,7 @@ class _LoginPageState extends State<LoginPage> {
         maxLength: 11,
         valueChanged: (phoneNum) {
           _userName = phoneNum;
-          setState(() {
-            _isCodeBtnEnable = _userName?.length == 11;
-            _isLoginBtnEnable = _userName != null && _password != null;
-          });
+          setState(() {});
         },
       ),
     );
@@ -151,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
       textOffset: 0.1,
       valueChanged: (password) {
         _password = password;
-        setState(() => _isLoginBtnEnable = _userName != null && _password != null);
+        setState(() {});
       },
     );
   }
@@ -171,7 +168,7 @@ class _LoginPageState extends State<LoginPage> {
           child: CodeButton(
             second: 59,
             phone: _userName,
-            style: _isCodeBtnEnable ? TextStyle(fontSize: 14.px, color: Colors.orangeAccent) : TextStyle(fontSize: 14.px,color: Colors.black26),
+            style: isCodeBtnEnable ? TextStyle(fontSize: 14.px, color: Colors.orangeAccent) : TextStyle(fontSize: 14.px,color: Colors.black26),
             callback: codeRequest
           )
         )
@@ -188,7 +185,7 @@ class _LoginPageState extends State<LoginPage> {
         borderRadius: BorderRadius.circular(22.px)
       ),
       child: ElevatedButton(
-        onPressed: _isLoginBtnEnable ? loginRequest : null,
+        onPressed: isLoginBtnEnable ? loginRequest : null,
         style: ButtonStyle(
           shape: MaterialStateProperty.all(const StadiumBorder()), //设置圆角弧度
           backgroundColor: MaterialStateProperty.resolveWith((states) {
@@ -284,65 +281,18 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  ///构建登录方式组件 - 底部说明组件
+  ///构建登录方式组件 - 底部用户须知组件
   Widget buildLoginStyleFooter() {
-    return SizedBox(
-      width: width - 120.px,
-      child: RichText(
-          text: TextSpan(
-            text: "登录/注册代表您同意段子乐",
-            style: const TextStyle(color: Colors.black54),
-            children: [
-              TextSpan(
-                text: "《隐私政策》",
-                style: const TextStyle(color: Colors.orangeAccent),
-                recognizer: TapGestureRecognizer()..onTap
-              ),
-              const TextSpan(text: "和"),
-              const TextSpan(text: "《用户服务协议》",style: TextStyle(color:Colors.orangeAccent))
-            ]
-          ),
-        textAlign: TextAlign.center,
-      ),
-    );
+    return const UserNotice();
   }
 
   ///构建底部弹窗
   Widget buildBottomSheet() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 15.px),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8.px)
-      ),
-      child: buildBottomSheetList(),
-    );
-  }
-
-  ///构建底部弹窗列表
-  Widget buildBottomSheetList() {
-    List<String> items = ["选择您遇到的问题","忘记密码","联系客服","我要反馈","取消"];
-    return ListView.separated(
-        shrinkWrap: true,
-        itemCount: items.length,
-        itemBuilder: (context,idx){
-          return ListTile(
-            onTap: () => debugPrint("idx === $idx"),
-            visualDensity: const VisualDensity(vertical: -4),
-            title: Text(
-              items[idx],
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.black87,
-                fontSize: idx == 0 ? 18.px : 16.px,
-                fontWeight: idx == 0 ? FontWeight.bold : FontWeight.normal
-              ),
-            ),
-          );
-        },
-        separatorBuilder: (context,idx){
-          return Divider(thickness: idx == 3 ? 10.px : 1.px, color: ColorExtension.lineColor);
-        },
-    );
+    const List<SheetItem> items = [
+      SheetItem(title: "忘记密码", type: SheetItemType.forgot),
+      SheetItem(title: "联系客服", type: SheetItemType.customer),
+      SheetItem(title: "我要反馈", type: SheetItemType.feedback),
+    ];
+    return const CustomBottomSheet(items: items);
   }
 }
