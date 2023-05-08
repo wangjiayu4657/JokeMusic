@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-import 'code_button.dart';
 import '../tools/extension/int_extension.dart';
 import '../tools/extension/color_extension.dart';
 
@@ -27,6 +25,7 @@ class Input extends StatefulWidget {
     this.obscureText,
     this.contentPadding,
     double? textOffset,
+    this.minLines,
     this.maxLines = 1,
     this.maxLength,
     this.valueChanged,
@@ -60,6 +59,8 @@ class Input extends StatefulWidget {
   final EdgeInsets? contentPadding;
   ///文本垂直对齐偏移量,取值范围: -1.0 ~ 1.0
   final double textOffset;
+  ///最小行数,默认为0行
+  final int? minLines;
   ///最大行数,默认为1行
   final int? maxLines;
   ///最大字符数(字符串长度)
@@ -79,6 +80,7 @@ class _InputState extends State<Input> {
       onChanged: widget.valueChanged,
       cursorColor: Colors.black12,
       cursorHeight: 15.px,
+      minLines: widget.minLines,
       maxLines: widget.maxLines,
       maxLength: widget.maxLength,
       autofocus: widget.autofocus ?? false,

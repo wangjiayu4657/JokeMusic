@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jokemusic/pages/profile/feedback_page.dart';
 
 import 'package:share_plus/share_plus.dart';
 
@@ -41,11 +42,11 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void handlerItemClick(int tag) {
     switch(tag){
-      case 3:
-        print("分享给朋友");
-        share();
+      case 3: share();                                                      //分享给朋友
         break;
-      case 6: Navigator.pushNamed(context, SettingPage.routeName);
+      case 4: Navigator.pushNamed(context, FeedbackPage.routeName);         //意见反馈
+        break;
+      case 6: Navigator.pushNamed(context, SettingPage.routeName);          //设置
         break;
       default:
         break;

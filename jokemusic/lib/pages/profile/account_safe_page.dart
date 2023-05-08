@@ -34,9 +34,7 @@ class _AccountSafePageState extends State<AccountSafePage> {
     if(idx == 5){
       showDialog(
         context: context,
-        builder: (context){
-          return buildAlert();
-        }
+        builder: (context) => buildAlert()
       );
       return;
     }
@@ -125,7 +123,7 @@ class _AccountSafePageState extends State<AccountSafePage> {
               padding: EdgeInsets.only(bottom: 15.px),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(8.px))
+                borderRadius: BorderRadius.all(Radius.circular(8.px))
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -150,7 +148,6 @@ class _AccountSafePageState extends State<AccountSafePage> {
   Widget buildAlertHeader() {
     return Container(
       height: 64.px,
-      // color: Colors.redAccent,
       padding: EdgeInsets.symmetric(horizontal: 20.px),
       child: Stack(
         alignment: AlignmentDirectional.center,
