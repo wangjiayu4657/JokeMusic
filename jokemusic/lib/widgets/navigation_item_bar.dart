@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../tools/extension/int_extension.dart';
+import '../tools/extension/string_extension.dart';
 
 ///自定义导航项目栏
 class NavigationItemBar extends StatefulWidget {
@@ -9,11 +10,13 @@ class NavigationItemBar extends StatefulWidget {
     required this.items,
     this.currentIndex,
     this.isShowBottomLine = false,
-    this.bottomLineColor,
+    this.bottomLineWidth,
+    Color? bottomLineColor,
     TextStyle? normalStyle,
     TextStyle? selectedStyle,
     this.callBack,
-  }) : normalStyle = normalStyle ??
+  }) : bottomLineColor = bottomLineColor ?? Colors.redAccent,
+       normalStyle = normalStyle ??
            TextStyle(color: Colors.black87, fontSize: 18.px, fontWeight: FontWeight.normal),
        selectedStyle = selectedStyle ??
            TextStyle(color: Colors.redAccent, fontSize: 20.px, fontWeight: FontWeight.bold),
@@ -23,6 +26,7 @@ class NavigationItemBar extends StatefulWidget {
   final int? currentIndex;
   final bool? isShowBottomLine;
   final Color? bottomLineColor;
+  final double? bottomLineWidth;
   final TextStyle? normalStyle;
   final TextStyle? selectedStyle;
   final ValueChanged<int>? callBack;
@@ -38,7 +42,6 @@ class _NavigationItemBarState extends State<NavigationItemBar> {
   @override
   Widget build(BuildContext context) {
     _index = widget.currentIndex ?? 0;
-    debugPrint("idx ===== $_index");
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.px,vertical: 15.px),
       child: Row(
@@ -51,8 +54,11 @@ class _NavigationItemBarState extends State<NavigationItemBar> {
   }
 
   Widget navigationBarItem({String? title, int tag = 0}) {
-    bool state = _index == tag;
-    Color? color = (state && widget.isShowBottomLine == true) ? widget.bottomLineColor : Colors.transparent;
+    final state = _index == tag;
+    final style = state ? widget.selectedStyle : widget.normalStyle;
+    final width = StringExtension.calculateWidth(context: context, text: title ?? "", style: style);
+    final color = (state && widget.isShowBottomLine == true) ? widget.bottomLineColor : Colors.transparent;
+
     return Expanded(
       child: InkWell(
         onTap: () {
@@ -61,8 +67,11 @@ class _NavigationItemBarState extends State<NavigationItemBar> {
         },
         child: Column(
           children: [
-            Text(title ?? "", style: state ? widget.selectedStyle : widget.normalStyle),
-            Divider(color: color, thickness: 2.px, height: 10.px)
+            Text(title ?? "", style: style),
+            SizedBox(
+              width: widget.bottomLineWidth ?? width,
+              child: Divider(color: color, thickness: 2.px, height: 10.px)
+            )
           ],
         ),
       ),

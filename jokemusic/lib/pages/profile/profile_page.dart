@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:jokemusic/pages/profile/feedback_page.dart';
-
 import 'package:share_plus/share_plus.dart';
 
 import 'setting_page.dart';
 import '../../pages/login/login_page.dart';
+import '../../pages/profile/feedback_page.dart';
+import '../../pages/profile/audit_result_page.dart';
 import '../../widgets/vertical_item.dart';
 import '../../widgets/user_item_header.dart';
 import '../../tools/extension/int_extension.dart';
@@ -42,13 +42,15 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void handlerItemClick(int tag) {
     switch(tag){
+      case 1: Navigator.pushNamed(context, AuditResultPage.routeName);      //审核结果
+        break;
       case 2: share();                                                      //分享给朋友
         break;
       case 3: Navigator.pushNamed(context, FeedbackPage.routeName);         //意见反馈
         break;
       case 4: Navigator.pushNamed(context, SettingPage.routeName);          //设置
         break;
-      default:
+      default:                                                              //我的客服
         break;
     }
   }
@@ -96,7 +98,7 @@ class _ProfilePageState extends State<ProfilePage> {
         },
         separatorBuilder: (ctx, idx) {
           if(idx == 1 || idx == 4) return Divider(color: Colors.transparent,thickness: 12.px);
-          return const Divider(color: Colors.transparent, height: 0.01,);
+          return Divider(color: Colors.transparent, height: 1.px, thickness: 1.px);
         },
       ),
     );
@@ -157,11 +159,11 @@ class _ProfilePageState extends State<ProfilePage> {
       padding: EdgeInsets.symmetric(horizontal:15.px),
       child: Row(
         children: [
-          const VerticalItem(icon: Text("-"), title: "关注"),
+          VerticalItem(icon: const Text("-"), title: "关注", width: 40.px),
           SizedBox(width: 45.px),
-          const VerticalItem(icon: Text("-"), title: "粉丝"),
+          VerticalItem(icon: const  Text("-"), title: "粉丝", width: 40.px),
           SizedBox(width: 45.px),
-          const VerticalItem(icon: Text("-"), title: "乐豆"),
+          VerticalItem(icon: const Text("-"), title: "乐豆", width: 40.px),
         ],
       ),
     );
@@ -175,11 +177,11 @@ class _ProfilePageState extends State<ProfilePage> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(8.px)
       ),
-      padding: EdgeInsets.all(10.px),
       margin: EdgeInsets.symmetric(horizontal: 15.px),
+      padding: EdgeInsets.symmetric(vertical:10.px,horizontal: 20.px),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           buildVerticalItem(title: "帖子", imgName: "profile_post"),
           buildVerticalItem(title: "评论", imgName: "profile_comment"),

@@ -37,10 +37,7 @@ class _HomePageState extends State<HomePage> {
           currentIndex: _currentIndex,
           isShowBottomLine: false,
           bottomLineColor: Colors.redAccent,
-          callBack: (idx) => setState(() {
-            _currentIndex = idx;
-            onPageChanged(idx);
-          })
+          callBack: onPageChanged
         ),
         actions: [
           navigationBarItemSearch()

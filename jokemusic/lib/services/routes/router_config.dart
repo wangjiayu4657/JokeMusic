@@ -15,6 +15,7 @@ import '../../pages/profile/account_safe_page.dart';
 import '../../pages/profile/reset_password_page.dart';
 import '../../pages/profile/change_password_page.dart';
 import '../../pages/profile/feedback_page.dart';
+import '../../pages/profile/audit_result_page.dart';
 
 
 class RouterConfig {
@@ -33,6 +34,7 @@ class RouterConfig {
     ResetPasswordPage.routeName: (ctx) => const ResetPasswordPage(),
     ChangePasswordPage.routeName: (ctx) => const ChangePasswordPage(),
     FeedbackPage.routeName: (ctx) => const FeedbackPage(),
+    AuditResultPage.routeName: (ctx) => const AuditResultPage(),
   };
 
   //统一处理
