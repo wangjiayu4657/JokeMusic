@@ -21,8 +21,8 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
 
-  List<String> titles = ["我的客服","审核中","审核失败","分享给朋友","意见反馈","赏个好评","设置"];
-  List<String> images = ["customer","auditing","audit_failure","share","feedback","praise","setting"];
+  List<String> titles = ["我的客服","审核结果","分享给朋友","意见反馈","设置"];
+  List<String> images = ["customer","auditing","share","feedback","setting"];
 
   // Future<void> share() async {
   //   print("开始分享");
@@ -42,11 +42,11 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void handlerItemClick(int tag) {
     switch(tag){
-      case 3: share();                                                      //分享给朋友
+      case 2: share();                                                      //分享给朋友
         break;
-      case 4: Navigator.pushNamed(context, FeedbackPage.routeName);         //意见反馈
+      case 3: Navigator.pushNamed(context, FeedbackPage.routeName);         //意见反馈
         break;
-      case 6: Navigator.pushNamed(context, SettingPage.routeName);          //设置
+      case 4: Navigator.pushNamed(context, SettingPage.routeName);          //设置
         break;
       default:
         break;
@@ -95,7 +95,7 @@ class _ProfilePageState extends State<ProfilePage> {
           return idx == 0 ? buildListHeader() : buildListItem(idx: idx - 1);
         },
         separatorBuilder: (ctx, idx) {
-          if(idx == 1 || idx == 3) return Divider(color: Colors.transparent,thickness: 12.px);
+          if(idx == 1 || idx == 4) return Divider(color: Colors.transparent,thickness: 12.px);
           return const Divider(color: Colors.transparent, height: 0.01,);
         },
       ),
@@ -123,11 +123,11 @@ class _ProfilePageState extends State<ProfilePage> {
 
   //处理圆角问题
   BorderRadius buildBorderRadius(int idx) {
-    if(idx == 0) {
+    if(idx == 0 || idx == 4) {
       return BorderRadius.circular(8.px);
-    } else if(idx == 1 || idx == 3){
+    } else if(idx == 1){
       return BorderRadius.vertical(top: Radius.circular(8.px));
-    } else if(idx == 2 || idx == 6){
+    } else if(idx == 3){
       return BorderRadius.vertical(bottom: Radius.circular(8.px));
     } else {
       return BorderRadius.zero;

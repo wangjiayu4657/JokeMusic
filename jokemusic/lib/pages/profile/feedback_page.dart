@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:jokemusic/tools/share/const_config.dart';
 
 import '../../widgets/input.dart';
 import '../../widgets/custom_button.dart';
+import '../../tools/share/const_config.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
+import '../../tools/extension/object_extension.dart';
 
 ///我的-意见反馈页
 class FeedbackPage extends StatefulWidget {
@@ -16,6 +17,20 @@ class FeedbackPage extends StatefulWidget {
 }
 
 class _FeedbackPageState extends State<FeedbackPage> {
+
+  List<String> list = [
+    "assets/images/sources/add_image.png",
+  ];
+
+  void handlerImageSelected() {
+    setState(() {
+      if(list.length >= 6) {
+        showToast("最多只允许上传6张图片~!");
+      } else {
+        list.add("assets/images/sources/add_image.png");
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +72,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        buildBodyQuestionTypeTitle(title: "请描述具体问题", fontWeight: FontWeight.bold),
+        buildBodyQuestionTypeTitle(title: "请描述具体问题"),
         SizedBox(height: 10.px),
         buildBodyQuestionTypeInput(isConnect: false, desc: "请详细描述您遇到的问题,方便我们排查问题...")
       ],
@@ -79,15 +94,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
   ///构建内容组件-图片补充-图片列表
   Widget buildBodyQuestionImageList() {
-    List<String> list = [
-      "assets/images/sources/add_image.png",
-      // "assets/images/sources/add_image.png",
-      // "assets/images/sources/add_image.png",
-      // "assets/images/sources/add_image.png",
-      // "assets/images/sources/add_image.png",
-      // "assets/images/sources/add_image.png",
-    ];
-
     return GridView.builder(
       shrinkWrap: true,
       padding: EdgeInsets.zero,
@@ -99,8 +105,39 @@ class _FeedbackPageState extends State<FeedbackPage> {
         crossAxisSpacing: 15.px
       ),
       itemBuilder: (context,idx) {
-        return Image.asset(list[idx], fit: BoxFit.fill);
+        return InkWell(
+          onTap: handlerImageSelected,
+          child: buildBodyQuestionImageListItem(idx)
+        );
       }
+    );
+  }
+
+  ///构建gridView的item
+  Widget buildBodyQuestionImageListItem(int idx) {
+    return Stack(
+      children: [
+        Image.asset(list[idx], fit: BoxFit.fill),
+        Positioned(
+          top: -8.px,
+          right: -8.px,
+          child: (idx == list.length -1) ? const SizedBox() : buildGridViewItemDelButton(idx)
+        ),
+      ],
+    );
+  }
+
+  ///构建gridView的item-删除按钮
+  Widget buildGridViewItemDelButton(int idx) {
+    return IconButton(
+      onPressed: (){
+        setState(() => list.removeAt(idx));
+      },
+      icon: Image.asset(
+        "assets/images/sources/del_image.png",
+        width: 20.px,
+        height: 20.px
+      )
     );
   }
 
@@ -118,12 +155,12 @@ class _FeedbackPageState extends State<FeedbackPage> {
   }
 
   ///构建问题组件-标题
-  Widget buildBodyQuestionTypeTitle({String? title, FontWeight? fontWeight}) {
+  Widget buildBodyQuestionTypeTitle({String? title}) {
     return Text(title ?? "",
       style: TextStyle(
         fontSize: 14.px,
         color: Colors.black87,
-        fontWeight: fontWeight ?? FontWeight.normal
+        fontWeight: FontWeight.normal
       )
     );
   }
@@ -139,7 +176,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
       borderWidth: 1.px,
       contentPadding: EdgeInsets.all(12.px),
       valueChanged: (text) {
-        print("text == $text");
+        debugPrint("text == $text");
       }
     );
   }
@@ -149,7 +186,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
     return SizedBox(
       width: double.infinity,
       height: 48.px,
-      child: CustomButton(title: "提 交", onPressed: (){}),
+      child: CustomButton(title: "提 交", onPressed: (){
+
+      }),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../pages/Main/main_page.dart';
 import '../../pages/Home/home_page.dart';
+import '../../pages/home/widgets/home_search.dart';
 import '../../pages/video/video_page.dart';
 import '../../pages/publish/publish_page.dart';
 import '../../pages/message/message_page.dart';
@@ -20,6 +21,7 @@ class RouterConfig {
   static Map<String, WidgetBuilder> routes = {
     MainPage.routeName: (ctx) => const MainPage(),
     HomePage.routeName: (ctx) => const HomePage(),
+    HomeSearch.routeName: (ctx) => const HomeSearch(),
     VideoPage.routeName: (ctx) => const VideoPage(),
     PublishPage.routeName: (ctx) => const PublishPage(),
     MessagePage.routeName: (ctx) => const MessagePage(),
