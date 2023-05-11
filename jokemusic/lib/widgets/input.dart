@@ -15,6 +15,8 @@ class Input extends StatefulWidget {
     Key? key,
     this.prefixIcon,
     this.suffixIcon,
+    this.focusNode,
+    this.controller,
     this.hintStyle,
     this.borderType = BorderType.noBorder,
     this.borderWidth = 1,
@@ -65,6 +67,8 @@ class Input extends StatefulWidget {
   final int? maxLines;
   ///最大字符数(字符串长度)
   final int? maxLength;
+  final FocusNode? focusNode;
+  final TextEditingController? controller;
 
   @override
   State<Input> createState() => _InputState();
@@ -80,6 +84,8 @@ class _InputState extends State<Input> {
       onChanged: widget.valueChanged,
       cursorColor: Colors.black12,
       cursorHeight: 15.px,
+      focusNode: widget.focusNode,
+      controller: widget.controller,
       minLines: widget.minLines,
       maxLines: widget.maxLines,
       maxLength: widget.maxLength,
