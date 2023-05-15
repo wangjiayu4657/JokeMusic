@@ -6,7 +6,7 @@ import '../../tools/extension/int_extension.dart';
 
 ///我的-审核结果页
 class AuditResultPage extends StatefulWidget {
-  static const String routeName = "audit_result";
+  static const String routeName = "/audit_result";
   const AuditResultPage({Key? key}) : super(key: key);
 
   @override

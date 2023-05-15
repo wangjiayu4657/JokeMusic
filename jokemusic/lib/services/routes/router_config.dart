@@ -18,6 +18,7 @@ import '../../pages/profile/feedback_page.dart';
 import '../../pages/profile/audit_result_page.dart';
 
 
+
 class RouterConfig {
   static Map<String, WidgetBuilder> routes = {
     MainPage.routeName: (ctx) => const MainPage(),
@@ -35,6 +36,7 @@ class RouterConfig {
     ChangePasswordPage.routeName: (ctx) => const ChangePasswordPage(),
     FeedbackPage.routeName: (ctx) => const FeedbackPage(),
     AuditResultPage.routeName: (ctx) => const AuditResultPage(),
+    // DisplayPicturePage.routeName: (ctx,{arguments}) => DisplayPicturePage(path: arguments),
   };
 
   //统一处理

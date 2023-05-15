@@ -12,7 +12,7 @@ import '../../tools/extension/color_extension.dart';
 
 ///我的
 class ProfilePage extends StatefulWidget {
-  static const String routeName = "/ProfilePage";
+  static const String routeName = "/profile_page";
   const ProfilePage({Key? key}) : super(key: key);
 
   @override

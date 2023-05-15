@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../widgets/input.dart';
 import '../../widgets/custom_button.dart';
@@ -6,10 +9,12 @@ import '../../tools/share/const_config.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
 import '../../tools/extension/object_extension.dart';
+import '../../pages/profile/photo_browser_page.dart';
+
 
 ///我的-意见反馈页
 class FeedbackPage extends StatefulWidget {
-  static const String routeName = "feedback";
+  static const String routeName = "/feedback";
   const FeedbackPage({Key? key}) : super(key: key);
 
   @override
@@ -18,21 +23,36 @@ class FeedbackPage extends StatefulWidget {
 
 class _FeedbackPageState extends State<FeedbackPage> with WidgetsBindingObserver {
   double _sizeHeight = 0;
-  final _connectFocusNode = FocusNode();//监听是否获取焦点
-  final GlobalKey _targetWidgetKey = GlobalKey();  //为了获取目标组件位置
+  //监听是否获取焦点
+  final _connectFocusNode = FocusNode();
+  //图片选择器
+  final ImagePicker _picker = ImagePicker();
+  //为了获取目标组件位置
+  final GlobalKey _targetWidgetKey = GlobalKey();
   final ScrollController _scrollController = ScrollController();
-  List<String> list = [
-    "assets/images/sources/add_image.png",
-  ];
+  List<XFile> _images = [];
 
-  void handlerImageSelected() {
-    setState(() {
-      if(list.length >= 6) {
-        showToast("最多只允许上传6张图片~!");
-      } else {
-        list.add("assets/images/sources/add_image.png");
-      }
-    });
+  ///处理选择的图片
+  handlerImageSelected() async {
+    if(_images.length >= 6) {
+      showToast("最多只允许上传6张图片~!");
+      return;
+    }
+
+    try {
+     final List<XFile> images = await _picker.pickMultiImage();
+     if(images.isEmpty) return;
+
+     showToast("正在加载图片,请稍后...");
+
+     setState(() {
+       _images.addAll(images);
+       _images = _images.take(6).toList();
+       hideToast();
+     });
+    } catch (e){
+      debugPrint("错误: $e");
+    }
   }
 
   @override
@@ -70,6 +90,7 @@ class _FeedbackPageState extends State<FeedbackPage> with WidgetsBindingObserver
 
     super.didChangeMetrics();
   }
+
 
   @override
   void dispose() {
@@ -145,7 +166,7 @@ class _FeedbackPageState extends State<FeedbackPage> with WidgetsBindingObserver
     return GridView.builder(
       shrinkWrap: true,
       padding: EdgeInsets.zero,
-      itemCount: list.length,
+      itemCount: _images.length + 1,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
         maxCrossAxisExtent: width / 4,
@@ -164,29 +185,52 @@ class _FeedbackPageState extends State<FeedbackPage> with WidgetsBindingObserver
   ///构建gridView的item
   Widget buildBodyQuestionImageListItem(int idx) {
     return Stack(
+      fit: StackFit.expand,
       children: [
-        Image.asset(list[idx], fit: BoxFit.fill),
-        Positioned(
-          top: -8.px,
-          right: -8.px,
-          child: (idx == list.length -1) ? const SizedBox() : buildGridViewItemDelButton(idx)
-        ),
+        buildSelectedImage(idx),
+        Positioned(top: -10.px, right: -10.px, child: buildGridViewItemDelButton(idx)),
       ],
     );
   }
 
   ///构建gridView的item-删除按钮
   Widget buildGridViewItemDelButton(int idx) {
-    return IconButton(
-      onPressed: (){
-        setState(() => list.removeAt(idx));
-      },
-      icon: Image.asset(
-        "assets/images/sources/del_image.png",
-        width: 20.px,
-        height: 20.px
-      )
-    );
+    return (_images.isEmpty || idx == _images.length) ?
+      const SizedBox() :
+      IconButton(
+        onPressed: () => setState(() => _images.removeAt(idx)),
+        icon: Image.asset("assets/images/sources/del_image.png", width: 20.px, height: 20.px)
+      );
+  }
+
+  ///构建并显示选中的图片
+  Widget buildSelectedImage(int idx) {
+    return (_images.isEmpty || idx == _images.length) ?
+      Image.asset("assets/images/sources/add_image.png") :
+      InkWell(
+        onTap: () {
+          Navigator.of(context).push(
+            PageRouteBuilder(pageBuilder: (context,anim1,anim2){
+              return FadeTransition(
+                opacity: anim1,
+                child: PhotoBrowserPage(
+                  images: _images,
+                  initialIndex: idx,
+                  backgroundDecoration: const BoxDecoration(color: Colors.black),
+                ),
+              );
+            })
+          );
+        },
+        child: Hero(
+          tag: _images[idx].path,
+          child: Image.file(
+            File(_images[idx].path),
+            fit: BoxFit.cover,
+            errorBuilder: (context, err, stackTrace) => const Center(child: Text("this image type is not supported")),
+          ),
+        ),
+      );
   }
 
   ///构建内容组件-联系方式

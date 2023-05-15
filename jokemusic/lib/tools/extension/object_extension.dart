@@ -37,4 +37,8 @@ extension ObjectMap on Object {
       fontSize: 14.px
     );
   }
+
+  void hideToast() async {
+    Fluttertoast.cancel();
+  }
 }

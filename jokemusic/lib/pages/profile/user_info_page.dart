@@ -8,7 +8,7 @@ import '../../pages/login/models/user_info_model.dart';
 
 ///我的-设置-用户信息页
 class UserInfoPage extends StatefulWidget {
-  static const String routeName = "/userInfo";
+  static const String routeName = "/user_info";
   const UserInfoPage({Key? key}) : super(key: key);
 
   @override
