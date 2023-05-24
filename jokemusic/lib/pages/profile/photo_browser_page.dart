@@ -49,9 +49,7 @@ class _PhotoBrowserPageState extends State<PhotoBrowserPage> {
       onTap: () => Navigator.pop(context),
       child: Container(
         decoration: widget.backgroundDecoration,
-        constraints: BoxConstraints.expand(
-          height: height
-        ),
+        constraints: BoxConstraints.expand(height: height),
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
@@ -67,13 +65,7 @@ class _PhotoBrowserPageState extends State<PhotoBrowserPage> {
   Widget buildPhotoBrowserTitle() {
     return Padding(
       padding: EdgeInsets.all(20.px),
-      child: Text(
-        "Image ${idx + 1}",
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 17.0,
-        ),
-      ),
+      child: Text("Image ${idx + 1}", style: TextStyle(color: Colors.white, fontSize: 17.px)),
     );
   }
 

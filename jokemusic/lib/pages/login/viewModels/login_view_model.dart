@@ -6,10 +6,15 @@ import '../../../tools/share/user_manager.dart';
 import '../../../tools/extension/object_extension.dart';
 import '../../../pages/login/models/user_info_model.dart';
 
-class LoginViewModel {
+class LoginViewModel extends ChangeNotifier {
+
+  ///是否登录成功
+  late bool isLogin = false;
+  ///用户信息
+  UserInfoModel? userInfoModel;
 
   ///密码登录请求
-  void loginRequest({String? userName, String? password, VoidCallback? callback}) async {
+  void loginPwdRequest({String? userName, String? password, VoidCallback? callback}) async {
     if(userName == null) {
       showToast("请输入账户名");
       return;
@@ -40,7 +45,7 @@ class LoginViewModel {
 
     const url = "/user/login/code";
     final params = {"phone": userName, "code": code};
-    final result = await HttpClient.request(url: url,params: params);
+    final result = await HttpClient.request(url: url, params: params);
 
     parseJsonData(result["data"]);
     callback != null ? callback() : null;
@@ -50,7 +55,7 @@ class LoginViewModel {
   void codeRequest({String? phone}) {
     const url = "/user/login/get_code";
     final params = {"phone":phone};
-    HttpClient.request(url: url,params: params);
+    HttpClient.request(url: url, params: params);
   }
 
   ///解析数据
@@ -59,9 +64,17 @@ class LoginViewModel {
     String token = result["token"];
     Storage.save<String>("token", token);
 
+    String type = result["type"];
+    isLogin = type == "login_success";
+    UserManager.instance.saveLoginState(isLogin);
+
     //保存用户信息
     final userInfo = result["userInfo"];
     final userModel = UserInfoModel.fromJson(userInfo);
-    UserManager.saveUserModel(userModel);
+    UserManager.instance.saveUserInfo(userModel);
+
+    userInfoModel = userModel;
+
+    notifyListeners();
   }
 }

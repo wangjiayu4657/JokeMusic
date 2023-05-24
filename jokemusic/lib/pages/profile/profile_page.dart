@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:share_plus/share_plus.dart';
+import 'package:provider/provider.dart';
 
-import 'setting_page.dart';
 import '../../pages/login/login_page.dart';
-import '../../pages/profile/feedback_page.dart';
-import '../../pages/profile/audit_result_page.dart';
+import '../../pages/login/viewModels/login_view_model.dart';
+import '../../pages/profile/viewModels/profile_view_model.dart';
 import '../../widgets/vertical_item.dart';
 import '../../widgets/user_item_header.dart';
 import '../../tools/extension/int_extension.dart';
@@ -20,50 +19,24 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  static const List<String> _titles = ["我的客服","审核结果","分享给朋友","意见反馈","设置"];
+  static const List<String> _images = ["customer","auditing","share","feedback","setting"];
+  final ProfileViewModel _profileViewModel = ProfileViewModel();
 
-  List<String> titles = ["我的客服","审核结果","分享给朋友","意见反馈","设置"];
-  List<String> images = ["customer","auditing","share","feedback","setting"];
-
-  // Future<void> share() async {
-  //   print("开始分享");
-  //   await FlutterShare.share(
-  //     title: "分享标题",
-  //     text: "分享内容",
-  //     linkUrl: "分享链接: https://flutter.dev/",
-  //     chooserTitle: "选择标题"
-  //   );
-  // }
-
-  Future<void> share() async {
-    await Share.shareXFiles(
-      [XFile("path")],
-    );
-  }
-
-  void handlerItemClick(int tag) {
-    switch(tag){
-      case 1: Navigator.pushNamed(context, AuditResultPage.routeName);      //审核结果
-        break;
-      case 2: share();                                                      //分享给朋友
-        break;
-      case 3: Navigator.pushNamed(context, FeedbackPage.routeName);         //意见反馈
-        break;
-      case 4: Navigator.pushNamed(context, SettingPage.routeName);          //设置
-        break;
-      default:                                                              //我的客服
-        break;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        title: buildAppBarTitle(),
-        backgroundColor: ColorExtension.lineColor,
+    return ChangeNotifierProvider(
+      lazy: true,
+      create: (context) => ProfileViewModel(),
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          title: buildAppBarTitle(),
+          backgroundColor: ColorExtension.lineColor,
+        ),
+        body: buildBody(),
       ),
-      body: buildBody(),
     );
   }
 
@@ -71,16 +44,22 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget buildAppBarTitle() {
     return Padding(
       padding: EdgeInsets.all(8.px),
-      child: UserItemHeader(
-        title: "登录/注册",
-        subTitle: "快来开始你的创作吧~",
-        titleStyle: TextStyle(fontSize: 16.px, color: Colors.black87),
-        subTitleStyle: TextStyle(fontSize: 12.px, color: Colors.black87),
-        backgroundColor: Colors.transparent,
-        right: IconButton(
-          onPressed: () => Navigator.pushNamed(context, LoginPage.routeName),
-          icon: const Icon(Icons.arrow_forward_ios, color: Colors.black45),
-        ),
+      child: Consumer<LoginViewModel>(
+        builder: (context, viewModel, child) {
+          return UserItemHeader(
+            title: viewModel.isLogin ? "登录/注册" : viewModel.userInfoModel?.nickname,
+            subTitle: "快来开始你的创作吧~",
+            avatar: viewModel.userInfoModel?.avatar,
+            titleStyle: TextStyle(fontSize: 16.px, color: Colors.black87),
+            subTitleStyle: TextStyle(fontSize: 12.px, color: Colors.black87),
+            backgroundColor: Colors.transparent,
+            right: IconButton(
+              onPressed: () => _profileViewModel.gotoLogin(context),
+              icon: child ?? const Icon(Icons.arrow_forward_ios, color: Colors.black45),
+            ),
+          );
+        },
+        child: const Icon(Icons.arrow_forward_ios, color: Colors.black45),
       ),
     );
   }
@@ -92,7 +71,7 @@ class _ProfilePageState extends State<ProfilePage> {
       child: ListView.separated(
         shrinkWrap: true,
         padding: EdgeInsets.only(bottom: 15.px),
-        itemCount: titles.length + 1,
+        itemCount: _titles.length + 1,
         itemBuilder: (ctx,idx) {
           return idx == 0 ? buildListHeader() : buildListItem(idx: idx - 1);
         },
@@ -113,9 +92,9 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       margin: EdgeInsets.symmetric(horizontal: 15.px),
       child: ListTile(
-        onTap: () => handlerItemClick(idx),
-        leading: Image.asset("assets/images/sources/profile_${images[idx]}@3x.png", width: 20.px),
-        title: Text(titles[idx], style: TextStyle(fontSize: 16.px, fontWeight: FontWeight.normal)),
+        onTap: () => _profileViewModel.handlerItemClick(context: context, tag: idx),
+        leading: Image.asset("assets/images/sources/profile_${_images[idx]}@3x.png", width: 20.px),
+        title: Text(_titles[idx], style: TextStyle(fontSize: 16.px, fontWeight: FontWeight.normal)),
         trailing: Icon(Icons.arrow_forward_ios,size: 18.px),
         visualDensity: const VisualDensity(horizontal: -4),
         minLeadingWidth: 10.px,
@@ -157,14 +136,18 @@ class _ProfilePageState extends State<ProfilePage> {
       height: 48.px,
       color: Colors.transparent,
       padding: EdgeInsets.symmetric(horizontal:15.px),
-      child: Row(
-        children: [
-          VerticalItem(icon: const Text("-"), title: "关注", width: 40.px),
-          SizedBox(width: 45.px),
-          VerticalItem(icon: const  Text("-"), title: "粉丝", width: 40.px),
-          SizedBox(width: 45.px),
-          VerticalItem(icon: const Text("-"), title: "乐豆", width: 40.px),
-        ],
+      child: Consumer<ProfileViewModel>(
+        builder: (context, viewModel, child){
+          return  Row(
+            children: [
+              VerticalItem(icon: Text("${viewModel.socialInfo?.attentionNum ?? 0 }"), title: "关注", width: 40.px),
+              SizedBox(width: 45.px),
+              VerticalItem(icon: Text("${viewModel.socialInfo?.fansNum ?? 0 }"), title: "粉丝", width: 40.px),
+              SizedBox(width: 45.px),
+              VerticalItem(icon: Text("${viewModel.socialInfo?.experienceNum ?? 0 }"), title: "乐豆", width: 40.px),
+            ],
+          );
+        },
       ),
     );
   }

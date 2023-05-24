@@ -11,6 +11,7 @@ class UserItemHeader extends StatelessWidget {
     this.right,
     this.title,
     this.subTitle,
+    this.avatar,
     this.titleStyle,
     this.subTitleStyle,
     this.onTap,
@@ -22,6 +23,7 @@ class UserItemHeader extends StatelessWidget {
   final Widget? right;
   final String? title;
   final String? subTitle;
+  final String? avatar;
   final TextStyle? titleStyle;
   final TextStyle? subTitleStyle;
   final GestureTapCallback? onTap;
@@ -63,7 +65,13 @@ class UserItemHeader extends StatelessWidget {
     return SizedBox(
         width: iconSize,
         height: iconSize,
-        child: const CircleAvatar(backgroundImage: AssetImage("assets/images/sources/avatar.png"))
+        child: avatar == null ?
+         const CircleAvatar(backgroundImage: AssetImage("assets/images/sources/avatar.png")) :
+         FadeInImage.assetNetwork(
+           image: avatar!,
+           placeholder: "assets/images/sources/avatar.png",
+           fit: BoxFit.cover,
+         )
     );
   }
 

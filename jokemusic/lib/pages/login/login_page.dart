@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
         callback: () => Navigator.pop(context)
       );
     } else {
-      _viewModel.loginRequest(
+      _viewModel.loginPwdRequest(
         userName: _userName,
         password: _password,
         callback: () => Navigator.pop(context)

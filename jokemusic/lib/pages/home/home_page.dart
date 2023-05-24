@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jokemusic/tools/extension/int_extension.dart';
 
 import 'widgets/home_search.dart';
 import 'widgets/home_focus.dart';
@@ -8,6 +7,7 @@ import 'widgets/home_fresh.dart';
 import 'widgets/home_text.dart';
 import 'widgets/home_picture.dart';
 import '../../widgets/navigation_item_bar.dart';
+import '../../tools/extension/int_extension.dart';
 
 class HomePage extends StatefulWidget {
   static const String routeName = "/home";
