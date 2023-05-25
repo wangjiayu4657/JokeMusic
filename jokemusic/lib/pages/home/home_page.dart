@@ -20,6 +20,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   late final PageController _pageController = PageController(initialPage: _currentIndex);
+  final List<BarItem> _items = const [
+    BarItem(title: "关注"),
+    BarItem(title: "推荐"),
+    BarItem(title: "新鲜"),
+    BarItem(title: "纯文"),
+    BarItem(title: "趣图")
+  ];
 
   void onPageChanged(int idx){
     setState(() {
@@ -30,10 +37,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: NavigationItemBar(
-          items: const ["关注","推荐","新鲜","纯文","趣图"],
+          items: _items,
           currentIndex: _currentIndex,
           isShowBottomLine: false,
           bottomLineColor: Colors.redAccent,

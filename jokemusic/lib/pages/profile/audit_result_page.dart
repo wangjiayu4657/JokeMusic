@@ -41,7 +41,7 @@ class _AuditResultPageState extends State<AuditResultPage> {
   ///构建内容组件-头部组件
   Widget buildHeader()  {
     return NavigationItemBar(
-      items: const ['审核中','审核失败'],
+      items: const [BarItem(title: "审核中"), BarItem(title: "审核失败")],
       currentIndex: _curIdx,
       isShowBottomLine: true,
       callBack: onPageChanged,

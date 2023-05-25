@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:jokemusic/widgets/custom_button.dart';
+import 'package:jokemusic/tools/share/const_config.dart';
+
+import 'views/works_view.dart';
+import '../../widgets/custom_button.dart';
 import '../../tools/extension/int_extension.dart';
+import '../../tools/extension/color_extension.dart';
+import '../../widgets/navigation_item_bar.dart';
 
 class UserEditorPage extends StatefulWidget {
   static const String routeName = "/user_editor";
@@ -11,6 +16,22 @@ class UserEditorPage extends StatefulWidget {
 }
 
 class _UserEditorPageState extends State<UserEditorPage> {
+  int _curIdx = 0;
+  final _pageCtrl = PageController();
+  final List<BarItem> _items = const [
+    BarItem(title: "作品", count: 1),
+    BarItem(title: "喜欢", count: 1),
+    BarItem(title: "评论", count: 1),
+    BarItem(title: "收藏", count: 1),
+  ];
+
+  void onPageChanged(int idx){
+    setState(() {
+      _curIdx = idx;
+      _pageCtrl.jumpToPage(idx);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,20 +39,22 @@ class _UserEditorPageState extends State<UserEditorPage> {
     );
   }
 
+  ///构建内容组件
   Widget buildBody() {
     return CustomScrollView(
       slivers: [
         buildSliverAppBar(),
-        // buildBody()
+        buildSliverBody()
       ],
     );
   }
 
+  ///构建内容组件-导航
   Widget buildSliverAppBar() {
     return SliverAppBar(
       pinned: true,
       // floating: true,
-      expandedHeight: 300.px,
+      expandedHeight: 320.px,
       actions: [
         IconButton(
           onPressed: (){},
@@ -39,7 +62,6 @@ class _UserEditorPageState extends State<UserEditorPage> {
         )
       ],
       flexibleSpace: FlexibleSpaceBar(
-        title: const Text("测试"),
         background: Column(
           children: [
             buildFlexibleSpaceBarImg(),
@@ -50,21 +72,23 @@ class _UserEditorPageState extends State<UserEditorPage> {
     );
   }
 
+  ///构建内容组件-导航-背景图片
   Widget buildFlexibleSpaceBarImg() {
     return SizedBox(
-      height: 130.px,
+      height: 150.px,
       width: double.infinity,
       child: Image.asset("assets/images/sources/joke_logo.png",fit: BoxFit.fitWidth)
     );
   }
 
+  ///构建内容组件-导航-内容
   Widget buildFlexibleSpaceBarBody() {
     return Stack(
       clipBehavior: Clip.none,
       children: [
         buildFlexibleSpaceBarBodyContent(),
         Positioned(
-          top: -20.px,
+          top: -25.px,
           left: 15.px,
           child: buildFlexibleSpaceBarBodyIcon()
         ),
@@ -77,6 +101,7 @@ class _UserEditorPageState extends State<UserEditorPage> {
     );
   }
 
+  ///构建内容组件-导航-内容-图标
   Widget buildFlexibleSpaceBarBodyIcon() {
     return SizedBox(
       width: 80.px,
@@ -85,6 +110,7 @@ class _UserEditorPageState extends State<UserEditorPage> {
     );
   }
 
+  ///构建内容组件-导航-内容-编辑按钮
   Widget buildFlexibleSpaceBarBodyEditButton() {
     return CustomButton(
       radius: 17.px,
@@ -96,19 +122,147 @@ class _UserEditorPageState extends State<UserEditorPage> {
     );
   }
 
-    Widget buildFlexibleSpaceBarBodyContent() {
+  ///构建内容组件-导航-内容-内容
+  Widget buildFlexibleSpaceBarBodyContent() {
     return Container(
-      color: Colors.blue,
+      color: Colors.white,
+      padding: EdgeInsets.symmetric(horizontal: 15.px),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 80.px),
+          buildFlexibleSpaceBarBodyContentTitle(),
+          Divider(color: ColorExtension.lineColor,height: 30.px, thickness: 1.px),
+          buildFlexibleSpaceBarBodyContentSign()
+        ],
+      ),
     );
   }
 
+  ///构建内容组件-导航-内容-标题
+  Widget buildFlexibleSpaceBarBodyContentTitle(){
+    return Column(
+      children: [
+        Text("乐-DISPL7",
+          style: TextStyle(
+            fontSize: 18.px,
+            color: Colors.black87,
+            fontWeight: FontWeight.bold
+          ),
+        ),
+        SizedBox(height: 6.px),
+        Text("入住段子乐: 1个月",
+          style: TextStyle(
+            fontSize: 14.px,
+            color: Colors.black54,
+            fontWeight: FontWeight.normal
+          ),
+        )
+      ],
+    );
+  }
 
+  ///构建内容组件-导航-内容-前面
+  Widget buildFlexibleSpaceBarBodyContentSign(){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("他正在想一个爆炸的签名...",style: TextStyle(fontSize: 16.px, color: Colors.black87)),
+        SizedBox(height: 15.px),
+        Row(
+          children: [
+            buildFlexibleSpaceBarBodyContentSignItem(count: 0, text: "获赞"),
+            SizedBox(width: 18.px),
+            buildFlexibleSpaceBarBodyContentSignItem(count: 0, text: "关注"),
+            SizedBox(width: 18.px),
+            buildFlexibleSpaceBarBodyContentSignItem(count: 0, text: "粉丝"),
+          ],
+        )
+      ],
+    );
+  }
+
+  ///构建内容组件-导航-内容-签名-操作item
+  Widget buildFlexibleSpaceBarBodyContentSignItem({int count=0,String? text}) {
+    return Row(
+      children: [
+        Text("$count",style: TextStyle(fontSize: 18.px, color: Colors.black87, fontWeight: FontWeight.bold)),
+        SizedBox(width: 6.px),
+        Text(text ?? "",style: TextStyle(fontSize: 16.px, color: Colors.black87, fontWeight: FontWeight.normal)),
+      ],
+    );
+ }
 
   Widget buildSliverBody() {
-    return Container(
-      color: Colors.blue,
-      child: const Center(child: Text("端资源")),
+    return SliverGrid(
+      delegate: SliverChildBuilderDelegate((context,idx) => buildSliverBodyContent(),
+        childCount: 1,
+      ),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 1,
+      )
     );
   }
+
+  Widget buildSliverBodyContent() {
+    return Container(
+      width: width,
+      color: Colors.blue,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          buildSliverBodyContentHeader(),
+          Expanded(child: buildSliverBodyContentPageView())
+          // WorksView()
+        ],
+      ),
+    );
+  }
+
+  Widget buildSliverBodyContentHeader() {
+    return Stack(
+      alignment: AlignmentDirectional.bottomCenter,
+      clipBehavior: Clip.none,
+      children: [
+        buildSliverBodyContentItemBar(),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 4.px,
+          child: const Divider(color: ColorExtension.lineColor, height: 1, thickness: 1)
+        )
+      ],
+    );
+  }
+
+  Widget buildSliverBodyContentItemBar({int count=0,String? text}) {
+    return NavigationItemBar(
+      items: _items,
+      currentIndex: _curIdx,
+      bottomLineMargin: 2.px,
+      padding: EdgeInsets.only(left: 15.px, top: 12.px),
+      isShowBottomLine: true,
+      bottomLineColor: Colors.redAccent,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      callBack: onPageChanged
+    );
+  }
+
+  Widget buildSliverBodyContentPageView() {
+    return PageView(
+      controller: _pageCtrl,
+      onPageChanged: onPageChanged,
+      children: [
+        // WorksView(),
+        // WorksView(),
+        Container(width: 175, height: 680, color: Colors.green),
+        Container(width: 175, height: 680, color: Colors.orangeAccent),
+      ],
+    );
+  }
+
+
+
+
 
 }

@@ -25,9 +25,9 @@ class _HomeFocusState extends State<HomeFocus> {
   }
 
   Widget buildListViewItem() {
-    return Column(
+    return const Column(
       mainAxisSize: MainAxisSize.min,
-      children: const[
+      children: [
         UserItemHeader(),
         // ListVideoItem(),
         // OperationTool()
