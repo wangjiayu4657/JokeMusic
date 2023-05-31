@@ -5,12 +5,12 @@ import '../tools/extension/string_extension.dart';
 
 class BarItem {
   const BarItem({
-    this.title,
-    this.count
+    this.count = 0,
+    this.title = "",
   });
 
-  final String? title;
-  final int? count;
+  final int count;
+  final String title;
 }
 
 ///自定义导航项目栏

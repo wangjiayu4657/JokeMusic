@@ -1,15 +1,13 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 import '../../widgets/input.dart';
 import '../../widgets/custom_button.dart';
 import '../../tools/share/const_config.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
-import '../../tools/extension/object_extension.dart';
 import '../../pages/profile/photo_browser_page.dart';
+import '../../pages/profile/views/picker_method.dart';
 
 
 ///我的-意见反馈页
@@ -25,34 +23,18 @@ class _FeedbackPageState extends State<FeedbackPage> with WidgetsBindingObserver
   double _sizeHeight = 0;
   //监听是否获取焦点
   final _connectFocusNode = FocusNode();
-  //图片选择器
-  final ImagePicker _picker = ImagePicker();
   //为了获取目标组件位置
   final GlobalKey _targetWidgetKey = GlobalKey();
   final ScrollController _scrollController = ScrollController();
-  List<XFile> _images = [];
+  List<AssetEntity> _images = <AssetEntity>[];
+
 
   ///处理选择的图片
-  handlerImageSelected() async {
-    if(_images.length >= 6) {
-      showToast("最多只允许上传6张图片~!");
-      return;
-    }
-
-    try {
-     final List<XFile> images = await _picker.pickMultiImage();
-     if(images.isEmpty) return;
-
-     showToast("正在加载图片,请稍后...");
-
-     setState(() {
-       _images.addAll(images);
-       _images = _images.take(6).toList();
-       hideToast();
-     });
-    } catch (e){
-      debugPrint("错误: $e");
-    }
+  Future<void> handlerImageSelected(PickerMethod pickerMethod) async {
+    final List<AssetEntity>? result = await pickerMethod.method(context, _images);
+    if (result == null) return;
+    _images = result.toList();
+    if (mounted) setState(() {});
   }
 
   @override
@@ -175,7 +157,7 @@ class _FeedbackPageState extends State<FeedbackPage> with WidgetsBindingObserver
       ),
       itemBuilder: (context,idx) {
         return InkWell(
-          onTap: handlerImageSelected,
+          onTap: () => handlerImageSelected(PickerMethod.image(maxCount: 6)),
           child: buildBodyQuestionImageListItem(idx)
         );
       }
@@ -223,12 +205,8 @@ class _FeedbackPageState extends State<FeedbackPage> with WidgetsBindingObserver
           );
         },
         child: Hero(
-          tag: _images[idx].path,
-          child: Image.file(
-            File(_images[idx].path),
-            fit: BoxFit.cover,
-            errorBuilder: (context, err, stackTrace) => const Center(child: Text("this image type is not supported")),
-          ),
+          tag: _images[idx],
+          child: AssetEntityImage(_images[idx],isOriginal: false, fit: BoxFit.cover)
         ),
       );
   }

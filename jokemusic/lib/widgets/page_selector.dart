@@ -1,16 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:jokemusic/services/theme/theme_config.dart';
 
 import '../../tools/share/const_config.dart';
 import '../../tools/extension/int_extension.dart';
+
+class PageSelectorItem {
+  PageSelectorItem({
+    this.count = 0,
+    this.title = ""
+  });
+
+  final int count;
+  final String title;
+}
 
 class PageSelector extends StatefulWidget {
   const PageSelector({
     Key? key,
     required this.tabs,
     required this.children,
-    this.appBarHeight = 48,
+    this.bodyHeight = double.infinity,
+    this.headerWidth = double.infinity,
+    this.headerHeight = 48,
     this.isScrollable = true,
     this.padding,
+    this.headerColor = Colors.white,
     this.indicatorColor,
     this.indicatorWeight = 2,
     this.indicatorPadding = EdgeInsets.zero,
@@ -31,9 +45,12 @@ class PageSelector extends StatefulWidget {
 
   final List<Widget> tabs;
   final List<Widget> children;
-  final double? appBarHeight;
+  final double bodyHeight;
+  final double? headerWidth;
+  final double? headerHeight;
   final bool isScrollable;
   final EdgeInsetsGeometry? padding;
+  final Color? headerColor;
   final Color? indicatorColor;
   final double indicatorWeight;
   final EdgeInsetsGeometry indicatorPadding;
@@ -64,22 +81,28 @@ class _PageSelectorState extends State<PageSelector> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Column(
-        children: [
-          Expanded(child: Scaffold(
-            appBar: PreferredSize(
-              preferredSize: Size.fromHeight(widget.appBarHeight ?? 58.px),
-              child: AppBar(bottom: _tabBarTop())
+      debugShowCheckedModeBanner: false,
+      home: SizedBox(
+        height: widget.bodyHeight,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: double.infinity,
+              height: widget.headerHeight,
+              color: widget.headerColor,
+              child: _tabBarTop()
             ),
-            body: _tabBarView(),
-          ))
-        ],
+            Expanded(child: _tabBarView()),
+          ],
+        ),
       ),
     );
   }
 
   _tabBarTop() => TabBar(
     onTap: widget.onTap,
+    padding: widget.padding,
     isScrollable: widget.isScrollable,
     indicator: widget.indicator,
     indicatorColor: widget.indicatorColor,

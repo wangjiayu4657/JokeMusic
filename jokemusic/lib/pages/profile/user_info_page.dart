@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart';
 
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
@@ -41,7 +41,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
   void handlerItemSelected(int idx) {
     switch (idx) {
       case 0:   //头像
-        ImagePicker().pickImage(source: ImageSource.gallery);
+        // ImagePicker().pickImage(source: ImageSource.gallery);
         break;
       case 1:   //昵称
         break;

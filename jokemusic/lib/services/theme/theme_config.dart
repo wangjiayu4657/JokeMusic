@@ -13,7 +13,7 @@ class ThemeConfig {
   //默认主题
   static const normalTextColor = Colors.black87;
   static final ThemeData normalTheme = ThemeData(
-    primarySwatch: Colors.red,
+    primarySwatch: Colors.blue,
     primaryColor: Colors.white,
     splashColor: Colors.transparent,
     splashFactory: NoSplash.splashFactory,

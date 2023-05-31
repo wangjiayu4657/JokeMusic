@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:jokemusic/tools/share/const_config.dart';
 
-import 'views/works_view.dart';
+// import 'views/work_view.dart';
+import '../../widgets/page_selector.dart';
 import '../../widgets/custom_button.dart';
+import '../../tools/share/const_config.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
 import '../../widgets/navigation_item_bar.dart';
@@ -143,7 +144,7 @@ class _UserEditorPageState extends State<UserEditorPage> {
   Widget buildFlexibleSpaceBarBodyContentTitle(){
     return Column(
       children: [
-        Text("乐-DISPL7",
+        Text("乐-D7",
           style: TextStyle(
             fontSize: 18.px,
             color: Colors.black87,
@@ -193,6 +194,8 @@ class _UserEditorPageState extends State<UserEditorPage> {
     );
  }
 
+ 
+ 
   Widget buildSliverBody() {
     return SliverGrid(
       delegate: SliverChildBuilderDelegate((context,idx) => buildSliverBodyContent(),
@@ -204,18 +207,22 @@ class _UserEditorPageState extends State<UserEditorPage> {
     );
   }
 
+  _tabItems(int idx) => Row(
+    mainAxisSize: MainAxisSize.min,
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      Text(_items[idx].title),
+      SizedBox(width: 6.px),
+      Text("${_items[idx].count}")
+    ],
+  );
+
   Widget buildSliverBodyContent() {
-    return Container(
-      width: width,
-      color: Colors.blue,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          buildSliverBodyContentHeader(),
-          Expanded(child: buildSliverBodyContentPageView())
-          // WorksView()
-        ],
-      ),
+    return PageSelector(
+      bodyHeight: height,
+      headerHeight: 30.px,
+      tabs: List<Widget>.generate(_items.length, (index) => _tabItems(index)),
+      children: List<Widget>.generate(_items.length, (index) => Center(child: Text(_items[index].title))),
     );
   }
 

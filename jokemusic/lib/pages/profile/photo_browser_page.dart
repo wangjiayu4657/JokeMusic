@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:photo_manager/photo_manager.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
 import '../../tools/share/const_config.dart';
@@ -25,7 +25,7 @@ class PhotoBrowserPage extends StatefulWidget {
   final int initialIndex;
   final dynamic minScale;
   final dynamic maxScale;
-  final List<XFile> images;
+  final List<AssetEntity> images;
   final Axis scrollDirection;
   final PageController pageController;
   final LoadingBuilder? loadingBuilder;
@@ -86,13 +86,13 @@ class _PhotoBrowserPageState extends State<PhotoBrowserPage> {
 
   ///构建图片浏览页-预览item组件
   PhotoViewGalleryPageOptions buildPhotoBrowserGalleryPreViewItem(BuildContext context, int index) {
-    final String path = widget.images[index].path;
+    final AssetEntity entity = widget.images[index];
     return PhotoViewGalleryPageOptions(
-      imageProvider: AssetImage(path),
+      imageProvider: AssetEntityImageProvider(entity, isOriginal: false),
       initialScale: PhotoViewComputedScale.contained,
       minScale: PhotoViewComputedScale.contained,
       maxScale: PhotoViewComputedScale.covered,
-      heroAttributes: PhotoViewHeroAttributes(tag: path),
+      heroAttributes: PhotoViewHeroAttributes(tag: entity),
     );
   }
 

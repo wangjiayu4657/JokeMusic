@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jokemusic/tools/extension/int_extension.dart';
+import 'package:jokemusic/tools/share/const_config.dart';
 
 import '../../widgets/page_selector.dart';
 
@@ -16,13 +17,19 @@ class _VideoPageState extends State<VideoPage> with SingleTickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    return PageSelector(
-      appBarHeight: 58,
-      indicator: const BoxDecoration(),
-      indicatorWeight: 0,
-      labelStyle: TextStyle(fontSize: 16.px),
-      tabs: List.generate(_items.length, (index) => Tab(child: _tabItems(index))).toList(),
-      children: List.generate(_items.length, (index) => Center(child: Text(_items[index]))).toList()
+    return Scaffold(
+      appBar: AppBar(title: const Text('video'), elevation: 0),
+      body: PageSelector(
+        headerHeight: 58,
+        bodyHeight: height,
+        isScrollable: false,
+        indicator: const BoxDecoration(),
+        indicatorWeight: 0,
+        headerColor: Colors.green,
+        labelStyle: TextStyle(fontSize: 16.px, fontWeight: FontWeight.bold),
+        tabs: List.generate(_items.length, (index) => Tab(child: _tabItems(index))),
+        children: List.generate(_items.length, (index) => Center(child: Text(_items[index])))
+      ),
     );
   }
 
