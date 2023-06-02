@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:jokemusic/tools/share/const_config.dart';
+import 'package:jokemusic/widgets/page_selector.dart';
 
 import '../../../widgets/navigation_item_bar.dart';
 import '../../../tools/extension/int_extension.dart';
 import '../../../tools/extension/color_extension.dart';
 
 ///作品视图
-class WorksView extends StatefulWidget {
-  const WorksView({Key? key}) : super(key: key);
+class WorkView extends StatefulWidget {
+  const WorkView({Key? key}) : super(key: key);
 
   @override
-  State<WorksView> createState() => _WorksViewState();
+  State<WorkView> createState() => _WorkViewState();
 }
 
-class _WorksViewState extends State<WorksView> {
+class _WorkViewState extends State<WorkView> {
   int _curIdx = 0;
   final _pageCtrl = PageController();
-
+  final List<BarItem> _tabs = const [BarItem(title: "文字图片"), BarItem(title: "视频")];
+  
   void onPageChanged(int idx){
     setState(() {
       _curIdx = idx;
@@ -25,35 +28,33 @@ class _WorksViewState extends State<WorksView> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        buildHeader(),
-        Divider(color: ColorExtension.lineColor,  height: 20.px, thickness: 1.px),
-        buildContent()
-      ],
+    return PageSelector(
+      indicator: const BoxDecoration(),
+      dividerColor: ColorExtension.lineColor,
+      tabs: List<Widget>.generate(_tabs.length, (index) => _tabItem(index)),
+      children: List<Widget>.generate(_tabs.length, (index) => _tabView(index))
     );
   }
 
-  ///构建头部组件
-  Widget buildHeader() {
-    return NavigationItemBar(
-      currentIndex: _curIdx,
-      items: const [BarItem(title: "文字图片"), BarItem(title: "视频")],
-      crossAxisAlignment: CrossAxisAlignment.start,
-      callBack: onPageChanged,
+  Widget _tabItem(int index) {
+    return Tab(
+      child: Text(_tabs[index].title, style: const TextStyle(color: Colors.black54))
     );
   }
-
-  ///构建内容组件
-  Widget buildContent() {
-    return PageView(
-      controller: _pageCtrl,
-      onPageChanged: onPageChanged,
-      children: [
-        Container(color: Colors.blue),
-        Container(color: Colors.orangeAccent)
-      ],
+  
+  Widget _tabView(int index) {
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: 50,
+      physics: const NeverScrollableScrollPhysics(),
+      itemBuilder: (context, idx) {
+        return const ListTile(
+          leading: Icon(Icons.people),
+          title: Text("联系人"),
+          subtitle: Text("电话号码: 186****4657"),
+          trailing: Icon(Icons.delete),
+        );
+      }
     );
   }
 }

@@ -5,11 +5,11 @@ import '../tools/extension/string_extension.dart';
 
 class BarItem {
   const BarItem({
-    this.count = 0,
+    this.count,
     this.title = "",
   });
 
-  final int count;
+  final int? count;
   final String title;
 }
 
@@ -18,6 +18,7 @@ class NavigationItemBar extends StatefulWidget {
   NavigationItemBar({
     Key? key,
     required this.items,
+    this.height = 72,
     this.currentIndex,
     this.isShowBottomLine = false,
     this.isAutoRashin = false,
@@ -41,6 +42,7 @@ class NavigationItemBar extends StatefulWidget {
 
   ///item数据
   final List<BarItem> items;
+  final double? height;
   ///当前索引
   final int? currentIndex;
   ///是否展示底部滑动线
@@ -78,6 +80,7 @@ class _NavigationItemBarState extends State<NavigationItemBar> {
   Widget build(BuildContext context) {
     _index = widget.currentIndex ?? 0;
     return Container(
+      height: widget.height,
       padding: widget.padding ?? EdgeInsets.symmetric(vertical: 15.px),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -122,7 +125,7 @@ class _NavigationItemBarState extends State<NavigationItemBar> {
       children: [
         Text(item?.title ?? "", style: style),
         SizedBox(width: 6.px),
-        if(item?.count != null) Text("${item?.count ?? 0}", style: widget.countStyle ?? style?.copyWith(fontSize: 16.px))
+        if(item?.count != null) Text("${item?.count}", style: widget.countStyle ?? style?.copyWith(fontSize: 16.px))
       ],
     );
   }

@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jokemusic/services/theme/theme_config.dart';
-
-import '../../tools/share/const_config.dart';
-import '../../tools/extension/int_extension.dart';
 
 class PageSelectorItem {
   PageSelectorItem({
@@ -82,7 +78,9 @@ class _PageSelectorState extends State<PageSelector> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: Theme.of(context).copyWith(useMaterial3: true),
       home: SizedBox(
+        width: double.infinity,
         height: widget.bodyHeight,
         child: Column(
           mainAxisSize: MainAxisSize.min,

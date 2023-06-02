@@ -28,13 +28,12 @@ class _FeedbackPageState extends State<FeedbackPage> with WidgetsBindingObserver
   final ScrollController _scrollController = ScrollController();
   List<AssetEntity> _images = <AssetEntity>[];
 
-
   ///处理选择的图片
   Future<void> handlerImageSelected(PickerMethod pickerMethod) async {
     final List<AssetEntity>? result = await pickerMethod.method(context, _images);
     if (result == null) return;
     _images = result.toList();
-    if (mounted) setState(() {});
+    if (mounted) setState(() { });
   }
 
   @override

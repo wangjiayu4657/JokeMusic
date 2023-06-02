@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jokemusic/pages/profile/views/work_view.dart';
 
 // import 'views/work_view.dart';
 import '../../widgets/page_selector.dart';
@@ -54,7 +55,6 @@ class _UserEditorPageState extends State<UserEditorPage> {
   Widget buildSliverAppBar() {
     return SliverAppBar(
       pinned: true,
-      // floating: true,
       expandedHeight: 320.px,
       actions: [
         IconButton(
@@ -143,6 +143,7 @@ class _UserEditorPageState extends State<UserEditorPage> {
   ///构建内容组件-导航-内容-标题
   Widget buildFlexibleSpaceBarBodyContentTitle(){
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text("乐-D7",
           style: TextStyle(
@@ -154,7 +155,7 @@ class _UserEditorPageState extends State<UserEditorPage> {
         SizedBox(height: 6.px),
         Text("入住段子乐: 1个月",
           style: TextStyle(
-            fontSize: 14.px,
+            fontSize: 12.px,
             color: Colors.black54,
             fontWeight: FontWeight.normal
           ),
@@ -168,7 +169,7 @@ class _UserEditorPageState extends State<UserEditorPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("他正在想一个爆炸的签名...",style: TextStyle(fontSize: 16.px, color: Colors.black87)),
+        Text("他正在想一个爆炸的签名...",style: TextStyle(fontSize: 14.px, color: Colors.black87)),
         SizedBox(height: 15.px),
         Row(
           children: [
@@ -203,6 +204,7 @@ class _UserEditorPageState extends State<UserEditorPage> {
       ),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 1,
+        childAspectRatio: 0.5
       )
     );
   }
@@ -211,18 +213,23 @@ class _UserEditorPageState extends State<UserEditorPage> {
     mainAxisSize: MainAxisSize.min,
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
-      Text(_items[idx].title),
+      Text(_items[idx].title, style: TextStyle(fontSize: 16.px, color: Colors.black87)),
       SizedBox(width: 6.px),
-      Text("${_items[idx].count}")
+      Text("${_items[idx].count}", style: TextStyle(fontSize: 16.px, color: Colors.black26))
     ],
   );
 
   Widget buildSliverBodyContent() {
-    return PageSelector(
-      bodyHeight: height,
-      headerHeight: 30.px,
-      tabs: List<Widget>.generate(_items.length, (index) => _tabItems(index)),
-      children: List<Widget>.generate(_items.length, (index) => Center(child: Text(_items[index].title))),
+    return Padding(
+      padding: EdgeInsets.only(top: 10.px),
+      child: PageSelector(
+        dividerColor: ColorExtension.lineColor,
+        bodyHeight: height,
+        headerHeight: 50.px,
+        isScrollable: false,
+        tabs: List<Widget>.generate(_items.length, (index) => _tabItems(index)),
+        children: List<Widget>.generate(_items.length, (index) => const WorkView()),
+      ),
     );
   }
 
@@ -267,9 +274,5 @@ class _UserEditorPageState extends State<UserEditorPage> {
       ],
     );
   }
-
-
-
-
 
 }

@@ -27,7 +27,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
   }
 
   void _initModel() {
-   _infoModel = UserInfoModel(
+    _infoModel = UserInfoModel(
       avatar: "assets/images/sources/joke_logo.png",
       nickname: "xiaowang",
       signature: "this is a test content",
