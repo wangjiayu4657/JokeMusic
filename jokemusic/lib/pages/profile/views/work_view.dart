@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:jokemusic/tools/share/const_config.dart';
-import 'package:jokemusic/widgets/page_selector.dart';
 
+import '../../../widgets/page_selector.dart';
 import '../../../widgets/navigation_item_bar.dart';
-import '../../../tools/extension/int_extension.dart';
 import '../../../tools/extension/color_extension.dart';
 
 ///作品视图
 class WorkView extends StatefulWidget {
-  const WorkView({Key? key}) : super(key: key);
+  const WorkView({
+    Key? key
+  }) : super(key: key);
 
   @override
   State<WorkView> createState() => _WorkViewState();
 }
 
-class _WorkViewState extends State<WorkView> {
+class _WorkViewState extends State<WorkView> with SingleTickerProviderStateMixin {
   int _curIdx = 0;
   final _pageCtrl = PageController();
   final List<BarItem> _tabs = const [BarItem(title: "文字图片"), BarItem(title: "视频")];
-  
+  late final _tabCtrl = TabController(length: _tabs.length, vsync: this);
+
   void onPageChanged(int idx){
     setState(() {
       _curIdx = idx;
@@ -28,6 +29,10 @@ class _WorkViewState extends State<WorkView> {
 
   @override
   Widget build(BuildContext context) {
+    return _pageSelector();
+  }
+
+  Widget _pageSelector() {
     return PageSelector(
       indicator: const BoxDecoration(),
       dividerColor: ColorExtension.lineColor,
@@ -46,6 +51,7 @@ class _WorkViewState extends State<WorkView> {
     return ListView.builder(
       shrinkWrap: true,
       itemCount: 50,
+      padding: EdgeInsets.zero,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, idx) {
         return const ListTile(

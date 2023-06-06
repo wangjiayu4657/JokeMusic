@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:jokemusic/tools/extension/color_extension.dart';
 
 import '../../tools/extension/int_extension.dart';
 
@@ -25,7 +26,7 @@ class ThemeConfig {
     hoverColor: Colors.transparent,
     highlightColor: Colors.transparent,
     bottomSheetTheme: const BottomSheetThemeData(backgroundColor: Colors.black12),
-    elevatedButtonTheme: elevatedButtonThemeData
+    elevatedButtonTheme: elevatedButtonThemeData,
   );
 
   static final TextTheme normalTextTheme = TextTheme(

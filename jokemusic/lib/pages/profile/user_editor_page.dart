@@ -63,6 +63,7 @@ class _UserEditorPageState extends State<UserEditorPage> {
         )
       ],
       flexibleSpace: FlexibleSpaceBar(
+        collapseMode: CollapseMode.pin,
         background: Column(
           children: [
             buildFlexibleSpaceBarImg(),

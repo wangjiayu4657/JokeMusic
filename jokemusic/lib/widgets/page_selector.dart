@@ -83,7 +83,7 @@ class _PageSelectorState extends State<PageSelector> with SingleTickerProviderSt
         width: double.infinity,
         height: widget.bodyHeight,
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          // mainAxisSize: MainAxisSize.min,
           children: [
             Container(
               width: double.infinity,
