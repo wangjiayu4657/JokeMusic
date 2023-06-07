@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jokemusic/tools/extension/int_extension.dart';
 
 import '../../../widgets/page_selector.dart';
 import '../../../widgets/navigation_item_bar.dart';
@@ -14,27 +15,16 @@ class WorkView extends StatefulWidget {
   State<WorkView> createState() => _WorkViewState();
 }
 
-class _WorkViewState extends State<WorkView> with SingleTickerProviderStateMixin {
-  int _curIdx = 0;
-  final _pageCtrl = PageController();
+class _WorkViewState extends State<WorkView> {
   final List<BarItem> _tabs = const [BarItem(title: "文字图片"), BarItem(title: "视频")];
-  late final _tabCtrl = TabController(length: _tabs.length, vsync: this);
-
-  void onPageChanged(int idx){
-    setState(() {
-      _curIdx = idx;
-      _pageCtrl.jumpToPage(idx);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    return _pageSelector();
-  }
-
-  Widget _pageSelector() {
     return PageSelector(
+      indicatorWeight: 0,
       indicator: const BoxDecoration(),
+      indicatorPadding: EdgeInsets.zero,
+      labelPadding: EdgeInsets.only(top: 4.px, left: 15.px),
       dividerColor: ColorExtension.lineColor,
       tabs: List<Widget>.generate(_tabs.length, (index) => _tabItem(index)),
       children: List<Widget>.generate(_tabs.length, (index) => _tabView(index))
@@ -51,6 +41,7 @@ class _WorkViewState extends State<WorkView> with SingleTickerProviderStateMixin
     return ListView.builder(
       shrinkWrap: true,
       itemCount: 50,
+      itemExtent: 60,
       padding: EdgeInsets.zero,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, idx) {

@@ -10,7 +10,7 @@ import '../../../services/http/http_client.dart';
 import '../../../tools/share/user_manager.dart';
 import '../../../pages/login/models/user_info_model.dart';
 import '../../../pages/profile/user_editor_page.dart';
-import '../../../pages/profile/user_editor_page2.dart';
+
 
 class ProfileViewModel extends ChangeNotifier {
   SocialInfo? socialInfo;
@@ -46,14 +46,14 @@ class ProfileViewModel extends ChangeNotifier {
   void gotoLogin(BuildContext context) async {
     final navigator = Navigator.of(context);
     bool isLogin = await UserManager.instance.isLogin;
-    navigator.pushNamed(isLogin ? UserEditorPage2.routeName : LoginPage.routeName);
+    navigator.pushNamed(isLogin ? UserEditorPage.routeName : LoginPage.routeName);
   }
 
   ///用户信息获取
   void _userInfoRequest() async {
     String url = "/user/info";
     final result = await HttpClient.request(url: url);
-    print("result === $result");
+    debugPrint("result === $result");
 
     final info = result["info"];
     socialInfo = SocialInfo.fromJson(info);

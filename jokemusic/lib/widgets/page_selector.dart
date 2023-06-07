@@ -78,7 +78,6 @@ class _PageSelectorState extends State<PageSelector> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: Theme.of(context).copyWith(useMaterial3: true),
       home: SizedBox(
         width: double.infinity,
         height: widget.bodyHeight,
@@ -91,6 +90,7 @@ class _PageSelectorState extends State<PageSelector> with SingleTickerProviderSt
               color: widget.headerColor,
               child: _tabBarTop()
             ),
+            Divider(color: widget.dividerColor, height: 1, thickness: 1),
             Expanded(child: _tabBarView()),
           ],
         ),
