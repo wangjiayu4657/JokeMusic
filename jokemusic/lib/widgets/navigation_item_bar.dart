@@ -24,14 +24,18 @@ class NavigationItemBar extends StatefulWidget {
     this.isAutoRashin = false,
     this.bottomLineWidth,
     this.bottomLineMargin = 0,
+    this.horizontalMargin = 10,
     Color? bottomLineColor,
+    Color? backgroundColor,
     TextStyle? normalStyle,
     TextStyle? selectedStyle,
     this.countStyle,
+    this.mainAxisAlignment = MainAxisAlignment.spaceEvenly,
     CrossAxisAlignment? crossAxisAlignment,
     EdgeInsets? padding,
     this.callBack,
   }) : bottomLineColor = bottomLineColor ?? Colors.redAccent,
+       backgroundColor = backgroundColor ?? Colors.white,
        normalStyle = normalStyle ??
            TextStyle(color: Colors.black87, fontSize: 18.px, fontWeight: FontWeight.normal),
        selectedStyle = selectedStyle ??
@@ -51,16 +55,22 @@ class NavigationItemBar extends StatefulWidget {
   final bool? isAutoRashin;
   ///底部滑动线的颜色
   final Color? bottomLineColor;
+  ///背景色
+  final Color? backgroundColor;
   ///底部滑动线的宽度
   final double? bottomLineWidth;
   ///底部滑动线距离文本的间距
   final double? bottomLineMargin;
+  ///item之间的水平间隔
+  final double horizontalMargin;
   ///未选中时item的样式
   final TextStyle? normalStyle;
   ///选中后item的样式
   final TextStyle? selectedStyle;
   ///数量文本的样式, 如果没有设置则跟随item文本颜色
   final TextStyle? countStyle;
+  ///横向对齐方式
+  final MainAxisAlignment mainAxisAlignment;
   ///item的对齐方式
   final CrossAxisAlignment? crossAxisAlignment;
   ///内边距
@@ -80,10 +90,11 @@ class _NavigationItemBarState extends State<NavigationItemBar> {
   Widget build(BuildContext context) {
     _index = widget.currentIndex ?? 0;
     return Container(
+      color: widget.backgroundColor,
       height: widget.height,
       padding: widget.padding ?? EdgeInsets.symmetric(vertical: 15.px),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: widget.mainAxisAlignment,
         children: List.generate(items.length, (idx) {
           return navigationBarItem(item: items[idx],tag: idx);
         }).toList(),
@@ -98,24 +109,27 @@ class _NavigationItemBarState extends State<NavigationItemBar> {
     double width = StringExtension.calculateWidth(context: context, text: item?.title ?? "", style: style);
     width += item?.count == null ? 0 : 12.px;
 
-    return Expanded(
-      child: InkWell(
-        onTap: () {
-          widget.callBack?.call(tag);
-          setState(() => _index = tag);
-        },
-        child: Column(
-          crossAxisAlignment: widget.crossAxisAlignment ?? CrossAxisAlignment.center,
-          children: [
-            buildCountText(item: item, style: style),
-            SizedBox(height: widget.bottomLineMargin),
-            SizedBox(
-              width: widget.bottomLineWidth ?? (widget.isAutoRashin == true ? double.infinity : width),
-              child: Divider(color: color, thickness: 2.px, height: 10.px)
-            )
-          ],
+    return Row(
+      children: [
+        InkWell(
+          onTap: () {
+            widget.callBack?.call(tag);
+            setState(() => _index = tag);
+          },
+          child: Column(
+            crossAxisAlignment: widget.crossAxisAlignment ?? CrossAxisAlignment.center,
+            children: [
+              buildCountText(item: item, style: style),
+              SizedBox(height: widget.bottomLineMargin),
+              SizedBox(
+                width: widget.bottomLineWidth ?? (widget.isAutoRashin == true ? double.infinity : width),
+                child: Divider(color: color, thickness: 2.px, height: 10.px)
+              )
+            ],
+          ),
         ),
-      ),
+        SizedBox(width: widget.horizontalMargin)
+      ],
     );
   }
 

@@ -16,7 +16,7 @@ class _HomeFocusState extends State<HomeFocus> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-       itemCount: 10,
+       itemCount: 20,
        shrinkWrap: true,
        itemBuilder: (context,idx) {
          return buildListViewItem();

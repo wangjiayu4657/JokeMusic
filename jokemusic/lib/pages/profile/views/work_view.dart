@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:jokemusic/tools/extension/int_extension.dart';
 
 import '../../../widgets/page_selector.dart';
 import '../../../widgets/navigation_item_bar.dart';
+import '../../../tools/extension/int_extension.dart';
 import '../../../tools/extension/color_extension.dart';
 
 ///作品视图
@@ -41,7 +41,7 @@ class _WorkViewState extends State<WorkView> {
     return ListView.builder(
       shrinkWrap: true,
       itemCount: 50,
-      itemExtent: 60,
+      prototypeItem: const ListTile(),
       padding: EdgeInsets.zero,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, idx) {
