@@ -89,6 +89,7 @@ class _NavigationItemBarState extends State<NavigationItemBar> {
   @override
   Widget build(BuildContext context) {
     _index = widget.currentIndex ?? 0;
+    debugPrint("currentIndex === ${widget.currentIndex}");
     return Container(
       color: widget.backgroundColor,
       height: widget.height,
@@ -103,6 +104,7 @@ class _NavigationItemBarState extends State<NavigationItemBar> {
   }
 
   Widget navigationBarItem({BarItem? item, int tag = 0}) {
+    debugPrint("_index === $_index");
     final state = _index == tag;
     final style = state ? widget.selectedStyle : widget.normalStyle;
     final color = (state && widget.isShowBottomLine == true) ? widget.bottomLineColor : Colors.transparent;

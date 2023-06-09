@@ -8,14 +8,16 @@ class SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
   SliverHeaderDelegate({
     this.minHeight = 0,
     required this.maxHeight,
-    required Widget child
+    required Widget child,
+    this.isNeedRebuild
   }) : builder = ((a, b, c) => child),
        assert(minHeight <= maxHeight && minHeight >= 0);
 
   ///最大和最小高度相同
   SliverHeaderDelegate.fixedHeight({
     required double height,
-    required Widget child
+    required Widget child,
+    this.isNeedRebuild
   }) : minHeight = height,
        maxHeight = height,
        builder = ((a,b,c) => child);
@@ -24,13 +26,16 @@ class SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
   SliverHeaderDelegate.builder({
     this.minHeight = 0,
     required this.maxHeight,
-    required this.builder
+    required this.builder,
+    this.isNeedRebuild
   });
 
   ///最小高度
   final double minHeight;
   ///最大高度
   final double maxHeight;
+  ///是否需要立即重新构建
+  final bool? isNeedRebuild;
   ///子组件构建器
   final SliverHeaderBuilder builder;
 
@@ -57,6 +62,6 @@ class SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return oldDelegate.minExtent != minHeight || oldDelegate.maxExtent != maxHeight;
+    return isNeedRebuild ?? oldDelegate.minExtent != minHeight || oldDelegate.maxExtent != maxHeight;
   }
 }

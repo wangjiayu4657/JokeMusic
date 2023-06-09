@@ -9,7 +9,7 @@ import '../../Profile/setting_page.dart';
 import '../../../services/http/http_client.dart';
 import '../../../tools/share/user_manager.dart';
 import '../../../pages/login/models/user_info_model.dart';
-import '../../../pages/profile/user_editor_page.dart';
+import '../../../pages/profile/user_editor_page2.dart';
 
 
 class ProfileViewModel extends ChangeNotifier {
@@ -46,7 +46,7 @@ class ProfileViewModel extends ChangeNotifier {
   void gotoLogin(BuildContext context) async {
     final navigator = Navigator.of(context);
     bool isLogin = await UserManager.instance.isLogin;
-    navigator.pushNamed(isLogin ? UserEditorPage.routeName : LoginPage.routeName);
+    navigator.pushNamed(isLogin ? UserEditorPage2.routeName : LoginPage.routeName);
   }
 
   ///用户信息获取
