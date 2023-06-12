@@ -28,6 +28,11 @@ class PickerMethod {
     List<AssetEntity> selectedAssets,
   ) method;
 
+  ///选择单图片
+  factory PickerMethod.singleImage() {
+    return PickerMethod.image(maxCount: 1);
+  }
+
   ///选择图片
   factory PickerMethod.image({int maxCount = 9}) {
     return PickerMethod(

@@ -22,6 +22,7 @@ class NavigationItemBar extends StatefulWidget {
     this.currentIndex,
     this.isShowBottomLine = false,
     this.isAutoRashin = false,
+    this.dividerColor = Colors.transparent,
     this.bottomLineWidth,
     this.bottomLineMargin = 0,
     this.horizontalMargin = 10,
@@ -53,6 +54,8 @@ class NavigationItemBar extends StatefulWidget {
   final bool? isShowBottomLine;
   ///底部滑动线是否自适应, 如果设置了宽度则该属性无效
   final bool? isAutoRashin;
+  ///底部分割线颜色, 默认无色
+  final Color dividerColor;
   ///底部滑动线的颜色
   final Color? bottomLineColor;
   ///背景色
@@ -89,11 +92,13 @@ class _NavigationItemBarState extends State<NavigationItemBar> {
   @override
   Widget build(BuildContext context) {
     _index = widget.currentIndex ?? 0;
-    debugPrint("currentIndex === ${widget.currentIndex}");
     return Container(
-      color: widget.backgroundColor,
       height: widget.height,
       padding: widget.padding ?? EdgeInsets.symmetric(vertical: 15.px),
+      decoration: BoxDecoration(
+        color: widget.backgroundColor,
+        border: Border(bottom: BorderSide(color: widget.dividerColor))
+      ),
       child: Row(
         mainAxisAlignment: widget.mainAxisAlignment,
         children: List.generate(items.length, (idx) {
@@ -104,7 +109,6 @@ class _NavigationItemBarState extends State<NavigationItemBar> {
   }
 
   Widget navigationBarItem({BarItem? item, int tag = 0}) {
-    debugPrint("_index === $_index");
     final state = _index == tag;
     final style = state ? widget.selectedStyle : widget.normalStyle;
     final color = (state && widget.isShowBottomLine == true) ? widget.bottomLineColor : Colors.transparent;

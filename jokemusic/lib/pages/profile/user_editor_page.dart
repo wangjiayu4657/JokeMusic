@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:jokemusic/pages/Profile/user_info_page.dart';
 
-import '../../tools/share/const_config.dart';
-import '../../tools/extension/color_extension.dart';
-import '../../tools/extension/int_extension.dart';
-import '../../widgets/keep_alive_wrapper.dart';
 import '../../widgets/custom_button.dart';
-import '../../pages/profile/views/work_view.dart';
+import '../../widgets/keep_alive_wrapper.dart';
+import '../../widgets/navigation_item_bar.dart';
+import '../../widgets/sliver_header_delegate.dart';
+import '../../tools/extension/int_extension.dart';
+import '../../tools/extension/color_extension.dart';
+
+/*
+
+---------------------------------------  page  ------------------------------------------
+            0                             1                               2
+         今日爆款                        土货生鲜                         会员中心
+--------- subPage -------    ---------- subPage ---------    --------- subPage ---------
+   0        1         2         0          1          2        0          1          2
+  文字     图片       视频       文字        图片       视频      文字        图片       视频
+
+*/
 
 
 class UserEditorPage extends StatefulWidget {
@@ -16,79 +28,88 @@ class UserEditorPage extends StatefulWidget {
   State<UserEditorPage> createState() => _UserEditorPageState();
 }
 
-class _UserEditorPageState extends State<UserEditorPage> {
-  final List<String> tabs = <String>['作品', '喜欢', '评论', '收藏'];
+class _UserEditorPageState extends State<UserEditorPage> with SingleTickerProviderStateMixin {
+  int _page = 0;
+  int _subPage  = 0;
+  final _pageCtrl = PageController();
+  final List<String> _tabs = <String>['作品', '喜欢', '评论', '收藏'];
+  late final _tabCtrl = TabController(length: _tabs.length, vsync: this);
+
+  void _changeItem(int index) {
+    _page = index;
+    _changeSubItem(0);
+  }
+
+  void _changeSubItem(int index){
+    _subPage = index;
+    _toTargetPage();
+  }
+
+  void _pageChanged(int index){
+    _page = index ~/ 3;   //_page 取值: 0,1,2
+    _subPage = index % 3; //_subPage 取值: 0,1,2
+    _toTargetPage();
+  }
+
+  void _toTargetPage(){
+    int curIdx = _subPage + _page * 3;
+    setState(() {
+      _tabCtrl.animateTo(_page);
+      _pageCtrl.jumpToPage(curIdx);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: tabs.length,
-      child: Scaffold(
-        body: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            _headerSliver(context,innerBoxIsScrolled),
+    return Material (
+      child: NestedScrollView(
+        headerSliverBuilder: (context, isInnerScroll) => [
+          _sliverHeader(),
+          _sliverSubHeader()
+        ],
+        body: PageView(
+          controller: _pageCtrl,
+          onPageChanged: _pageChanged,
+          children: List.generate(_tabs.length * 3, (index) => _sliverBodyContent(index))
+        )
+      ),
+    );
+  }
+
+  ///一级悬停组件
+  Widget _sliverHeader() {
+    return SliverAppBar(
+      pinned: true,
+      elevation: 0,
+      expandedHeight: 360.px,
+      title: const Text("用户名"),
+      titleSpacing: 0,
+      centerTitle: false,
+      actions: [IconButton(onPressed: (){}, icon: const Icon(Icons.more_horiz))],
+      flexibleSpace: FlexibleSpaceBar(
+        collapseMode: CollapseMode.pin,
+        background: Column(
+          children: [
+            _sliverHeaderImage(),
+            Expanded(child: _sliverHeaderBody())
           ],
-          body: _bodySliver(context)
         ),
       ),
-    );
-  }
-
-  ///导航
-  Widget _headerSliver(BuildContext context,bool innerBoxIsScrolled) {
-    return SliverOverlapAbsorber(
-      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-      sliver: SliverAppBar(
-        pinned: true,
-        elevation: 0,
-        expandedHeight: 360.px,
-        forceElevated: innerBoxIsScrolled,
-        actions: [IconButton(onPressed: (){}, icon: const Icon(Icons.more_horiz))],
-        title: const Text("用户"),
-        centerTitle: false,
-        flexibleSpace: FlexibleSpaceBar(
-          collapseMode: CollapseMode.pin,
-          background: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _headerSliverImg(),
-              Expanded(child: _headerSliverBody())
-            ],
-          ),
-        ),
-        bottom: _tabBar()
-      ),
-    );
-  }
-
-  PreferredSizeWidget _tabBar() {
-    return PreferredSize(
-      preferredSize: Size.fromHeight(48.px),
-      child: Material(
-        color: Colors.white,
-        child: Theme(
-          data: Theme.of(context).copyWith(useMaterial3: true),
-          child: TabBar(
-            dividerColor: ColorExtension.lineColor,
-            labelStyle: TextStyle(fontSize: 16.px),
-            tabs: tabs.map((e) => Tab(text: e)).toList()
-          ),
-        ),
-      ),
+      bottom: _sliverHeaderBottom(),
     );
   }
 
   ///导航-图片
-  Widget _headerSliverImg({double? height}) {
+  Widget _sliverHeaderImage() {
     return SizedBox(
-      height: height ?? 150.px,
+      height: 150.px,
       width: double.infinity,
       child: Image.asset("assets/images/sources/joke_logo.png",fit: BoxFit.fitWidth)
     );
   }
 
   ///导航-内容
-  Widget _headerSliverBody() {
+  Widget _sliverHeaderBody() {
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -96,19 +117,19 @@ class _UserEditorPageState extends State<UserEditorPage> {
         Positioned(
           top: -25.px,
           left: 15.px,
-          child: _headerSliverBodyIcon()
+          child: _sliverHeaderBodyIcon()
         ),
         Positioned(
           top: 8.px,
           right: 15.px,
-          child: _headerSliverBodyEditButton()
+          child: _sliverHeaderBodyEditButton()
         ),
       ],
     );
   }
 
   ///导航-内容-图标
-  Widget _headerSliverBodyIcon() {
+  Widget _sliverHeaderBodyIcon() {
     return SizedBox(
       width: 80.px,
       height: 80.px,
@@ -117,13 +138,13 @@ class _UserEditorPageState extends State<UserEditorPage> {
   }
 
   ///导航-内容-编辑按钮
-  Widget _headerSliverBodyEditButton() {
+  Widget _sliverHeaderBodyEditButton() {
     return CustomButton(
       radius: 17.px,
       backgroundColor: Colors.white,
       textColor: Colors.orangeAccent,
       enableColor: Colors.transparent,
-      onPressed: (){},
+      onPressed: () => Navigator.pushNamed(context, UserInfoPage.routeName),
       title: "编辑资料"
     );
   }
@@ -137,16 +158,16 @@ class _UserEditorPageState extends State<UserEditorPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: 80.px),
-          _headerSliverBodyContentTitle(),
-          Divider(color: ColorExtension.lineColor,height: 30.px, thickness: 1.px),
-          _headerSliverBodyContentSign()
+          _sliverHeaderBodyContentTitle(),
+          Divider(color: ColorExtension.lineColor, height: 30.px, thickness: 1.px),
+          _sliverHeaderBodyContentSign()
         ],
       ),
     );
   }
 
   ///导航-内容-内容-标题
-  Widget _headerSliverBodyContentTitle(){
+  Widget _sliverHeaderBodyContentTitle(){
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -170,7 +191,7 @@ class _UserEditorPageState extends State<UserEditorPage> {
   }
 
   ///导航--内容-内容-签名描述
-  Widget _headerSliverBodyContentSign(){
+  Widget _sliverHeaderBodyContentSign(){
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,11 +200,11 @@ class _UserEditorPageState extends State<UserEditorPage> {
         SizedBox(height: 15.px),
         Row(
           children: [
-            _headerSliverBodyContentSignItem(count: 0, text: "获赞"),
+            _sliverHeaderBodyContentSignItem(count: 0, text: "获赞"),
             SizedBox(width: 18.px),
-            _headerSliverBodyContentSignItem(count: 0, text: "关注"),
+            _sliverHeaderBodyContentSignItem(count: 0, text: "关注"),
             SizedBox(width: 18.px),
-            _headerSliverBodyContentSignItem(count: 0, text: "粉丝"),
+            _sliverHeaderBodyContentSignItem(count: 0, text: "粉丝"),
           ],
         )
       ],
@@ -191,47 +212,89 @@ class _UserEditorPageState extends State<UserEditorPage> {
   }
 
   ///导航-内容-内容-签名-操作item
-  Widget _headerSliverBodyContentSignItem({int count=0,String? text}) {
+  Widget _sliverHeaderBodyContentSignItem({int count=0, String? text}) {
     return Row(
       children: [
-        Text("$count",style: TextStyle(fontSize: 18.px, color: Colors.black87, fontWeight: FontWeight.bold)),
+        Text("$count",
+          style: TextStyle(
+            fontSize: 18.px,
+            color: Colors.black87,
+            fontWeight: FontWeight.bold
+          )
+        ),
         SizedBox(width: 6.px),
-        Text(text ?? "",style: TextStyle(fontSize: 16.px, color: Colors.black87, fontWeight: FontWeight.normal)),
+        Text(text ?? "",
+          style: TextStyle(
+            fontSize: 16.px,
+            color: Colors.black87,
+            fontWeight: FontWeight.normal
+          )
+        ),
       ],
     );
   }
 
-
-  Widget _bodySliver(BuildContext context) {
-    return TabBarView(
-      children: tabs.map((e) {
-        return SafeArea(
-          top: false,
-          bottom: false,
-          child: Builder(builder: (context) => _bodySliverContent(context,e))
-        );
-      }).toList(),
+  ///导航-底部组件
+  PreferredSizeWidget _sliverHeaderBottom() {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(54.px),
+      child: Material(
+        color: Colors.white,
+        child: Theme(
+          data: ThemeData(useMaterial3: true, splashFactory: NoSplash.splashFactory),
+          child: TabBar(
+            onTap: _changeItem,
+            controller: _tabCtrl,
+            indicatorSize: TabBarIndicatorSize.tab,
+            indicatorPadding:EdgeInsets.symmetric(horizontal: 15.px),
+            dividerColor: ColorExtension.lineColor,
+            indicatorColor: Colors.orangeAccent,
+            labelColor: Colors.orangeAccent,
+            labelStyle: TextStyle(fontSize: 16.px, fontWeight: FontWeight.bold),
+            tabs: _tabs.map((e) => Tab(text: e)).toList()
+          ),
+        ),
+      ),
     );
   }
 
-  ///主体内容
-  Widget _bodySliverContent(BuildContext context,String name) {
+  ///二级悬停组件
+  Widget _sliverSubHeader() {
+    final List<String> tabs = ['文字','图片','视频'];
+    return SliverPersistentHeader(
+      pinned: true,
+      delegate: SliverHeaderDelegate.fixedHeight(
+        height: 58,
+        isNeedRebuild: true,
+        child: NavigationItemBar(
+          mainAxisAlignment: MainAxisAlignment.start,
+          bottomLineMargin: 0,
+          horizontalMargin: 16.px,
+          currentIndex: _subPage,
+          dividerColor: ColorExtension.lineColor,
+          padding: EdgeInsets.only(top: 18.px, left: 15.px),
+          normalStyle: TextStyle(fontSize: 14.px),
+          selectedStyle: TextStyle(fontSize: 14.px, color: Colors.orangeAccent),
+          callBack: _changeSubItem,
+          items: tabs.map((e) => BarItem(title: e)).toList(),
+        )
+      )
+    );
+  }
+
+  ///pageView中的内容组件
+  Widget _sliverBodyContent(int index) {
     return KeepAliveWrapper(
-      child: CustomScrollView(
-        key: PageStorageKey<String>(name),
-        slivers: <Widget>[
-          SliverOverlapInjector(handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context)),
-          SliverFixedExtentList(
-            itemExtent: height * 2,
-            delegate: SliverChildBuilderDelegate(
-              (context,idx) => const WorkView(),
-              childCount: 1
-            )
-          ),
-        ],
+      child: ListView.builder(
+        itemCount: 20,
+        padding: EdgeInsets.zero,
+        prototypeItem: const ListTile(title: Text(""),subtitle: Text("")),
+        itemBuilder: (context,idx) => ListTile(
+          title: Text("联系人 $index"),
+          subtitle: const Text("电话号码: 136****4657"),
+        ),
       ),
     );
   }
 }
-
 

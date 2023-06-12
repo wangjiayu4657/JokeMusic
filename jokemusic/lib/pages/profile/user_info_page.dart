@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:image_picker/image_picker.dart';
+import 'package:photo_manager/photo_manager.dart';
 
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
+import '../../pages/profile/views/picker_method.dart';
 import '../../pages/login/models/user_info_model.dart';
 
 ///我的-设置-用户信息页
@@ -18,18 +19,22 @@ class UserInfoPage extends StatefulWidget {
 class _UserInfoPageState extends State<UserInfoPage> {
 
   UserInfoModel? _infoModel;
+  AssetEntity? _imageFile;
   List<String> items = ["头像","昵称","签名","性别","生日","我的邀请码","绑定邀请码"];
 
-  @override
-  void initState() {
-    super.initState();
-    _initModel();
+  ///处理选择的图片
+  Future<void> handlerImageSelected(PickerMethod pickerMethod) async {
+    List<AssetEntity> images = <AssetEntity>[];
+    final List<AssetEntity>? result = await pickerMethod.method(context, images);
+    if (result == null) return;
+    _imageFile = result.toList().first;
+    if (mounted) setState(() { });
   }
 
   void _initModel() {
     _infoModel = UserInfoModel(
       avatar: "assets/images/sources/joke_logo.png",
-      nickname: "xiaowang",
+      nickname: "king",
       signature: "this is a test content",
       sex: "保密",
       birthday: "1999.06.07",
@@ -41,7 +46,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
   void handlerItemSelected(int idx) {
     switch (idx) {
       case 0:   //头像
-        // ImagePicker().pickImage(source: ImageSource.gallery);
+        handlerImageSelected(PickerMethod.singleImage());
         break;
       case 1:   //昵称
         break;
@@ -78,6 +83,12 @@ class _UserInfoPageState extends State<UserInfoPage> {
     } else {
       return "";
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initModel();
   }
 
   @override
@@ -143,7 +154,13 @@ class _UserInfoPageState extends State<UserInfoPage> {
         SizedBox(
           width: 30.px,
           height: 30.px,
-          child: CircleAvatar(child: Image.asset(_infoModel?.avatar ?? "")),
+          child: _imageFile == null ?
+            CircleAvatar(child: Image.asset(_infoModel?.avatar ?? "")) :
+            Container(
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
+              child: AssetEntityImage(_imageFile!, isOriginal: false, fit: BoxFit.fill)
+            )
         ),
         Icon(Icons.arrow_forward_ios, size: 18.px, color: Colors.black26),
       ],
