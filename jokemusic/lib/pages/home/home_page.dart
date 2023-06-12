@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'widgets/home_search.dart';
-import 'widgets/home_focus.dart';
-import 'widgets/home_recommend.dart';
-import 'widgets/home_fresh.dart';
-import 'widgets/home_text.dart';
-import 'widgets/home_picture.dart';
+import '../../widgets/keep_alive_wrapper.dart';
 import '../../widgets/navigation_item_bar.dart';
 import '../../tools/extension/int_extension.dart';
+import '../../pages/home/widgets/home_item_page.dart';
 
 class HomePage extends StatefulWidget {
   static const String routeName = "/home";
@@ -58,16 +55,18 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget buildBodyWidget() {
+    List<HomeItemType> itemTypes = [
+      HomeItemType.focus,
+      HomeItemType.recommend,
+      HomeItemType.refresh,
+      HomeItemType.text,
+      HomeItemType.picture
+    ];
+
     return PageView(
       controller: _pageController,
       onPageChanged: onPageChanged,
-      children: const [
-        HomeFocus(),
-        HomeRecommend(),
-        HomeFresh(),
-        HomeText(),
-        HomePicture(),
-      ],
+      children: itemTypes.map((e) => KeepAliveWrapper(child: HomeItemPage(homeItemType: e))).toList(),
     );
   }
 

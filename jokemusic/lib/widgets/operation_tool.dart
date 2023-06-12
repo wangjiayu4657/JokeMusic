@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import '../../../tools/extension/int_extension.dart';
 
 class OperationTool extends StatelessWidget {
-  const OperationTool(
-      {
+  const OperationTool({
     Key? key,
     this.color,
     this.height = 40,
-    this.iconSize = 40
+    this.iconSize = 40,
+    this.callBack
   }) : super(key: key);
 
   final Color? color;
   final double? height;
   final double? iconSize;
+  final ValueChanged? callBack;
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +41,12 @@ class OperationTool extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         InkWell(
-          onTap: (){},
-          child: Image.asset("assets/images/footer/$icon", fit: BoxFit.fitHeight,),
+          onTap: () => callBack?.call(tag),
+          child: SizedBox(
+            width: 24.px,
+            height: 24.px,
+            child: Image.asset("assets/images/footer/$icon", fit: BoxFit.contain)
+          ),
         ),
         SizedBox(width: 10.px),
         Text(title ?? "0", style: TextStyle(fontSize: 16.px, color: Colors.black54))

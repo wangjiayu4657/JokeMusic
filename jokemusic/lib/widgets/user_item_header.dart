@@ -8,10 +8,11 @@ class UserItemHeader extends StatelessWidget {
     this.height = 60,
     this.iconSize = 48,
     this.backgroundColor,
-    this.right,
+    this.actions,
     this.title,
     this.subTitle,
     this.avatar,
+    this.padding,
     this.titleStyle,
     this.subTitleStyle,
     this.onTap,
@@ -20,10 +21,11 @@ class UserItemHeader extends StatelessWidget {
   final double? height;
   final double? iconSize;
   final Color? backgroundColor;
-  final Widget? right;
+  final List<Widget>? actions;
   final String? title;
   final String? subTitle;
   final String? avatar;
+  final EdgeInsets? padding;
   final TextStyle? titleStyle;
   final TextStyle? subTitleStyle;
   final GestureTapCallback? onTap;
@@ -32,6 +34,7 @@ class UserItemHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: height,
+      padding: padding,
       color: backgroundColor,
       child: buildUserItemHeader(),
     );
@@ -90,13 +93,13 @@ class UserItemHeader extends StatelessWidget {
 
   ///构建右侧组件
   Widget buildUserItemHeaderMore() {
-    return SizedBox(
-      width: 30.px,
-      child: right ?? IconButton(
-         onPressed: onTap,
-         icon: const Icon(Icons.more_horiz)
-      ),
-    );
+    return (actions == null || actions?.isEmpty == true) ?
+      const SizedBox() :
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: actions!
+      );
   }
 }
 

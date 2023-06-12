@@ -53,10 +53,12 @@ class _ProfilePageState extends State<ProfilePage> {
             titleStyle: TextStyle(fontSize: 16.px, color: Colors.black87),
             subTitleStyle: TextStyle(fontSize: 12.px, color: Colors.black87),
             backgroundColor: Colors.transparent,
-            right: IconButton(
-              onPressed: () => _profileViewModel.gotoLogin(context),
-              icon: child ?? const Icon(Icons.arrow_forward_ios, color: Colors.black45),
-            ),
+            actions: [
+              IconButton(
+                onPressed: () => _profileViewModel.gotoLogin(context),
+                icon: child ?? const Icon(Icons.arrow_forward_ios, color: Colors.black45),
+              )
+            ],
           );
         },
         child: const Icon(Icons.arrow_forward_ios, color: Colors.black45),

@@ -7,6 +7,7 @@ class CustomButton extends StatelessWidget {
   const CustomButton({
     Key? key,
     required this.title,
+    this.style,
     this.enable,
     this.width,
     this.height,
@@ -22,6 +23,7 @@ class CustomButton extends StatelessWidget {
        super(key: key);
 
   final String title;
+  final TextStyle? style;
   final bool? enable;
   final double? width;
   final double? height;
@@ -51,7 +53,7 @@ class CustomButton extends StatelessWidget {
             return states.contains(MaterialState.disabled) ? disableColor : enableColor;
           })
         ),
-        child: Text(title, style: ThemeConfig.normalTextTheme.displaySmall?.copyWith(color: textColor))
+        child: Text(title, style: style ?? ThemeConfig.normalTextTheme.displaySmall?.copyWith(color: textColor))
       ),
     );
   }
