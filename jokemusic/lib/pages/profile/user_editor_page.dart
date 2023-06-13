@@ -142,8 +142,8 @@ class _UserEditorPageState extends State<UserEditorPage> with SingleTickerProvid
     return CustomButton(
       radius: 17.px,
       backgroundColor: Colors.white,
-      textColor: Colors.orangeAccent,
       enableColor: Colors.transparent,
+      style: const TextStyle(color: Colors.orangeAccent),
       onPressed: () => Navigator.pushNamed(context, UserInfoPage.routeName),
       title: "编辑资料"
     );

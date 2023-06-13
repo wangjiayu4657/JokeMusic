@@ -40,10 +40,10 @@ class HomeRecommendCard extends StatelessWidget {
   ///推荐用户-列表
   Widget _userRecommendedGrid() {
     return GridView.builder(
-        itemCount: 20,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context,idx) => _userRecommendedGridItem(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1, childAspectRatio: 1.3)
+      itemCount: 20,
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (context,idx) => _userRecommendedGridItem(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1, childAspectRatio: 1.3)
     );
   }
 
@@ -58,11 +58,11 @@ class HomeRecommendCard extends StatelessWidget {
           CircleAvatar(child: Image.asset("assets/images/placeholder.png")),
           Text("明天会更好", style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 14.px)),
           Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text("发表 148", style: TextStyle(fontSize: 12.px, color: Colors.black26)),
-                Text("粉丝 48", style: TextStyle(fontSize: 12.px, color: Colors.black26)),
-              ]),
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text("发表 148", style: TextStyle(fontSize: 12.px, color: Colors.black26)),
+              Text("粉丝 48", style: TextStyle(fontSize: 12.px, color: Colors.black26)),
+            ]),
           CustomButton(title: "+关注", height: 30.px,style: TextStyle(fontSize: 14.px), onPressed: (){}),
           SizedBox(height: 2.px),
         ],

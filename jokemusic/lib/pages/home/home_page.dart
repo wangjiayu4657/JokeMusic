@@ -34,19 +34,16 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: NavigationItemBar(
           items: _items,
-          currentIndex: _currentIndex,
           isShowBottomLine: false,
+          currentIndex: _currentIndex,
           bottomLineColor: Colors.redAccent,
           callBack: onPageChanged
         ),
-        actions: [
-          navigationBarItemSearch()
-        ],
+        actions: [ navigationBarItemSearch() ],
         backgroundColor: Colors.white,
         shadowColor: Colors.transparent,
       ),
@@ -55,7 +52,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget buildBodyWidget() {
-    List<HomeItemType> itemTypes = [
+    const List<HomeItemType> itemTypes = [
       HomeItemType.focus,
       HomeItemType.recommend,
       HomeItemType.refresh,
@@ -77,8 +74,8 @@ class _HomePageState extends State<HomePage> {
       },
       child: Container(
         width: 50.px,
-        height: 40.px,
-        padding: EdgeInsets.only(right: 20.px,bottom: 5.px),
+        height: 30.px,
+        padding: EdgeInsets.only(right: 20.px,bottom: 12.px),
         child: Image.asset("assets/images/sources/search.png"),
       )
     );

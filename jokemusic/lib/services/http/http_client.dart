@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'http_config.dart';
 import '../../services/storage/storage.dart';
+import '../../tools/share/user_manager.dart';
 import '../../tools/share/device_manager.dart';
 
 class HttpClient {
@@ -29,8 +31,6 @@ class HttpClient {
       "device": DeviceManager.device
     };
 
-    // debugPrint("headers === $headers");
-
     final Options options = Options(method: method,headers: headers);
 
     //添加全局拦截器
@@ -42,6 +42,13 @@ class HttpClient {
       onResponse: (response,handler) {
         debugPrint("响应拦截: ${response.data}");
         handler.next(response);
+        final param = response.data;
+        final code = param["code"];
+        final msg = param["msg"];
+        if(code == 202) {
+          UserManager.instance.saveLoginState(false);
+          Fluttertoast.showToast(gravity: ToastGravity.CENTER, msg: msg);
+        }
       },
       onError: (error,handler){
         debugPrint("错误拦截: ${error.error}");
@@ -58,7 +65,7 @@ class HttpClient {
     try {
       Response response = await dio.request(url, queryParameters: params, options: options);
       return response.data;
-    } on DioError catch(err) {
+    } on DioException catch(err) {
       return Future.error(err);
     }
   }

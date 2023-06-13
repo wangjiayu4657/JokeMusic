@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../../services/theme/theme_config.dart';
-import '../../tools/extension/color_extension.dart';
-import '../../tools/extension/int_extension.dart';
 import '../../widgets/input.dart';
 import '../../widgets/user_notice.dart';
 import '../../widgets/code_button.dart';
 import '../../widgets/custom_bottom_sheet.dart';
-
+import '../../services/theme/theme_config.dart';
+import '../../services/http/http_client.dart';
+import '../../tools/extension/int_extension.dart';
+import '../../tools/extension/color_extension.dart';
+import '../../tools/extension/object_extension.dart';
 
 class ResetPasswordPage extends StatefulWidget {
   static const String routeName = "/reset_password";
@@ -35,12 +36,22 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
            _password?.isNotEmpty == true;
   }
 
+  ///获取验证码
   void codeBtnClick() {
-
+    const url = "/user/psw/reset/get_code";
+    final params = {"phone": _phone};
+    HttpClient.request(url: url, params: params);
   }
 
-  void resetBtnClick() {
-
+  ///重置密码
+  void resetBtnClick() async {
+    const url = "/user/psw/reset";
+    final params = {"code":_code, "password":_password, "phone":_phone };
+    final result = await HttpClient.request(url: url, params: params);
+    final code = mapToInt(result["code"]);
+    final msg = result["msg"].toString();
+    showToast(msg);
+    if(mounted && code == 200) Navigator.pop(context);
   }
 
   @override

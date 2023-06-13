@@ -140,7 +140,7 @@ class _ProfilePageState extends State<ProfilePage> {
       padding: EdgeInsets.symmetric(horizontal:15.px),
       child: Consumer<ProfileViewModel>(
         builder: (context, viewModel, child){
-          return  Row(
+          return Row(
             children: [
               VerticalItem(icon: Text("${viewModel.socialInfo?.attentionNum ?? 0 }"), title: "关注", width: 40.px),
               SizedBox(width: 45.px),

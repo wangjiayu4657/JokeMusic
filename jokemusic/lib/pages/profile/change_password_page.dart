@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:jokemusic/tools/extension/object_extension.dart';
 
-import '../../services/theme/theme_config.dart';
-import '../../tools/extension/color_extension.dart';
-import '../../tools/extension/int_extension.dart';
 import '../../widgets/input.dart';
 import '../../widgets/user_notice.dart';
 import '../../widgets/custom_bottom_sheet.dart';
+import '../../services/theme/theme_config.dart';
+import '../../services/http/http_client.dart';
+import '../../tools/extension/color_extension.dart';
+import '../../tools/extension/int_extension.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   static const String routeName = "/change_password";
@@ -22,18 +24,22 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   String? _surePwd;
   bool _obscureText = false;
 
-  bool get isResetBtnEnable {
+  bool get isChangeBtnEnable {
     return _oldPwd?.isNotEmpty == true &&
            _newPwd?.isNotEmpty == true &&
            _surePwd?.isNotEmpty == true;
   }
 
-  void codeBtnClick() {
+  ///修改密码
+  void changeBtnClick() async {
+    const url = "/user/psw/change";
+    final param = {"old_psw":_oldPwd, "password":_newPwd, "new_psw":_surePwd};
+    final result = await HttpClient.request(url: url, params: param);
+    final code = result["code"];
+    final msg = result["msg"].toString();
 
-  }
-
-  void resetBtnClick() {
-
+    showToast(msg);
+    if(mounted && code == 200) Navigator.pop(context);
   }
 
   @override
@@ -169,7 +175,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         borderRadius: BorderRadius.circular(22.px)
       ),
       child: ElevatedButton(
-        onPressed: isResetBtnEnable ? resetBtnClick : null,
+        onPressed: isChangeBtnEnable ? changeBtnClick : null,
         style: ButtonStyle(
           shape: MaterialStateProperty.all(const StadiumBorder()), //设置圆角弧度
           backgroundColor: MaterialStateProperty.resolveWith((states) {

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:jokemusic/widgets/custom_bottom_sheet.dart';
 
 import 'viewModels/login_view_model.dart';
 import '../../widgets/user_notice.dart';
 import '../../widgets/input.dart';
 import '../../widgets/code_button.dart';
+import '../../widgets/custom_bottom_sheet.dart';
 import '../../services/theme/theme_config.dart';
 import '../../tools/share/const_config.dart';
 import '../../tools/extension/int_extension.dart';
@@ -20,20 +20,20 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  //用户名
+  ///用户名
   String? _userName;
-  //密码/验证码
+  ///密码/验证码
   String? _password;
-  //是否为验证码登录
+  ///是否为验证码登录
   bool _isCodeLogin = false;
-  //验证码按钮是否可点
+  ///是否为密码状态
+  bool _obscureText = true;
+  ///验证码按钮是否可点
   bool get isCodeBtnEnable => _userName?.length == 11;
-  //登录按钮是否能交互
-  bool get isLoginBtnEnable {
-    return _userName != null && _password != null;
-  }
+  ///登录按钮是否能交互
+  bool get isLoginBtnEnable => _userName != null && _password != null;
 
-
+  late final _textCtrl = TextEditingController();
   late final LoginViewModel _viewModel = LoginViewModel();
 
   ///验证码请求
@@ -45,8 +45,8 @@ class _LoginPageState extends State<LoginPage> {
   void loginRequest() {
     if(_isCodeLogin) {
       _viewModel.loginCodeRequest(
-        userName: _userName,
         code: _password,
+        userName: _userName,
         callback: () => Navigator.pop(context)
       );
     } else {
@@ -145,7 +145,22 @@ class _LoginPageState extends State<LoginPage> {
   Widget buildPasswordInput() {
     return Input(
       placeholder: _isCodeLogin ? "请输入验证码" : "请输入密码",
-      textOffset: 0.1,
+      obscureText: _isCodeLogin ? false : _obscureText,
+      textOffset: 0.03,
+      controller: _textCtrl,
+      suffixIcon: IconButton(
+        onPressed: (){
+          if(_isCodeLogin) return;
+          setState(() => _obscureText = !_obscureText);
+        },
+        icon: SizedBox(
+          width: 20.px,
+          height: 20.px,
+          child: _isCodeLogin ?
+              const SizedBox() :
+              Image.asset("assets/images/normal/${_obscureText ? "eye_off.png" : "eye_on.png"}")
+        )
+      ),
       valueChanged: (password) {
         _password = password;
         setState(() {});
@@ -212,7 +227,10 @@ class _LoginPageState extends State<LoginPage> {
   ///构建登录工具 - 密码/验证码按钮组件
   Widget buildLoginToolPwdOrCodeLogin() {
     return TextButton(
-      onPressed: () => setState(() => _isCodeLogin = !_isCodeLogin),
+      onPressed: () {
+        _textCtrl.text = "";
+        setState(() => _isCodeLogin = !_isCodeLogin);
+      },
       child: Text( _isCodeLogin ? "密码登录" : "验证码登录",style: const TextStyle(color: Colors.orangeAccent))
     );
   }

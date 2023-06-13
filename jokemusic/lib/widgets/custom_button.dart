@@ -12,13 +12,12 @@ class CustomButton extends StatelessWidget {
     this.width,
     this.height,
     this.radius,
-    Color? textColor,
+    this.bordColor,
     this.backgroundColor,
     Color? enableColor,
     Color? disableColor,
     this.onPressed,
-  }) : textColor = textColor ?? Colors.white,
-       enableColor = enableColor ?? Colors.orangeAccent,
+  }) : enableColor = enableColor ?? Colors.orangeAccent,
        disableColor = disableColor ?? Colors.black12,
        super(key: key);
 
@@ -28,7 +27,7 @@ class CustomButton extends StatelessWidget {
   final double? width;
   final double? height;
   final double? radius;
-  final Color? textColor;
+  final Color? bordColor;
   final Color? backgroundColor;
   final Color? enableColor;
   final Color? disableColor;
@@ -41,7 +40,7 @@ class CustomButton extends StatelessWidget {
       height: height ?? 34.px,
       decoration: BoxDecoration(
         color: backgroundColor,
-        border: Border.all(color: textColor ?? Colors.transparent),
+        border: Border.all(color: bordColor ?? Colors.transparent),
         borderRadius: BorderRadius.circular(radius ?? 0)
       ),
       child: ElevatedButton(
@@ -53,7 +52,7 @@ class CustomButton extends StatelessWidget {
             return states.contains(MaterialState.disabled) ? disableColor : enableColor;
           })
         ),
-        child: Text(title, style: style ?? ThemeConfig.normalTextTheme.displaySmall?.copyWith(color: textColor))
+        child: Text(title, style: style ?? ThemeConfig.normalTextTheme.displaySmall?.copyWith(color: style?.color))
       ),
     );
   }

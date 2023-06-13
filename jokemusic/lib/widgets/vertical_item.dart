@@ -7,6 +7,7 @@ class VerticalItem extends StatelessWidget {
     required this.icon,
     this.title,
     this.style,
+    this.padding,
     this.width,
     this.height,
     this.margin = 8,
@@ -19,17 +20,22 @@ class VerticalItem extends StatelessWidget {
   final double? height;
   final double? margin;
   final TextStyle? style;
+  final EdgeInsets? padding;
   final VoidCallback? callback;
+
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: callback,
-      child: SizedBox(
+      child: Container(
         width: width,
         height: height,
+        padding: padding,
+        alignment: Alignment.center,
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             icon,
             SizedBox(height: margin),

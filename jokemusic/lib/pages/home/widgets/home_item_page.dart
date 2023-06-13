@@ -74,7 +74,7 @@ class _HomeItemPageState extends State<HomeItemPage> {
     SliverList.separated(
       itemCount: 20,
       itemBuilder: (context, idx) => _focusListItem(),
-      separatorBuilder: (context, idx) => Divider(color:ColorExtension.lineColor,  height: 24.px, thickness: 8.px)
+      separatorBuilder: (context, idx) => Divider(color: ColorExtension.lineColor, height: 24.px, thickness: 8.px)
     );
   }
 

@@ -19,6 +19,7 @@ class LoginViewModel extends ChangeNotifier {
       showToast("请输入账户名");
       return;
     }
+
     if(password == null) {
       showToast("请输入密码");
       return;
@@ -38,6 +39,7 @@ class LoginViewModel extends ChangeNotifier {
       showToast("请输入账户名");
       return;
     }
+
     if(code == null) {
       showToast("请输入验证码");
       return;
@@ -64,8 +66,8 @@ class LoginViewModel extends ChangeNotifier {
     String token = result["token"];
     Storage.save<String>("token", token);
 
-    String type = result["type"];
-    isLogin = type == "login_success";
+    String type = result["type"].toString();
+    isLogin = (type == "login_success") || (type == "login_psw_success");
     UserManager.instance.saveLoginState(isLogin);
 
     //保存用户信息
@@ -74,7 +76,6 @@ class LoginViewModel extends ChangeNotifier {
     UserManager.instance.saveUserInfo(userModel);
 
     userInfoModel = userModel;
-
     notifyListeners();
   }
 }
