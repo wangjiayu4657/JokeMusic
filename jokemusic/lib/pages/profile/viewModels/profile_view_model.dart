@@ -52,9 +52,9 @@ class ProfileViewModel extends ChangeNotifier {
   ///用户信息获取
   void _userInfoRequest() async {
     String url = "/user/info";
-    final result = await HttpClient.request(url: url);
-    debugPrint("result === $result");
-
+    final response = await HttpClient.request(url: url);
+    debugPrint("response ===== $response");
+    final result = response["data"];
     final info = result["info"];
     socialInfo = SocialInfo.fromJson(info);
 

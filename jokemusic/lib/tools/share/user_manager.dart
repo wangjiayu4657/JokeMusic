@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
 
 import '../../services/storage/storage.dart';
 import '../../pages/login/models/user_info_model.dart';
@@ -28,16 +30,18 @@ class UserManager {
 
   ///获取用户信息
   Future<UserInfoModel> get userModel async {
-    return await Storage.fetch<UserInfoModel>(_userKey);
+    final infoStr = await Storage.fetch<String>(_userKey);
+    final infoJson = json.decode(infoStr);
+    return UserInfoModel.fromJson(infoJson);
   }
 
   ///保存用户信息
   saveUserInfo(UserInfoModel userModel) {
-    Storage.save<UserInfoModel>(_userKey, userModel);
+    final infoJson = userModel.toJson();
+    final infoStr = json.encode(infoJson);
+    Storage.save<String>(_userKey, infoStr);
   }
 
   ///删除用户信息
-  removeUserInfo() {
-    Storage.remove(_userKey);
-  }
+  removeUserInfo() => Storage.remove(_userKey);
 }

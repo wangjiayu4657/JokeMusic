@@ -38,8 +38,8 @@ dependencies:
   event_bus: ^2.0.0                                 #事件总线
   provider: ^6.0.2                                  #状态管理
   share_plus: ^7.0.2                                #分享组件
+  flutter_picker: ^2.1.0                            #时间选择器
   video_player: ^2.6.1                              #视频播放器
-#  image_picker: ^0.8.7+5                            #图片选择器
   wechat_assets_picker: ^8.5.0                      #图片选择器
   photo_manager: ^2.6.0
   extended_image: ^8.0.0

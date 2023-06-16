@@ -12,7 +12,7 @@ import '../../pages/others/unknown_page.dart';
 import '../../pages/profile/setting_page.dart';
 import '../../pages/profile/user_info_page.dart';
 import '../../pages/profile/user_editor_page.dart';
-import '../../pages/profile/user_editor_page.dart';
+import '../../pages/profile/user_info_editor_page.dart';
 import '../../pages/profile/account_safe_page.dart';
 import '../../pages/profile/reset_password_page.dart';
 import '../../pages/profile/change_password_page.dart';
@@ -38,7 +38,8 @@ class RouterConfig {
     ChangePasswordPage.routeName: (ctx) => const ChangePasswordPage(),
     FeedbackPage.routeName: (ctx) => const FeedbackPage(),
     AuditResultPage.routeName: (ctx) => const AuditResultPage(),
-    UserEditorPage.routeName: (ctx,{arguments}) => const UserEditorPage(),
+    UserEditorPage.routeName: (ctx) => const UserEditorPage(),
+    UserInfoEditorPage.routeName: (ctx,{arguments}) => UserInfoEditorPage(arguments: arguments),
   };
 
   //统一处理

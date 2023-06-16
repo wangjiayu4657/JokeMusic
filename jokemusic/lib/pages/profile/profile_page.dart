@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jokemusic/pages/Profile/user_info_page.dart';
 import 'package:provider/provider.dart';
 
 import '../../pages/login/login_page.dart';
@@ -23,6 +24,12 @@ class _ProfilePageState extends State<ProfilePage> {
   static const List<String> _images = ["customer","auditing","share","feedback","setting"];
   final ProfileViewModel _profileViewModel = ProfileViewModel();
 
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+  }
 
   @override
   Widget build(BuildContext context) {
