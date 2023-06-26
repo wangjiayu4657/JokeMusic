@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jokemusic/pages/Profile/user_info_page.dart';
 
 import '../../widgets/custom_button.dart';
 import '../../widgets/keep_alive_wrapper.dart';
@@ -7,18 +6,7 @@ import '../../widgets/navigation_item_bar.dart';
 import '../../widgets/sliver_header_delegate.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
-
-/*
-
----------------------------------------  page  ------------------------------------------
-            0                             1                               2
-         今日爆款                        土货生鲜                         会员中心
---------- subPage -------    ---------- subPage ---------    --------- subPage ---------
-   0        1         2         0          1          2        0          1          2
-  文字     图片       视频       文字        图片       视频      文字        图片       视频
-
-*/
-
+import '../../pages/Profile/user_info_page.dart';
 
 class UserEditorPage extends StatefulWidget {
   static const String routeName = "/user_editor";
@@ -27,6 +15,18 @@ class UserEditorPage extends StatefulWidget {
   @override
   State<UserEditorPage> createState() => _UserEditorPageState();
 }
+
+
+/*
+
+---------------------------------------------------  page  -----------------------------------------------------
+            0                           1                          2                         3
+           作品                         喜欢                       评论                       收藏
+   ------- subPage -------   ------- subPage -------   ------- subPage -------    ------- subPage -------
+     0       1        2         0       1       2        0        1        2         0        1        2
+    文字    图片      视频       文字     图片     视频     文字      图片     视频       文字      图片      视频
+
+*/
 
 class _UserEditorPageState extends State<UserEditorPage> with SingleTickerProviderStateMixin {
   int _page = 0;
@@ -142,6 +142,7 @@ class _UserEditorPageState extends State<UserEditorPage> with SingleTickerProvid
     return CustomButton(
       radius: 17.px,
       backgroundColor: Colors.white,
+      bordColor: Colors.orangeAccent,
       enableColor: Colors.transparent,
       style: const TextStyle(color: Colors.orangeAccent),
       onPressed: () => Navigator.pushNamed(context, UserInfoPage.routeName),

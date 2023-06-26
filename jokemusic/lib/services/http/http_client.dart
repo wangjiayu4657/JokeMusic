@@ -48,6 +48,7 @@ class HttpClient {
         if(code == 202) {
           UserManager.instance.saveLoginState(false);
           Fluttertoast.showToast(gravity: ToastGravity.CENTER, msg: msg);
+
         }
       },
       onError: (error,handler){

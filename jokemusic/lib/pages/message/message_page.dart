@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:jokemusic/pages/Home/widgets/home_search.dart';
-import 'package:jokemusic/pages/message/views/message_item.dart';
+import 'package:get/get.dart';
 
 import '../../widgets/custom_button.dart';
 import '../../widgets/vertical_item.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
+import '../../pages/Home/widgets/home_search.dart';
+import '../../pages/message/views/message_item.dart';
 
 class MessagePage extends StatefulWidget {
   static const String routeName = "/MessagePage";
@@ -16,6 +17,12 @@ class MessagePage extends StatefulWidget {
 }
 
 class _MessagePageState extends State<MessagePage> {
+
+  void show() {
+    Get.snackbar("hi", "message");
+    print("object");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +30,7 @@ class _MessagePageState extends State<MessagePage> {
         title: const Text("消息"),
         actions: [
           IconButton(
-            onPressed: () => Navigator.pushNamed(context, HomeSearch.routeName),
+            onPressed: show,
             icon: const Icon(Icons.search)
           )
         ],

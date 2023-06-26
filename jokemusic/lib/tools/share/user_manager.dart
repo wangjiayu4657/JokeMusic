@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
-
 import '../../services/storage/storage.dart';
 import '../../pages/login/models/user_info_model.dart';
 

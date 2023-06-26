@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:package_info_plus/package_info_plus.dart';
 
 import 'user_info_page.dart';
 import 'models/setting_model.dart';
+import '../../tools/share/user_manager.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
+import '../../tools/extension/object_extension.dart';
+import '../../services/storage/storage.dart';
 import '../../pages/profile/account_safe_page.dart';
 
 ///我的-设置页
@@ -31,14 +33,6 @@ class _SettingPageState extends State<SettingPage> {
     buildSignature: "Unknown",
     installerStore: "Unknown"
   );
-
-  @override
-  void initState() {
-    super.initState();
-
-    _initData();
-    _initPackageInfo();
-  }
 
   ///初始化数据
   void _initData() {
@@ -99,6 +93,23 @@ class _SettingPageState extends State<SettingPage> {
       default:
         break;
     }
+  }
+
+  void logoutRequest() async {
+    final result = await Storage.remove("token");
+    setState(() {
+      Navigator.pop(context);
+      UserManager.instance.saveLoginState(false);
+    });
+    showToast("退出成功");
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _initData();
+    _initPackageInfo();
   }
 
   @override
@@ -201,12 +212,17 @@ class _SettingPageState extends State<SettingPage> {
 
   ///构建列表尾部组件
   Widget buildListViewFooter() {
-    return Container(
-      height: 48.px,
-      color: Colors.white,
-      alignment: Alignment.center,
-      padding: EdgeInsets.only(top: 25.px),
-      child: Text("退出登录", style: TextStyle(color: Colors.orangeAccent,fontSize: 16.px)),
+    return InkWell(
+      onTap: () async {
+        await UserManager.instance.isLogin ? logoutRequest() : null;
+      },
+      child: Container(
+        height: 48.px,
+        color: Colors.white,
+        alignment: Alignment.center,
+        padding: EdgeInsets.only(top: 25.px),
+        child: Text("退出登录", style: TextStyle(color: Colors.orangeAccent,fontSize: 16.px)),
+      ),
     );
   }
 }

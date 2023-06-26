@@ -13,6 +13,9 @@ class LoginViewModel extends ChangeNotifier {
   ///用户信息
   UserInfoModel? userInfoModel;
 
+  String get nickname => isLogin ? userInfoModel?.nickname ?? ""  : "登录/注册";
+  String get signature => isLogin ? userInfoModel?.signature ?? "" : "快来开始你的创作吧~";
+
   ///密码登录请求
   void loginPwdRequest({String? userName, String? password, VoidCallback? callback}) async {
     if(userName == null) {

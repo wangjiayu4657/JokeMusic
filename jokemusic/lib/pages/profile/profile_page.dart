@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jokemusic/pages/Profile/user_info_page.dart';
 import 'package:provider/provider.dart';
 
-import '../../pages/login/login_page.dart';
 import '../../pages/login/viewModels/login_view_model.dart';
 import '../../pages/profile/viewModels/profile_view_model.dart';
 import '../../widgets/vertical_item.dart';
@@ -22,14 +20,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   static const List<String> _titles = ["我的客服","审核结果","分享给朋友","意见反馈","设置"];
   static const List<String> _images = ["customer","auditing","share","feedback","setting"];
-  final ProfileViewModel _profileViewModel = ProfileViewModel();
-
-@override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-  }
+  late final ProfileViewModel _profileViewModel = ProfileViewModel();
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +45,8 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Consumer<LoginViewModel>(
         builder: (context, viewModel, child) {
           return UserItemHeader(
-            title: viewModel.isLogin ? "登录/注册" : viewModel.userInfoModel?.nickname,
-            subTitle: "快来开始你的创作吧~",
+            title: viewModel.nickname,
+            subTitle: viewModel.signature,
             avatar: viewModel.userInfoModel?.avatar,
             titleStyle: TextStyle(fontSize: 16.px, color: Colors.black87),
             subTitleStyle: TextStyle(fontSize: 12.px, color: Colors.black87),

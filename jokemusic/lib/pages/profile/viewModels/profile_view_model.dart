@@ -46,6 +46,7 @@ class ProfileViewModel extends ChangeNotifier {
   void gotoLogin(BuildContext context) async {
     final navigator = Navigator.of(context);
     bool isLogin = await UserManager.instance.isLogin;
+    debugPrint("isLogin === $isLogin");
     navigator.pushNamed(isLogin ? UserEditorPage.routeName : LoginPage.routeName);
   }
 

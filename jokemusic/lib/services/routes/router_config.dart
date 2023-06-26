@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../pages/Main/main_page.dart';
 import '../../pages/Home/home_page.dart';
@@ -57,5 +58,27 @@ class RouterConfig {
   static RouteFactory onUnknownRoute = (setting){
     return MaterialPageRoute(builder: (ctx) => const UnknownPage());
   };
+}
+
+class RouterConfigs {
+  static List routePages = [
+    GetPage(name:  MainPage.routeName, page: () => const MainPage()),
+    GetPage(name:  HomePage.routeName, page: () => const HomePage()),
+    GetPage(name:  HomeSearch.routeName, page: () => const HomeSearch()),
+    GetPage(name:  VideoPage.routeName, page: () => const VideoPage()),
+    GetPage(name:  PublishPage.routeName, page: () => const PublishPage()),
+    GetPage(name:  MessagePage.routeName, page: () => const MessagePage()),
+    GetPage(name:  ProfilePage.routeName, page: () => const ProfilePage()),
+    GetPage(name:  LoginPage.routeName, page: () => const LoginPage()),
+    GetPage(name:  SettingPage.routeName, page: () => const SettingPage()),
+    GetPage(name:  UserInfoPage.routeName, page: () => const UserInfoPage()),
+    GetPage(name:  AccountSafePage.routeName, page: () => const AccountSafePage()),
+    GetPage(name:  ResetPasswordPage.routeName, page: () => const ResetPasswordPage()),
+    GetPage(name:  ChangePasswordPage.routeName, page: () => const ChangePasswordPage()),
+    GetPage(name:  FeedbackPage.routeName, page: () => const FeedbackPage()),
+    GetPage(name:  AuditResultPage.routeName, page: () => const AuditResultPage()),
+    GetPage(name:  UserEditorPage.routeName, page: () => const UserEditorPage()),
+    GetPage(name:  UserInfoEditorPage.routeName, page: () => const UserInfoEditorPage()),
+  ];
 }
 
