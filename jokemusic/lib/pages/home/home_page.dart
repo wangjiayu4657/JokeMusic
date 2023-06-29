@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'widgets/home_search.dart';
-import '../../widgets/keep_alive_wrapper.dart';
-import '../../widgets/navigation_item_bar.dart';
+import '../../common/keep_alive_wrapper.dart';
+import '../../common/navigation_item_bar.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../pages/home/widgets/home_item_page.dart';
 

@@ -1,4 +1,5 @@
 // import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:sp_util/sp_util.dart';
 
 // class Storage<T> {
@@ -80,7 +81,9 @@ class Storage {
   ///存值
   static save<T>(String key, T value) async {
     if (value is String) {
-      SpUtil.putString(key, value);
+      debugPrint("value ===1=== $value");
+      final result = await SpUtil.putString(key, value);
+      debugPrint("result ===1=== $result");
     } else if(value is bool) {
       SpUtil.putBool(key, value);
     } else if(value is int) {
@@ -100,6 +103,8 @@ class Storage {
   static Future fetch<T>(String key) async {
     var type = typeOf<T>();
     if (type == String) {
+      final token = SpUtil.getString(key);
+      debugPrint("fetch token ====== $token");
       return SpUtil.getString(key);
     } else if(type == bool) {
       return SpUtil.getBool(key);

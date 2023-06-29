@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'reset_password_page.dart';
-import '../../widgets/input.dart';
-import '../../widgets/custom_button.dart';
+import '../../common/input.dart';
+import '../../common/custom_button.dart';
 import '../../pages/profile/change_password_page.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';

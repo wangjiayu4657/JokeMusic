@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../widgets/custom_button.dart';
+import '../../../common/custom_button.dart';
 import '../../../tools/extension/int_extension.dart';
 import '../../../tools/extension/color_extension.dart';
 

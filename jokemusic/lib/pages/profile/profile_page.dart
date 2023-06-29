@@ -1,40 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
-import '../../pages/login/viewModels/login_view_model.dart';
-import '../../pages/profile/viewModels/profile_view_model.dart';
-import '../../widgets/vertical_item.dart';
-import '../../widgets/user_item_header.dart';
+import '../../common/vertical_item.dart';
+import '../../common/user_item_header.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
+import '../../pages/profile/controllers/profile_controller.dart';
 
 ///我的
-class ProfilePage extends StatefulWidget {
-  static const String routeName = "/profile_page";
+class ProfilePage extends StatelessWidget {
+  static const String routeName = "/profile";
   const ProfilePage({Key? key}) : super(key: key);
 
-  @override
-  State<ProfilePage> createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfilePage> {
-  static const List<String> _titles = ["我的客服","审核结果","分享给朋友","意见反馈","设置"];
-  static const List<String> _images = ["customer","auditing","share","feedback","setting"];
-  late final ProfileViewModel _profileViewModel = ProfileViewModel();
+  static final List<String> _titles = ["我的客服","审核结果","分享给朋友","意见反馈","设置"];
+  static final List<String> _images = ["customer","auditing","share","feedback","setting"];
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      lazy: true,
-      create: (context) => ProfileViewModel(),
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          title: buildAppBarTitle(),
-          backgroundColor: ColorExtension.lineColor,
-        ),
-        body: buildBody(),
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        title: buildAppBarTitle(),
+        backgroundColor: ColorExtension.lineColor,
       ),
+      body: buildBody(),
     );
   }
 
@@ -42,24 +31,25 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget buildAppBarTitle() {
     return Padding(
       padding: EdgeInsets.all(8.px),
-      child: Consumer<LoginViewModel>(
-        builder: (context, viewModel, child) {
+      child: GetBuilder<ProfileController>(
+        id: "profile_header_info",
+        init: ProfileController(),
+        builder: (viewModel) {
           return UserItemHeader(
-            title: viewModel.nickname,
-            subTitle: viewModel.signature,
-            avatar: viewModel.userInfoModel?.avatar,
+            title: viewModel.userInfo?.nickname,
+            subTitle: viewModel.userInfo?.signature,
+            avatar: viewModel.userInfo?.avatar,
             titleStyle: TextStyle(fontSize: 16.px, color: Colors.black87),
             subTitleStyle: TextStyle(fontSize: 12.px, color: Colors.black87),
             backgroundColor: Colors.transparent,
             actions: [
               IconButton(
-                onPressed: () => _profileViewModel.gotoLogin(context),
-                icon: child ?? const Icon(Icons.arrow_forward_ios, color: Colors.black45),
+                onPressed: viewModel.gotoLogin,
+                icon: const Icon(Icons.arrow_forward_ios, color: Colors.black45),
               )
             ],
           );
         },
-        child: const Icon(Icons.arrow_forward_ios, color: Colors.black45),
       ),
     );
   }
@@ -92,7 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       margin: EdgeInsets.symmetric(horizontal: 15.px),
       child: ListTile(
-        onTap: () => _profileViewModel.handlerItemClick(context: context, tag: idx),
+        onTap: () => ProfileController.to.handlerItemClick(tag: idx),
         leading: Image.asset("assets/images/sources/profile_${_images[idx]}@3x.png", width: 20.px),
         title: Text(_titles[idx], style: TextStyle(fontSize: 16.px, fontWeight: FontWeight.normal)),
         trailing: Icon(Icons.arrow_forward_ios,size: 18.px),
@@ -136,18 +126,14 @@ class _ProfilePageState extends State<ProfilePage> {
       height: 48.px,
       color: Colors.transparent,
       padding: EdgeInsets.symmetric(horizontal:15.px),
-      child: Consumer<ProfileViewModel>(
-        builder: (context, viewModel, child){
-          return Row(
-            children: [
-              VerticalItem(icon: Text("${viewModel.socialInfo?.attentionNum ?? 0 }"), title: "关注", width: 40.px),
-              SizedBox(width: 45.px),
-              VerticalItem(icon: Text("${viewModel.socialInfo?.fansNum ?? 0 }"), title: "粉丝", width: 40.px),
-              SizedBox(width: 45.px),
-              VerticalItem(icon: Text("${viewModel.socialInfo?.experienceNum ?? 0 }"), title: "乐豆", width: 40.px),
-            ],
-          );
-        },
+      child: Row(
+        children: [
+          VerticalItem(icon: Obx(() => Text("${ProfileController.to.socialInfo.value.attentionNum}")), title: "关注", width: 40.px),
+          SizedBox(width: 45.px),
+          VerticalItem(icon:  Obx(() => Text("${ProfileController.to.socialInfo.value.fansNum}")), title: "粉丝", width: 40.px),
+          SizedBox(width: 45.px),
+          VerticalItem(icon:  Obx(() => Text("${ProfileController.to.socialInfo.value.experienceNum}")), title: "乐豆", width: 40.px),
+        ],
       ),
     );
   }
@@ -197,5 +183,4 @@ class _ProfilePageState extends State<ProfilePage> {
        icon: Image.asset("assets/images/sources/$imgName.png", width: 30.px)
     );
   }
-  
 }

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 import '../tools/extension/int_extension.dart';
+import '../pages/login/viewModels/login_view_model.dart';
 
 ///用户信息头部组件
 class UserItemHeader extends StatelessWidget {
-  const UserItemHeader({
+  UserItemHeader({
     Key? key,
     this.height = 60,
     this.iconSize = 48,
@@ -29,6 +32,8 @@ class UserItemHeader extends StatelessWidget {
   final TextStyle? titleStyle;
   final TextStyle? subTitleStyle;
   final GestureTapCallback? onTap;
+
+  final LoginViewModel loginViewModel = Get.put(LoginViewModel());
 
   @override
   Widget build(BuildContext context) {
@@ -84,9 +89,11 @@ class UserItemHeader extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Obx(() => Text(loginViewModel.nickname, style: titleStyle)),
         Text(title ?? "丛林中的仙子",style: titleStyle),
         SizedBox(height: 4.px),
         Text(subTitle ?? "不是我不笑, 一笑粉就掉!",style: subTitleStyle)
+        // Obx(() => Text(subTitle ?? loginViewModel.signature, style: subTitleStyle)),
       ],
     );
   }

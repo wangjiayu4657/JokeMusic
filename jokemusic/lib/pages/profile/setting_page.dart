@@ -21,37 +21,38 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-
-  List<SettingModel> _list = [];   //数据源
-  bool _autoPlay = false;          //视频自动播放
-  bool _dataPlay = false;          //使用数据网络直接播放视频
+  List<SettingModel> _list = []; //数据源
+  bool _autoPlay = false; //视频自动播放
+  bool _dataPlay = false; //使用数据网络直接播放视频
   var _packageInfo = PackageInfo(
-    appName: "Unknown",
-    packageName: "Unknown",
-    version: "Unknown",
-    buildNumber: "Unknown",
-    buildSignature: "Unknown",
-    installerStore: "Unknown"
-  );
+      appName: "Unknown",
+      packageName: "Unknown",
+      version: "Unknown",
+      buildNumber: "Unknown",
+      buildSignature: "Unknown",
+      installerStore: "Unknown");
 
   ///初始化数据
   void _initData() {
     //用户相关
     const users = ["用户信息", "账号安全"];
-    final userModel = SettingModel.initModel(section: 0, title: "用户相关", names: users);
+    final userModel =
+        SettingModel.initModel(section: 0, title: "用户相关", names: users);
 
     //通用
-    const generals = ["推送开关","视频自动播放","数据网络直接播放视频","清除缓存"];
-    final generalModel = SettingModel.initModel(section: 1, title: "通用", names: generals);
+    const generals = ["推送开关", "视频自动播放", "数据网络直接播放视频", "清除缓存"];
+    final generalModel =
+        SettingModel.initModel(section: 1, title: "通用", names: generals);
 
     //其他设置
-    const others = ["给我评分","检查更新","用户服务协议","隐私政策","关于我们"];
-    final otherModel = SettingModel.initModel(section: 2, title: "其他设置", names: others);
+    const others = ["给我评分", "检查更新", "用户服务协议", "隐私政策", "关于我们"];
+    final otherModel =
+        SettingModel.initModel(section: 2, title: "其他设置", names: others);
 
     //退出登录
     final logoutModel = SettingModel(section: 3, title: "退出登录");
 
-    _list = [userModel,generalModel,otherModel,logoutModel];
+    _list = [userModel, generalModel, otherModel, logoutModel];
   }
 
   ///初始化packageInfo组件
@@ -61,33 +62,35 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   ///处理列表item的点击事件
-  void handlerItemSelected({int section = 0, int row = 0}){
-    switch (section){
+  void handlerItemSelected({int section = 0, int row = 0}) {
+    switch (section) {
       case 0:
-        if(row == 0) {                    //用户信息
+        if (row == 0) {
+          //用户信息
           Navigator.pushNamed(context, UserInfoPage.routeName);
-        } else {                          //账号安全
+        } else {
+          //账号安全
           Navigator.pushNamed(context, AccountSafePage.routeName);
         }
         break;
       case 1:
-        if(row == 0){                     //推送开关
-
-        } else if(row == 3){              //清除缓存
-
+        if (row == 0) {
+          //推送开关
+        } else if (row == 3) {
+          //清除缓存
         }
         break;
       case 2:
-        if(row == 0){                     //给我评分
-
-        } else if(row == 1){              //检查更新
-
-        } else if(row == 2){              //用户服务协议
-
-        } else if(row == 3) {             //隐私政策
-
-        } else {                          //关于我们
-
+        if (row == 0) {
+          //给我评分
+        } else if (row == 1) {
+          //检查更新
+        } else if (row == 2) {
+          //用户服务协议
+        } else if (row == 3) {
+          //隐私政策
+        } else {
+          //关于我们
         }
         break;
       default:
@@ -96,7 +99,7 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   void logoutRequest() async {
-    final result = await Storage.remove("token");
+    await Storage.remove("token");
     setState(() {
       Navigator.pop(context);
       UserManager.instance.saveLoginState(false);
@@ -124,11 +127,10 @@ class _SettingPageState extends State<SettingPage> {
   ///构建内容组件
   Widget buildBody() {
     return ListView.builder(
-      itemCount: _list.length,
-      itemBuilder: (context,idx){
-        return idx == 3 ? buildListViewFooter() : buildListItem(idx);
-      }
-    );
+        itemCount: _list.length,
+        itemBuilder: (context, idx) {
+          return idx == 3 ? buildListViewFooter() : buildListItem(idx);
+        });
   }
 
   ///构建列表item组件
@@ -136,8 +138,8 @@ class _SettingPageState extends State<SettingPage> {
     return Column(
       children: [
         buildListItemHeader(idx),
-        Divider(color: ColorExtension.lineColor,thickness: 1.px),
-        buildListItemBody(model:_list[idx]),
+        Divider(color: ColorExtension.lineColor, thickness: 1.px),
+        buildListItemBody(model: _list[idx]),
         buildListItemFooter()
       ],
     );
@@ -148,44 +150,51 @@ class _SettingPageState extends State<SettingPage> {
     return Container(
       height: 44.px,
       alignment: Alignment.centerLeft,
-      padding: EdgeInsets.only(left: 15.px,right: 15.px,top: 8.px),
-      child: Text(_list[idx].title ?? "",style: TextStyle(fontSize: 16.px,fontWeight: FontWeight.bold)),
+      padding: EdgeInsets.only(left: 15.px, right: 15.px, top: 8.px),
+      child: Text(_list[idx].title ?? "",
+          style: TextStyle(fontSize: 16.px, fontWeight: FontWeight.bold)),
     );
   }
 
   ///构建列表item组件-内容
   Widget buildListItemBody({SettingModel? model}) {
-   return ListView.separated(
-       shrinkWrap: true,
-       padding: EdgeInsets.only(bottom: 18.px),
-       physics: const NeverScrollableScrollPhysics(),
-       itemCount: model?.list?.length ?? 0,
-       itemBuilder: (context,idx){
-         return ListTile(
-           onTap: () => handlerItemSelected(section:model?.section ?? 0, row: idx),
-           title: Text(model?.list?[idx].name ?? "",style: TextStyle(fontSize: 16.px, fontWeight: FontWeight.normal)),
-           visualDensity: const VisualDensity(vertical: -4),
-           trailing: buildListItemBodyTrailing(idx: idx, section: model?.section ?? 0),
-         );
-       },
-       separatorBuilder: (context,idx) => Divider(color: ColorExtension.lineColor, thickness: 1.px),
-   );
+    return ListView.separated(
+      shrinkWrap: true,
+      padding: EdgeInsets.only(bottom: 18.px),
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: model?.list?.length ?? 0,
+      itemBuilder: (context, idx) {
+        return ListTile(
+          onTap: () =>
+              handlerItemSelected(section: model?.section ?? 0, row: idx),
+          title: Text(model?.list?[idx].name ?? "",
+              style: TextStyle(fontSize: 16.px, fontWeight: FontWeight.normal)),
+          visualDensity: const VisualDensity(vertical: -4),
+          trailing:
+              buildListItemBodyTrailing(idx: idx, section: model?.section ?? 0),
+        );
+      },
+      separatorBuilder: (context, idx) =>
+          Divider(color: ColorExtension.lineColor, thickness: 1.px),
+    );
   }
 
   ///构建列表item组件-内容-尾部小组件
   Widget buildListItemBodyTrailing({int idx = 0, int section = 0}) {
-    if(section == 1){
-      return (idx == 0 || idx == 3) ?
-        buildListItemBodyTrailingText(idx == 0 ? "未开启" : "502.80KB") :
-        buildListItemBodyTrailingSwitch(idx);
-    } else if(section == 2){
-      return idx == 1 ? buildListItemBodyTrailingText(_packageInfo.version) : Icon(Icons.arrow_forward_ios, size: 18.px);
+    if (section == 1) {
+      return (idx == 0 || idx == 3)
+          ? buildListItemBodyTrailingText(idx == 0 ? "未开启" : "502.80KB")
+          : buildListItemBodyTrailingSwitch(idx);
+    } else if (section == 2) {
+      return idx == 1
+          ? buildListItemBodyTrailingText(_packageInfo.version)
+          : Icon(Icons.arrow_forward_ios, size: 18.px);
     }
     return Icon(Icons.arrow_forward_ios, size: 18.px);
   }
 
   ///构建列表item组件-内容-尾部小组件-文本
-  Widget buildListItemBodyTrailingText(String text){
+  Widget buildListItemBodyTrailingText(String text) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -198,16 +207,16 @@ class _SettingPageState extends State<SettingPage> {
   ///构建列表item组件-内容-尾部小组件-开关
   Widget buildListItemBodyTrailingSwitch(int idx) {
     return CupertinoSwitch(
-      value: idx == 1 ? _autoPlay : _dataPlay,
-      onChanged: (val) => setState(() {
-        idx == 1 ? _autoPlay = val : _dataPlay = val;
-      })
-    );
+        value: idx == 1 ? _autoPlay : _dataPlay,
+        onChanged: (val) => setState(() {
+              idx == 1 ? _autoPlay = val : _dataPlay = val;
+            }));
   }
 
   ///构建列表item组件-尾部
   Widget buildListItemFooter() {
-    return Divider(color: ColorExtension.bgColor,thickness: 10.px,height: 0.01);
+    return Divider(
+        color: ColorExtension.bgColor, thickness: 10.px, height: 0.01);
   }
 
   ///构建列表尾部组件
@@ -221,7 +230,8 @@ class _SettingPageState extends State<SettingPage> {
         color: Colors.white,
         alignment: Alignment.center,
         padding: EdgeInsets.only(top: 25.px),
-        child: Text("退出登录", style: TextStyle(color: Colors.orangeAccent,fontSize: 16.px)),
+        child: Text("退出登录",
+            style: TextStyle(color: Colors.orangeAccent, fontSize: 16.px)),
       ),
     );
   }

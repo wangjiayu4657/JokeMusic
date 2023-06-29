@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../widgets/page_selector.dart';
-import '../../../widgets/navigation_item_bar.dart';
+import '../../../common/page_selector.dart';
+import '../../../common/navigation_item_bar.dart';
 import '../../../tools/extension/int_extension.dart';
 import '../../../tools/extension/color_extension.dart';
 

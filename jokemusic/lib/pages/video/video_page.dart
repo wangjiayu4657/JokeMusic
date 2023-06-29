@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../widgets/navigation_item_bar.dart';
-import '../../widgets/sliver_header_delegate.dart';
+import '../../common/navigation_item_bar.dart';
+import '../../common/sliver_header_delegate.dart';
 import '../../tools/extension/int_extension.dart';
 /*
 

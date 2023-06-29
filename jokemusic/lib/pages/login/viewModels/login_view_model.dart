@@ -6,18 +6,16 @@ import '../../../tools/share/user_manager.dart';
 import '../../../tools/extension/object_extension.dart';
 import '../../../pages/login/models/user_info_model.dart';
 
-class LoginViewModel extends ChangeNotifier {
+class LoginViewModel {
 
   ///是否登录成功
   late bool isLogin = false;
   ///用户信息
   UserInfoModel? userInfoModel;
 
-  String get nickname => isLogin ? userInfoModel?.nickname ?? ""  : "登录/注册";
-  String get signature => isLogin ? userInfoModel?.signature ?? "" : "快来开始你的创作吧~";
-
   ///密码登录请求
   void loginPwdRequest({String? userName, String? password, VoidCallback? callback}) async {
+
     if(userName == null) {
       showToast("请输入账户名");
       return;
@@ -79,6 +77,5 @@ class LoginViewModel extends ChangeNotifier {
     UserManager.instance.saveUserInfo(userModel);
 
     userInfoModel = userModel;
-    notifyListeners();
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../widgets/vertical_item.dart';
-import '../../widgets/navigation_item_bar.dart';
+import '../../common/vertical_item.dart';
+import '../../common/navigation_item_bar.dart';
 import '../../tools/extension/int_extension.dart';
 
 ///我的-审核结果页

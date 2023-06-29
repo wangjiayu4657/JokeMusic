@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
-import '../../widgets/input.dart';
-import '../../widgets/custom_button.dart';
+import '../../common/input.dart';
+import '../../common/custom_button.dart';
 import '../../tools/share/const_config.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';

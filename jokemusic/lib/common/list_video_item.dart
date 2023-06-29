@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/custom_video_player.dart';
+import '../common/custom_video_player.dart';
 import '../../../tools/extension/int_extension.dart';
 
 

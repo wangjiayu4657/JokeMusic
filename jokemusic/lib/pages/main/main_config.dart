@@ -6,11 +6,11 @@ import '../message/message_page.dart';
 import '../profile/profile_page.dart';
 
 class MainConfig {
-  static List<Widget> pages = const [
-    HomePage(),
-    VideoPage(),
-    PublishPage(),
-    MessagePage(),
+  static List<Widget> pages = [
+    const HomePage(),
+    const VideoPage(),
+    const PublishPage(),
+    const MessagePage(),
     ProfilePage()
   ];
 

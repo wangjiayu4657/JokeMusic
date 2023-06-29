@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart' as getrouter;
 
 import 'http_config.dart';
+import '../../pages/login/login_page.dart';
 import '../../services/storage/storage.dart';
 import '../../tools/share/user_manager.dart';
 import '../../tools/share/device_manager.dart';
@@ -48,7 +50,7 @@ class HttpClient {
         if(code == 202) {
           UserManager.instance.saveLoginState(false);
           Fluttertoast.showToast(gravity: ToastGravity.CENTER, msg: msg);
-
+          getrouter.Get.toNamed(LoginPage.routeName);
         }
       },
       onError: (error,handler){

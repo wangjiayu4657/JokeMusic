@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'viewModels/login_view_model.dart';
-import '../../widgets/user_notice.dart';
-import '../../widgets/input.dart';
-import '../../widgets/code_button.dart';
-import '../../widgets/custom_bottom_sheet.dart';
+import '../../common/user_notice.dart';
+import '../../common/input.dart';
+import '../../common/code_button.dart';
+import '../../common/custom_bottom_sheet.dart';
 import '../../services/theme/theme_config.dart';
 import '../../tools/share/const_config.dart';
 import '../../tools/extension/int_extension.dart';
@@ -12,7 +12,7 @@ import '../../tools/extension/color_extension.dart';
 
 
 class LoginPage extends StatefulWidget {
-  static const String routeName = "/LoginPage";
+  static const String routeName = "/login";
   const LoginPage({Key? key}) : super(key: key);
 
   @override

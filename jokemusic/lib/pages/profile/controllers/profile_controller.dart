@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../audit_result_page.dart';
@@ -11,12 +11,21 @@ import '../../../tools/share/user_manager.dart';
 import '../../../pages/login/models/user_info_model.dart';
 import '../../../pages/profile/user_editor_page.dart';
 
+class ProfileController extends GetxController {
+  final socialInfo = SocialInfo().obs;
+  UserInfoModel? userInfo = UserInfoModel();
 
-class ProfileViewModel extends ChangeNotifier {
-  SocialInfo? socialInfo;
-
-  ProfileViewModel() {
+  ProfileController() {
+    _initUserInfo();
     _userInfoRequest();
+  }
+
+  static ProfileController get to => Get.find();
+
+  ///获取用户信息
+  void _initUserInfo() async {
+    userInfo = await UserManager.instance.userModel;
+    update(['profile_header_info']);
   }
 
   ///分享
@@ -27,42 +36,42 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   ///处理列表item的点击事件
-  void handlerItemClick({required BuildContext context, int tag = 0}) {
-    switch(tag){
-      case 1: Navigator.pushNamed(context, AuditResultPage.routeName);      //审核结果
-      break;
-      case 2: _share();                                                      //分享给朋友
-      break;
-      case 3: Navigator.pushNamed(context, FeedbackPage.routeName);         //意见反馈
-      break;
-      case 4: Navigator.pushNamed(context, SettingPage.routeName);          //设置
-      break;
-      default:                                                              //我的客服
+  void handlerItemClick({int tag = 0}) {
+    switch (tag) {
+      case 1:
+        Get.toNamed(AuditResultPage.routeName);
+        break;
+      case 2:
+        _share(); //分享给朋友
+        break;
+      case 3:
+        Get.toNamed(FeedbackPage.routeName); //意见反馈
+        break;
+      case 4:
+        Get.toNamed(SettingPage.routeName); //设置
+        break;
+      default: //我的客服
         break;
     }
   }
 
   ///如果没有登录则先登录, 如果已登录则跳转用户资料编辑页
-  void gotoLogin(BuildContext context) async {
-    final navigator = Navigator.of(context);
+  void gotoLogin() async {
     bool isLogin = await UserManager.instance.isLogin;
-    debugPrint("isLogin === $isLogin");
-    navigator.pushNamed(isLogin ? UserEditorPage.routeName : LoginPage.routeName);
+    Get.toNamed(isLogin ? UserEditorPage.routeName : LoginPage.routeName);
   }
 
   ///用户信息获取
   void _userInfoRequest() async {
     String url = "/user/info";
     final response = await HttpClient.request(url: url);
-    debugPrint("response ===== $response");
+
     final result = response["data"];
     final info = result["info"];
-    socialInfo = SocialInfo.fromJson(info);
+    socialInfo.value = SocialInfo.fromJson(info);
 
     final user = result["user"];
     final userModel = UserInfoModel.fromJson(user);
     UserManager.instance.saveUserInfo(userModel);
-
-    notifyListeners();
   }
 }

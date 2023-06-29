@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:jokemusic/tools/extension/object_extension.dart';
 
-import '../../widgets/input.dart';
-import '../../widgets/user_notice.dart';
-import '../../widgets/custom_bottom_sheet.dart';
+import '../../common/input.dart';
+import '../../common/user_notice.dart';
+import '../../common/custom_bottom_sheet.dart';
 import '../../services/theme/theme_config.dart';
 import '../../services/http/http_client.dart';
-import '../../tools/extension/color_extension.dart';
 import '../../tools/extension/int_extension.dart';
+import '../../tools/extension/color_extension.dart';
+import '../../tools/extension/object_extension.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   static const String routeName = "/change_password";

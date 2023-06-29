@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../widgets/custom_button.dart';
-import '../../widgets/keep_alive_wrapper.dart';
-import '../../widgets/navigation_item_bar.dart';
-import '../../widgets/sliver_header_delegate.dart';
+import '../../common/custom_button.dart';
+import '../../common/keep_alive_wrapper.dart';
+import '../../common/navigation_item_bar.dart';
+import '../../common/sliver_header_delegate.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
 import '../../pages/Profile/user_info_page.dart';

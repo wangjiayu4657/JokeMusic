@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../../widgets/input.dart';
-import '../../../tools/extension/int_extension.dart';
-import '../../../tools/extension/color_extension.dart';
+import '../../common/input.dart';
+import '../../common/custom_button.dart';
 import '../../tools/share/const_config.dart';
-import '../../widgets/custom_button.dart';
+import '../../tools/extension/int_extension.dart';
+import '../../tools/extension/color_extension.dart';
 
 enum EditType {
   ///昵称

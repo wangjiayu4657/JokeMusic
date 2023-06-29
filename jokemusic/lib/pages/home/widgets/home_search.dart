@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 //首页 - 搜索
 class HomeSearch extends StatefulWidget {
-  static const String routeName = "home_search";
+  static const String routeName = "/home_search";
   const HomeSearch({Key? key}) : super(key: key);
 
   @override
