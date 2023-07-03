@@ -34,7 +34,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   void changeBtnClick() async {
     const url = "/user/psw/change";
     final param = {"old_psw":_oldPwd, "password":_newPwd, "new_psw":_surePwd};
-    final result = await HttpClient.request(url: url, params: param);
+    final result = await Http.post(url: url, params: param);
     final code = result["code"];
     final msg = result["msg"].toString();
 

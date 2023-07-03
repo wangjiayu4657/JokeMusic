@@ -40,14 +40,14 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
   void codeBtnClick() {
     const url = "/user/psw/reset/get_code";
     final params = {"phone": _phone};
-    HttpClient.request(url: url, params: params);
+    Http.post(url: url, params: params);
   }
 
   ///重置密码
   void resetBtnClick() async {
     const url = "/user/psw/reset";
     final params = {"code":_code, "password":_password, "phone":_phone };
-    final result = await HttpClient.request(url: url, params: params);
+    final result = await Http.post(url: url, params: params);
     final code = mapToInt(result["code"]);
     final msg = result["msg"].toString();
     showToast(msg);

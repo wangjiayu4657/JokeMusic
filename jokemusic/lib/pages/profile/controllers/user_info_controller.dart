@@ -110,7 +110,7 @@ class UserInfoController extends GetxController {
   void updateUserInfoRequest({int type = 0, String? content}) async {
     const url = "/user/info/update";
     final params = {"content":content, "type":type};
-    final result = await HttpClient.request(url: url, params: params);
+    final result = await Http.post(url: url, params: params);
     final msg = result["msg"].toString();
     final code = mapToInt(result["code"]);
     showToast(msg);

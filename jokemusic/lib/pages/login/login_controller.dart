@@ -62,7 +62,7 @@ class LoginController extends GetxController {
 
     const url = "/user/login/psw";
     final params = {"phone": userName, "psw": password};
-    final result = await HttpClient.request(url: url,params: params);
+    final result = await Http.post(url: url,params: params);
 
     parseJsonData(result["data"]);
     callback != null ? callback() : null;
@@ -82,7 +82,7 @@ class LoginController extends GetxController {
 
     const url = "/user/login/code";
     final params = {"phone": userName, "code": code};
-    final result = await HttpClient.request(url: url, params: params);
+    final result = await Http.post(url: url, params: params);
 
     parseJsonData(result["data"]);
     callback != null ? callback() : null;
@@ -97,7 +97,7 @@ class LoginController extends GetxController {
 
     const url = "/user/login/get_code";
     final params = {"phone": userName.value};
-    HttpClient.request(url: url, params: params);
+    Http.post(url: url, params: params);
   }
 
   ///解析数据
