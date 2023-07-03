@@ -24,10 +24,6 @@ class UserInfoController extends GetxController {
 
   // static UserInfoController get to => Get.find();
 
-  void test()  {
-
-  }
-
   ///处理选择的图片
   Future<void> handlerImageSelected(PickerMethod pickerMethod) async {
     List<AssetEntity> images = <AssetEntity>[];

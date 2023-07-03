@@ -79,14 +79,11 @@ class ProfileController extends GetxController {
   void _userInfoRequest() async {
     String url = "/user/info";
     final response = await Http.post(url: url);
-    print("http get ==1== $response");
     if(response == null) return;
     final result = response["data"];
     if(result == null) return;
     final info = result["info"];
     socialInfo.value = SocialInfo.fromJson(info);
-
-    print("http get ==2== $result");
 
     final user = result["user"];
     final userModel = UserInfoModel.fromJson(user);

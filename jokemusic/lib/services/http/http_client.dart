@@ -1,17 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart' as get_result;
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-
-import 'http_config.dart';
-import '../../pages/login/login_view.dart';
 import '../../services/http/net/net_util.dart';
-import 'net/net_config.dart';
-import '../../services/storage/storage.dart';
-import '../../tools/share/user_manager.dart';
-import '../../tools/share/device_manager.dart';
 
 
 class Http {
@@ -68,7 +57,6 @@ class Http {
       cancelToken: cancelToken,
       isLoading: isLoading
     );
-    print("response ==*== $response");
     return response;
   }
 
@@ -128,7 +116,7 @@ class Http {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    print("url === $url, params === $params, method === $method");
+    // debugPrint("url === $url, params === $params, method === $method");
     var response = await NetUtil.instance.request(
       url: url,
       data: data,
@@ -154,9 +142,8 @@ class Http {
     NetUtil.instance.cancelRequest(cancelToken: cancelToken);
   }
 
-  ///添加拦截器
+  ///添加拦截器(一种类型的拦截器只能添加一次)
   void addInterceptor(Interceptor interceptor) {
-    //一种类型的拦截器只能添加一次
     NetUtil.instance.addInterceptor(interceptor);
   }
 

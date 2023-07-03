@@ -11,18 +11,15 @@ class LoadingInterceptor extends Interceptor {
     //打开加载窗
     if(isLoading) SmartDialog.showLoading();
     handler.next(options);
-    debugPrint("url ==*==  ${options.uri}");
-    // super.onRequest(options, handler);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) async {
     //关闭弹窗
-    if(isLoading && SmartDialog.config.isExistLoading){
+    if (isLoading && SmartDialog.config.isExistLoading) {
       await SmartDialog.dismiss(status: SmartStatus.loading);
     }
     handler.next(response);
-    // super.onResponse(response, handler);
   }
 
   @override
@@ -32,6 +29,5 @@ class LoadingInterceptor extends Interceptor {
       await SmartDialog.dismiss(status: SmartStatus.loading);
     }
     handler.next(err);
-    // super.onError(err, handler);
   }
 }

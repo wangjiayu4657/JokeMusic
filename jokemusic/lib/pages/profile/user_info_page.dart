@@ -13,9 +13,6 @@ class UserInfoPage extends GetView<UserInfoController> {
   const UserInfoPage({Key? key}):super(key:key);
 
   @override
-  String? get tag => "myTag";
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("用户信息")),
@@ -106,6 +103,7 @@ class UserInfoPage extends GetView<UserInfoController> {
 class UserInfoBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(()=>UserInfoController());
+    Get.lazyPut<UserInfoController>(() => UserInfoController());
   }
 }
+

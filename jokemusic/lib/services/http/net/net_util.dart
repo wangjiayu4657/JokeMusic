@@ -42,7 +42,6 @@ class NetUtil {
   };
 
   NetUtil._internal() {
-    print("第一次调用------- ");
     dio.options = BaseOptions(
       //设置base url
       baseUrl: NetConfig.baseUrl,
@@ -57,12 +56,17 @@ class NetUtil {
       receiveTimeout: const Duration(seconds: NetConfig.receiveTimeout),
     );
 
+    Storage.fetchString("token").then((token) {
+      headers["token"] = token;
+      setHeaders(headers);
+    });
+
     //添加异常拦截
     dio.interceptors.add(ErrInterceptor());
     //添加日志拦截
-    // dio.interceptors.add(LogInterceptor());
+    dio.interceptors.add(LogInterceptor());
     //处理全局loading
-    // dio.interceptors.add(_loadingInterceptor);
+    dio.interceptors.add(_loadingInterceptor);
     //处理通用实体
     dio.interceptors.add(ResponseInterceptor());
   }
@@ -85,83 +89,6 @@ class NetUtil {
       dio.interceptors.addAll(interceptors);
     }
   }
-
-  // ///Get 操作
-  // Future<T> get<T>({
-  //   required String url,
-  //   Map<String,dynamic>? params,
-  //   Options? options,
-  //   CancelToken? cancelToken
-  // }) async {
-  //   final response = await request(
-  //     url: url,
-  //     method: HttpMethod.get,
-  //     params: params,
-  //     options: options,
-  //     cancelToken: cancelToken ?? _cancelToken,
-  //   );
-  //   return response;
-  // }
-  //
-  // ///Post 操作
-  // Future<T> post<T>({
-  //   required String url,
-  //   dynamic data,
-  //   Map<String,dynamic>? params,
-  //   Options? options,
-  //   CancelToken? cancelToken
-  // }) async {
-  //   final response = await request(
-  //     url: url,
-  //     data: data,
-  //     method: HttpMethod.post,
-  //     params: params,
-  //     options: options,
-  //     cancelToken: cancelToken ?? _cancelToken,
-  //   );
-  //
-  //   return response;
-  // }
-  //
-  // ///Put 操作
-  // Future<T> put<T>({
-  //   required String url,
-  //   dynamic data,
-  //   Map<String,dynamic>? params,
-  //   Options? options,
-  //   CancelToken? cancelToken
-  // }) async {
-  //   final response = await request(
-  //     url: url,
-  //     data: data,
-  //     method: HttpMethod.put,
-  //     params: params,
-  //     options: options,
-  //     cancelToken: cancelToken ?? _cancelToken,
-  //   );
-  //
-  //   return response;
-  // }
-  //
-  // ///Delete 操作
-  // Future<T> delete<T>({
-  //   required String url,
-  //   dynamic data,
-  //   Map<String,dynamic>? params,
-  //   Options? options,
-  //   CancelToken? cancelToken
-  // }) async {
-  //   final response = await request(
-  //     url: url,
-  //     data: data,
-  //     method: HttpMethod.delete,
-  //     params: params,
-  //     options: options,
-  //     cancelToken: cancelToken ?? _cancelToken,
-  //   );
-  //
-  //   return response;
-  // }
 
   ///Request 操作
   Future<T> request<T>({
@@ -188,13 +115,12 @@ class NetUtil {
       dio.options.method = "DELETE";
     }
 
-    String? token = await Storage.fetchString("token");
-    headers["token"] = token;
-    print("headers == $headers");
-    options?.headers?.addAll(headers);
+    // String? token = await Storage.fetchString("token");
+    // headers["token"] = token;
+    // print("headers == $headers");
+    // options?.headers?.addAll(headers);
 
-    options = options ??  Options(headers: headers);
-
+    options = options ??  Options();
     Completer<T> completer = Completer();
     dio.request<T>(
       url,

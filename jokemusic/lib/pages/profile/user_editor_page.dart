@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:jokemusic/pages/Profile/controllers/user_info_controller.dart';
 
 import '../../common/custom_button.dart';
 import '../../common/keep_alive_wrapper.dart';
@@ -7,14 +9,7 @@ import '../../common/sliver_header_delegate.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
 import '../../pages/Profile/user_info_page.dart';
-
-class UserEditorPage extends StatefulWidget {
-  static const String routeName = "/user_editor";
-  const UserEditorPage({Key? key}) : super(key: key);
-
-  @override
-  State<UserEditorPage> createState() => _UserEditorPageState();
-}
+import 'controllers/user_editor_controller.dart';
 
 
 /*
@@ -28,49 +23,22 @@ class UserEditorPage extends StatefulWidget {
 
 */
 
-class _UserEditorPageState extends State<UserEditorPage> with SingleTickerProviderStateMixin {
-  int _page = 0;
-  int _subPage  = 0;
-  final _pageCtrl = PageController();
-  final List<String> _tabs = <String>['作品', '喜欢', '评论', '收藏'];
-  late final _tabCtrl = TabController(length: _tabs.length, vsync: this);
-
-  void _changeItem(int index) {
-    _page = index;
-    _changeSubItem(0);
-  }
-
-  void _changeSubItem(int index){
-    _subPage = index;
-    _toTargetPage();
-  }
-
-  void _pageChanged(int index){
-    _page = index ~/ 3;   //_page 取值: 0,1,2
-    _subPage = index % 3; //_subPage 取值: 0,1,2
-    _toTargetPage();
-  }
-
-  void _toTargetPage(){
-    int curIdx = _subPage + _page * 3;
-    setState(() {
-      _tabCtrl.animateTo(_page);
-      _pageCtrl.jumpToPage(curIdx);
-    });
-  }
+class UserEditorPage extends GetView<UserEditorController> {
+  static const String routeName = "/user_editor";
+  const UserEditorPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Material (
+    return Material(
       child: NestedScrollView(
-        headerSliverBuilder: (context, isInnerScroll) => [
+        headerSliverBuilder: (context, isInnerScroll) =>[
           _sliverHeader(),
           _sliverSubHeader()
         ],
         body: PageView(
-          controller: _pageCtrl,
-          onPageChanged: _pageChanged,
-          children: List.generate(_tabs.length * 3, (index) => _sliverBodyContent(index))
+          controller: controller.pageCtrl,
+          onPageChanged: controller.pageChanged,
+          children: List.generate(controller.tabs.length * 3, (index) => _sliverBodyContent(index))
         )
       ),
     );
@@ -85,7 +53,9 @@ class _UserEditorPageState extends State<UserEditorPage> with SingleTickerProvid
       title: const Text("用户名"),
       titleSpacing: 0,
       centerTitle: false,
-      actions: [IconButton(onPressed: (){}, icon: const Icon(Icons.more_horiz))],
+      actions: [
+        IconButton(onPressed: () {}, icon: const Icon(Icons.more_horiz))
+      ],
       flexibleSpace: FlexibleSpaceBar(
         collapseMode: CollapseMode.pin,
         background: Column(
@@ -104,7 +74,7 @@ class _UserEditorPageState extends State<UserEditorPage> with SingleTickerProvid
     return SizedBox(
       height: 150.px,
       width: double.infinity,
-      child: Image.asset("assets/images/sources/joke_logo.png",fit: BoxFit.fitWidth)
+      child: Image.asset("assets/images/sources/joke_logo.png", fit: BoxFit.fitWidth)
     );
   }
 
@@ -145,7 +115,7 @@ class _UserEditorPageState extends State<UserEditorPage> with SingleTickerProvid
       bordColor: Colors.orangeAccent,
       enableColor: Colors.transparent,
       style: const TextStyle(color: Colors.orangeAccent),
-      onPressed: () => Navigator.pushNamed(context, UserInfoPage.routeName),
+      onPressed: () => Get.toNamed(UserInfoPage.routeName),
       title: "编辑资料"
     );
   }
@@ -168,7 +138,7 @@ class _UserEditorPageState extends State<UserEditorPage> with SingleTickerProvid
   }
 
   ///导航-内容-内容-标题
-  Widget _sliverHeaderBodyContentTitle(){
+  Widget _sliverHeaderBodyContentTitle() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -192,12 +162,13 @@ class _UserEditorPageState extends State<UserEditorPage> with SingleTickerProvid
   }
 
   ///导航--内容-内容-签名描述
-  Widget _sliverHeaderBodyContentSign(){
+  Widget _sliverHeaderBodyContentSign() {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("他正在想一个爆炸的签名...",style: TextStyle(fontSize: 14.px, color: Colors.black87)),
+        Text("他正在想一个爆炸的签名...",
+            style: TextStyle(fontSize: 14.px, color: Colors.black87)),
         SizedBox(height: 15.px),
         Row(
           children: [
@@ -213,7 +184,7 @@ class _UserEditorPageState extends State<UserEditorPage> with SingleTickerProvid
   }
 
   ///导航-内容-内容-签名-操作item
-  Widget _sliverHeaderBodyContentSignItem({int count=0, String? text}) {
+  Widget _sliverHeaderBodyContentSignItem({int count = 0, String? text}) {
     return Row(
       children: [
         Text("$count",
@@ -244,15 +215,15 @@ class _UserEditorPageState extends State<UserEditorPage> with SingleTickerProvid
         child: Theme(
           data: ThemeData(useMaterial3: true, splashFactory: NoSplash.splashFactory),
           child: TabBar(
-            onTap: _changeItem,
-            controller: _tabCtrl,
+            onTap: controller.changeItem,
+            controller: controller.tabCtrl,
             indicatorSize: TabBarIndicatorSize.tab,
-            indicatorPadding:EdgeInsets.symmetric(horizontal: 15.px),
+            indicatorPadding: EdgeInsets.symmetric(horizontal: 15.px),
             dividerColor: ColorExtension.lineColor,
             indicatorColor: Colors.orangeAccent,
             labelColor: Colors.orangeAccent,
             labelStyle: TextStyle(fontSize: 16.px, fontWeight: FontWeight.bold),
-            tabs: _tabs.map((e) => Tab(text: e)).toList()
+            tabs: controller.tabs.map((e) => Tab(text: e)).toList()
           ),
         ),
       ),
@@ -261,25 +232,27 @@ class _UserEditorPageState extends State<UserEditorPage> with SingleTickerProvid
 
   ///二级悬停组件
   Widget _sliverSubHeader() {
-    final List<String> tabs = ['文字','图片','视频'];
+    final List<String> tabs = ['文字', '图片', '视频'];
     return SliverPersistentHeader(
-      pinned: true,
-      delegate: SliverHeaderDelegate.fixedHeight(
-        height: 58,
-        isNeedRebuild: true,
-        child: NavigationItemBar(
-          mainAxisAlignment: MainAxisAlignment.start,
-          bottomLineMargin: 0,
-          horizontalMargin: 16.px,
-          currentIndex: _subPage,
-          dividerColor: ColorExtension.lineColor,
-          padding: EdgeInsets.only(top: 18.px, left: 15.px),
-          normalStyle: TextStyle(fontSize: 14.px),
-          selectedStyle: TextStyle(fontSize: 14.px, color: Colors.orangeAccent),
-          callBack: _changeSubItem,
-          items: tabs.map((e) => BarItem(title: e)).toList(),
+        pinned: true,
+        delegate: SliverHeaderDelegate.fixedHeight(
+          height: 58,
+          isNeedRebuild: true,
+          child: GetBuilder<UserEditorController>(builder: (_) {
+            return NavigationItemBar(
+              mainAxisAlignment: MainAxisAlignment.start,
+              bottomLineMargin: 0,
+              horizontalMargin: 16.px,
+              currentIndex: controller.subPage,
+              dividerColor: ColorExtension.lineColor,
+              padding: EdgeInsets.only(top: 18.px, left: 15.px),
+              normalStyle: TextStyle(fontSize: 14.px),
+              selectedStyle: TextStyle(fontSize: 14.px, color: Colors.orangeAccent),
+              callBack: controller.subItemChanged,
+              items: tabs.map((e) => BarItem(title: e)).toList(),
+            );
+          })
         )
-      )
     );
   }
 
@@ -289,8 +262,8 @@ class _UserEditorPageState extends State<UserEditorPage> with SingleTickerProvid
       child: ListView.builder(
         itemCount: 20,
         padding: EdgeInsets.zero,
-        prototypeItem: const ListTile(title: Text(""),subtitle: Text("")),
-        itemBuilder: (context,idx) => ListTile(
+        prototypeItem: const ListTile(title: Text(""), subtitle: Text("")),
+        itemBuilder: (context, idx) => ListTile(
           title: Text("联系人 $index"),
           subtitle: const Text("电话号码: 136****4657"),
         ),
