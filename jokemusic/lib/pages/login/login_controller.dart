@@ -1,21 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../../../services/storage/storage.dart';
-import '../../../services/http/http_client.dart';
-import '../../../tools/share/user_manager.dart';
-import '../../../tools/extension/object_extension.dart';
-import '../../../pages/login/models/user_info_model.dart';
+import '../../services/storage/storage.dart';
+import '../../services/http/http_client.dart';
+import '../../tools/share/user_manager.dart';
+import '../../tools/extension/object_extension.dart';
+import 'login_model.dart';
 
-class LoginViewModel {
-
-  ///是否登录成功
-  late bool isLogin = false;
+class LoginController extends GetxController {
   ///用户信息
   UserInfoModel? userInfoModel;
+  ///用户名
+  final userName = ''.obs;
+  ///密码/验证码
+  final password = ''.obs;
+  ///是否为验证码登录
+  final isCodeLogin = false.obs;
+  ///是否为密码状态
+  final obscureText = true.obs;
+  ///验证码按钮是否可点
+  final isCodeBtnEnable = false.obs;
+  ///登录按钮是否能交互
+  final isLoginBtnEnable = false.obs;
+  late final textCtrl = TextEditingController();
+
+  @override
+  void onInit() {
+    everAll([userName, password], (callback) {
+      isCodeBtnEnable.value = userName.value.isPhoneNumber;
+      isLoginBtnEnable.value = userName.isNotEmpty && password.isNotEmpty;
+    });
+    super.onInit();
+  }
+
+  @override
+  void onClose() {
+    textCtrl.dispose();
+    super.onClose();
+  }
+
+  ///登录请求
+  void loginRequest() {
+    if(isCodeLogin.value) {
+      loginCodeRequest(code: password.value, userName: userName.value, callback: Get.back);
+    } else {
+      loginPwdRequest(userName: userName.value, password: password.value, callback: Get.back);
+    }
+  }
 
   ///密码登录请求
   void loginPwdRequest({String? userName, String? password, VoidCallback? callback}) async {
-
     if(userName == null) {
       showToast("请输入账户名");
       return;
@@ -55,9 +89,14 @@ class LoginViewModel {
   }
 
   ///获取验证码
-  void codeRequest({String? phone}) {
+  void codeRequest() {
+    if(userName.value.isPhoneNumber == false) {
+      showToast("请输入正确的手机号码");
+      return;
+    }
+
     const url = "/user/login/get_code";
-    final params = {"phone":phone};
+    final params = {"phone": userName.value};
     HttpClient.request(url: url, params: params);
   }
 
@@ -68,7 +107,7 @@ class LoginViewModel {
     Storage.save<String>("token", token);
 
     String type = result["type"].toString();
-    isLogin = (type == "login_success") || (type == "login_psw_success");
+    final isLogin = (type == "login_success") || (type == "login_psw_success");
     UserManager.instance.saveLoginState(isLogin);
 
     //保存用户信息

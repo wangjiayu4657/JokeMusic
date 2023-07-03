@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import 'viewModels/login_view_model.dart';
+import 'login_controller.dart';
 import '../../common/user_notice.dart';
 import '../../common/input.dart';
 import '../../common/code_button.dart';
@@ -11,52 +12,10 @@ import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
 
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends GetView<LoginController> {
   static const String routeName = "/login";
+
   const LoginPage({Key? key}) : super(key: key);
-
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  ///用户名
-  String? _userName;
-  ///密码/验证码
-  String? _password;
-  ///是否为验证码登录
-  bool _isCodeLogin = false;
-  ///是否为密码状态
-  bool _obscureText = true;
-  ///验证码按钮是否可点
-  bool get isCodeBtnEnable => _userName?.length == 11;
-  ///登录按钮是否能交互
-  bool get isLoginBtnEnable => _userName != null && _password != null;
-
-  late final _textCtrl = TextEditingController();
-  late final LoginViewModel _viewModel = LoginViewModel();
-
-  ///验证码请求
-  void codeRequest() {
-    _viewModel.codeRequest(phone: _userName);
-  }
-
-  ///登录请求
-  void loginRequest() {
-    if(_isCodeLogin) {
-      _viewModel.loginCodeRequest(
-        code: _password,
-        userName: _userName,
-        callback: () => Navigator.pop(context)
-      );
-    } else {
-      _viewModel.loginPwdRequest(
-        userName: _userName,
-        password: _password,
-        callback: () => Navigator.pop(context)
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,9 +31,9 @@ class _LoginPageState extends State<LoginPage> {
     return AppBar(
       toolbarHeight: 40.px,
       leading: IconButton(
-        onPressed: () => Navigator.pop(context),
+        onPressed: Get.back,
         iconSize: 30.px,
-        icon: const Icon(Icons.close,color: Colors.black26),
+        icon: const Icon(Icons.close, color: Colors.black26),
       ),
       backgroundColor: Colors.white,
       shadowColor: Colors.transparent,
@@ -114,10 +73,7 @@ class _LoginPageState extends State<LoginPage> {
         placeholder: "请输入手机号码",
         textOffset: 0.1,
         maxLength: 11,
-        valueChanged: (phoneNum) {
-          _userName = phoneNum;
-          setState(() {});
-        },
+        valueChanged: (phoneNum) => controller.userName.value = phoneNum,
       ),
     );
   }
@@ -131,40 +87,38 @@ class _LoginPageState extends State<LoginPage> {
         color: ColorExtension.bgColor,
         borderRadius: BorderRadius.circular(22.px)
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(child: buildPasswordInput()),
-          if(_isCodeLogin) buildCodeButton()
-        ],
-      ),
+      child: Obx(() =>
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(child: buildPasswordInput()),
+            if(controller.isCodeLogin.isTrue) buildCodeButton()
+          ],
+        )),
     );
   }
 
   ///构建密码输入组件
   Widget buildPasswordInput() {
     return Input(
-      placeholder: _isCodeLogin ? "请输入验证码" : "请输入密码",
-      obscureText: _isCodeLogin ? false : _obscureText,
+      placeholder: controller.isCodeLogin.isTrue ? "请输入验证码" : "请输入密码",
+      obscureText: controller.isCodeLogin.isTrue ? false : controller.obscureText.value,
       textOffset: 0.03,
-      controller: _textCtrl,
+      controller: controller.textCtrl,
       suffixIcon: IconButton(
-        onPressed: (){
-          if(_isCodeLogin) return;
-          setState(() => _obscureText = !_obscureText);
+        onPressed: () {
+          if (controller.isCodeLogin.isTrue) return;
+          controller.obscureText.toggle();
         },
         icon: SizedBox(
           width: 20.px,
           height: 20.px,
-          child: _isCodeLogin ?
-              const SizedBox() :
-              Image.asset("assets/images/normal/${_obscureText ? "eye_off.png" : "eye_on.png"}")
+          child: controller.isCodeLogin.isTrue ?
+          const SizedBox() :
+          Image.asset("assets/images/normal/${controller.obscureText.isTrue ? "eye_off.png" : "eye_on.png"}")
         )
       ),
-      valueChanged: (password) {
-        _password = password;
-        setState(() {});
-      },
+      valueChanged: (password) => controller.password.value = password,
     );
   }
 
@@ -180,12 +134,14 @@ class _LoginPageState extends State<LoginPage> {
         ),
         SizedBox(
           width: 120.px,
-          child: CodeButton(
+          child: Obx(() => CodeButton(
             second: 59,
-            phone: _userName,
-            style: isCodeBtnEnable ? TextStyle(fontSize: 14.px, color: Colors.orangeAccent) : TextStyle(fontSize: 14.px,color: Colors.black26),
-            callback: codeRequest
-          )
+            phone: controller.userName.value,
+            style: controller.isCodeBtnEnable.value ?
+            TextStyle(fontSize: 14.px, color: Colors.orangeAccent) :
+            TextStyle(fontSize: 14.px, color: Colors.black26),
+            callback: controller.codeRequest
+          ))
         )
       ],
     );
@@ -196,20 +152,21 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       height: 44.px,
       width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(22.px)
-      ),
-      child: ElevatedButton(
-        onPressed: isLoginBtnEnable ? loginRequest : null,
-        style: ButtonStyle(
-          shape: MaterialStateProperty.all(const StadiumBorder()), //设置圆角弧度
-          backgroundColor: MaterialStateProperty.resolveWith((states) {
-            if(states.contains(MaterialState.disabled)) return Colors.black12;
-            return Colors.orangeAccent;
-          })
-        ),
-        child: Text("登  录", style: ThemeConfig.normalTextTheme.displaySmall?.copyWith(color: Colors.white))
-      ),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(22.px)),
+      child: Obx(() {
+        return ElevatedButton(
+          onPressed: controller.isLoginBtnEnable.value ? controller.loginRequest : null,
+          style: ButtonStyle(
+            shape: MaterialStateProperty.all(const StadiumBorder()),
+            //设置圆角弧度
+            backgroundColor: MaterialStateProperty.resolveWith((states) {
+              if (states.contains(MaterialState.disabled)) return Colors.black12;
+              return Colors.orangeAccent;
+            })
+          ),
+          child: Text("登  录", style: ThemeConfig.normalTextTheme.displaySmall?.copyWith(color: Colors.white))
+        );
+      }),
     );
   }
 
@@ -226,25 +183,25 @@ class _LoginPageState extends State<LoginPage> {
 
   ///构建登录工具 - 密码/验证码按钮组件
   Widget buildLoginToolPwdOrCodeLogin() {
-    return TextButton(
-      onPressed: () {
-        _textCtrl.text = "";
-        setState(() => _isCodeLogin = !_isCodeLogin);
-      },
-      child: Text( _isCodeLogin ? "密码登录" : "验证码登录",style: const TextStyle(color: Colors.orangeAccent))
-    );
+    return Obx(() =>
+      TextButton(
+        onPressed: () {
+          controller.textCtrl.text = "";
+          controller.isCodeLogin.toggle();
+        },
+        child: Text(controller.isCodeLogin.isTrue ? "密码登录" : "验证码登录",
+          style: const TextStyle(color: Colors.orangeAccent))
+      ));
   }
 
   ///构建登录工具 - 问题组件
   Widget buildLoginToolQuestion() {
     return TextButton(
-      onPressed: (){
-        showModalBottomSheet(
-          context: context,
+        onPressed: () => showModalBottomSheet(
+          context: Get.context!,
           builder: (context) => buildBottomSheet()
-        );
-      },
-      child: const Text("遇到问题?", style: TextStyle(color: Colors.orangeAccent))
+        ),
+        child: const Text("遇到问题?", style: TextStyle(color: Colors.orangeAccent))
     );
   }
 
@@ -267,7 +224,8 @@ class _LoginPageState extends State<LoginPage> {
 
   ///构建登录方式组件 - 头部
   Widget buildLoginStyleHeader() {
-    return Text("其他登录方式", style: TextStyle(fontSize: 14.px,color: Colors.black54));
+    return Text(
+        "其他登录方式", style: TextStyle(fontSize: 14.px, color: Colors.black54));
   }
 
   ///构建登录方式组件 - qq/weibo/weixin
@@ -277,24 +235,26 @@ class _LoginPageState extends State<LoginPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          buildLoginStyleOperationButton("assets/images/login/qq.png",tag: 0),
-          buildLoginStyleOperationButton("assets/images/login/weibo.png",tag: 1),
-          buildLoginStyleOperationButton("assets/images/login/weixin.png",tag: 2),
+          buildLoginStyleOperationButton("assets/images/login/qq.png", tag: 0),
+          buildLoginStyleOperationButton(
+              "assets/images/login/weibo.png", tag: 1),
+          buildLoginStyleOperationButton(
+              "assets/images/login/weixin.png", tag: 2),
         ],
       ),
     );
   }
 
   ///构建登录方式按钮组件
-  Widget buildLoginStyleOperationButton(String name,{int tag = 0})  {
+  Widget buildLoginStyleOperationButton(String name, {int tag = 0}) {
     return InkWell(
-      onTap: (){
+      onTap: () {
         debugPrint("tag == $tag");
       },
       child: SizedBox(
         width: 48.px,
         height: 48.px,
-        child: Image.asset(name,fit: BoxFit.fill),
+        child: Image.asset(name, fit: BoxFit.fill),
       ),
     );
   }

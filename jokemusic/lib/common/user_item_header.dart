@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../tools/extension/int_extension.dart';
-import '../pages/login/viewModels/login_view_model.dart';
+import '../pages/login/login_controller.dart';
 
 ///用户信息头部组件
 class UserItemHeader extends StatelessWidget {
@@ -33,7 +33,7 @@ class UserItemHeader extends StatelessWidget {
   final TextStyle? subTitleStyle;
   final GestureTapCallback? onTap;
 
-  final LoginViewModel loginViewModel = Get.put(LoginViewModel());
+  final LoginController loginViewModel = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {

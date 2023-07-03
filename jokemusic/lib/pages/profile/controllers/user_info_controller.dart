@@ -5,7 +5,7 @@ import 'package:photo_manager/photo_manager.dart';
 
 import '../views/picker_method.dart';
 import '../user_info_editor_page.dart';
-import '../../login/models/user_info_model.dart';
+import '../../login/login_model.dart';
 import '../../../tools/share/user_manager.dart';
 import '../../../tools/extension/int_extension.dart';
 import '../../../tools/extension/object_extension.dart';
@@ -29,9 +29,9 @@ class UserInfoController extends GetxController {
   }
 
   ///处理选择的图片
-  Future<void> handlerImageSelected(BuildContext context,PickerMethod pickerMethod) async {
+  Future<void> handlerImageSelected(PickerMethod pickerMethod) async {
     List<AssetEntity> images = <AssetEntity>[];
-    final List<AssetEntity>? result = await pickerMethod.method(context, images);
+    final List<AssetEntity>? result = await pickerMethod.method(Get.context!, images);
     if (result == null) return;
     imageFile = result.toList().first;
     update();
@@ -43,15 +43,15 @@ class UserInfoController extends GetxController {
     update();
   }
 
-  void handlerItemSelected({required BuildContext context, int idx = 0}) async {
+  void handlerItemSelected({int idx = 0}) async {
     switch (idx) {
       case 0:   //头像
-        handlerImageSelected(context,PickerMethod.singleImage());
+        handlerImageSelected(PickerMethod.singleImage());
         updateUserInfoRequest(type: idx, content: "");
         break;
       case 1:   //昵称
         final arguments = {"type":EditType.nickname, "nickname":userModel?.nickname};
-        final nickname = await Navigator.pushNamed(context, UserInfoEditorPage.routeName,arguments: arguments);
+        final nickname = await Get.toNamed(UserInfoEditorPage.routeName,arguments: arguments);
         userModel?.nickname = nickname.toString();
 
         if(nickname == null) return;
@@ -59,20 +59,20 @@ class UserInfoController extends GetxController {
         break;
       case 2:   //签名
         final arguments = {"type":EditType.nickname, "nickname":userModel?.signature};
-        final signature = await Navigator.pushNamed(context, UserInfoEditorPage.routeName,arguments: arguments);
+        final signature = await Get.toNamed(UserInfoEditorPage.routeName,arguments: arguments);
         userModel?.signature = signature.toString();
 
         if(signature == null) return;
         updateUserInfoRequest(type: idx, content: signature.toString());
         break;
       case 3:   //性别
-        showSexPicker(context, callBack: (sex) {
+        showSexPicker(callBack: (sex) {
           userModel?.sex = sex[1];
           updateUserInfoRequest(type: idx, content: sex[1]);
         });
         break;
       case 4:   //生日
-        showTimePicker(context, callBack: (date){
+        showTimePicker(callBack: (date){
           final birthday = date.substring(0,10);
           userModel?.birthday = birthday;
           updateUserInfoRequest(type: idx, content: birthday);
@@ -122,7 +122,8 @@ class UserInfoController extends GetxController {
   }
 
   ///性别选择器
-  void showSexPicker(BuildContext context,{ValueChanged<String>? callBack}) {
+  void showSexPicker({ValueChanged<String>? callBack}) {
+    if(Get.context == null) return;
     List<String> data = ["男","女","保密"];
     Picker(
       height: 180.px,
@@ -137,11 +138,12 @@ class UserInfoController extends GetxController {
       adapter: PickerDataAdapter(
           data: data.map((e) => PickerItem<String>(value: e)).toList()
       )
-    ).showModal(context);
+    ).showModal(Get.context!);
   }
 
   ///时间选择器
-  void showTimePicker(BuildContext context, {ValueChanged<String>? callBack}) {
+  void showTimePicker({ValueChanged<String>? callBack}) {
+    if(Get.context == null) return;
     Picker(
       height: 220.px,
       itemExtent: 36.px,
@@ -159,6 +161,6 @@ class UserInfoController extends GetxController {
         monthSuffix: '月',
         daySuffix: '日'
       ),
-    ).showModal(context);
+    ).showModal(Get.context!);
   }
 }

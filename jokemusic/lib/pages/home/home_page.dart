@@ -6,6 +6,8 @@ import '../../common/navigation_item_bar.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../pages/home/widgets/home_item_page.dart';
 
+
+
 class HomePage extends StatefulWidget {
   static const String routeName = "/home";
   const HomePage({Key? key}) : super(key: key);

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import '../../services/storage/storage.dart';
-import '../../pages/login/models/user_info_model.dart';
+import '../../pages/login/login_model.dart';
 
 ///用户信息管理类
 class UserManager {

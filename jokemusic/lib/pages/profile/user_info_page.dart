@@ -17,7 +17,6 @@ class UserInfoPage extends GetView<UserInfoController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut(()=>UserInfoController());
     return Scaffold(
       appBar: AppBar(title: const Text("用户信息")),
       body: buildBody(context),
@@ -43,7 +42,7 @@ class UserInfoPage extends GetView<UserInfoController> {
     return Container(
       color: Colors.white,
       child: ListTile(
-        onTap: () => controller.handlerItemSelected(context: context, idx: idx),
+        onTap: () => controller.handlerItemSelected(idx: idx),
         title: Text(controller.items[idx], style: TextStyle(fontSize: 16.px, fontWeight: FontWeight.normal)),
         trailing: buildBodyListItemTrailing(idx),
       ),
@@ -104,3 +103,9 @@ class UserInfoPage extends GetView<UserInfoController> {
   }
 }
 
+class UserInfoBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(()=>UserInfoController());
+  }
+}

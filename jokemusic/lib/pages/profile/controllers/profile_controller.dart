@@ -4,11 +4,11 @@ import 'package:share_plus/share_plus.dart';
 import '../audit_result_page.dart';
 import '../feedback_page.dart';
 import '../models/social_info.dart';
-import '../../login/login_page.dart';
+import '../../login/login_view.dart';
 import '../../Profile/setting_page.dart';
 import '../../../services/http/http_client.dart';
 import '../../../tools/share/user_manager.dart';
-import '../../../pages/login/models/user_info_model.dart';
+import '../../login/login_model.dart';
 import '../../../pages/profile/user_editor_page.dart';
 
 class ProfileController extends GetxController {
@@ -62,13 +62,31 @@ class ProfileController extends GetxController {
   }
 
   ///用户信息获取
+  // void _userInfoRequest() async {
+  //   String url = "/user/info";
+  //   final response = await HttpClient.request(url: url);
+  //   final result = response["data"];
+  //   if(result == null) return;
+  //   final info = result["info"];
+  //   socialInfo.value = SocialInfo.fromJson(info);
+  //
+  //   final user = result["user"];
+  //   final userModel = UserInfoModel.fromJson(user);
+  //   UserManager.instance.saveUserInfo(userModel);
+  // }
+
+  ///用户信息获取
   void _userInfoRequest() async {
     String url = "/user/info";
     final response = await HttpClient.request(url: url);
-
+    print("http get ==1== $response");
+    if(response == null) return;
     final result = response["data"];
+    if(result == null) return;
     final info = result["info"];
     socialInfo.value = SocialInfo.fromJson(info);
+
+    print("http get ==2== $result");
 
     final user = result["user"];
     final userModel = UserInfoModel.fromJson(user);

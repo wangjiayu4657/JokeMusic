@@ -46,13 +46,14 @@ dependencies:
   wechat_camera_picker: ^3.8.0
   grouped_list: ^5.1.2                              #分组列表
   fluttertoast: ^8.2.1                              #toast提示
+  flutter_smart_dialog: ^4.9.2                      #toast提示
   photo_view: ^0.14.0                               #图片浏览器
   device_info_plus: ^9.0.2                          #设备信息
   package_info_plus: ^4.0.2                         #获取版本信息
 #  shared_preferences: ^2.0.15                       #本地存储(数据持久化)
   get:                                              #高性能状态管理、智能依赖注入和路由管理，快速实用。
   sp_util: ^2.0.3                                   #数据持久化使用了sp_util这个库，其实也就是对[shared_preferences]进行了二次的封装，存储一些对象或者list数据更方便。
-
+  logger: ^1.4.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

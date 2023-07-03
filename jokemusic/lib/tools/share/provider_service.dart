@@ -2,7 +2,7 @@
 import 'package:provider/single_child_widget.dart';
 
 // import '../../tools/share/user_manager.dart';
-// import '../../pages/login/viewModels/login_view_model.dart';
+// import '../../pages/login/viewModels/login_controller.dart';
 
 class ProviderService  {
   static List<SingleChildWidget> providers = [
