@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import '../response/base_response.dart';
 
 ///定义一个响应拦截器
-class ResponseInterceptor extends Interceptor {
+class ResponseInterceptor extends InterceptorsWrapper {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     debugPrint("请求拦截: \n url = ${options.uri} \n param = ${options.queryParameters}");
@@ -17,6 +17,5 @@ class ResponseInterceptor extends Interceptor {
     response.data = bean.data;
     print("response  ===  ${response.data}");
     handler.next(response);
-    super.onResponse(response, handler);
   }
 }

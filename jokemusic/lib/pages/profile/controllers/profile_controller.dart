@@ -78,7 +78,7 @@ class ProfileController extends GetxController {
   ///用户信息获取
   void _userInfoRequest() async {
     String url = "/user/info";
-    final response = await HttpClient.request(url: url);
+    final response = await Http.post(url: url);
     print("http get ==1== $response");
     if(response == null) return;
     final result = response["data"];

@@ -190,7 +190,7 @@ class NetUtil {
 
     String? token = await Storage.fetchString("token");
     headers["token"] = token;
-    setHeaders(headers);
+    print("headers == $headers");
     options?.headers?.addAll(headers);
 
     options = options ??  Options(headers: headers);

@@ -14,164 +14,164 @@ import '../../tools/share/user_manager.dart';
 import '../../tools/share/device_manager.dart';
 
 
-// class Http {
-//   void init({
-//     required String baseUrl,
-//     int? sendTimeout,
-//     int? connectTimeout,
-//     int? receiveTimeout,
-//     List<Interceptor>? interceptors,
-//   }){
-//     NetUtil.instance.init(
-//       baseUrl: baseUrl,
-//       sendTimeout: sendTimeout,
-//       connectTimeout: connectTimeout,
-//       receiveTimeout: receiveTimeout,
-//       interceptors: interceptors
-//     );
-//   }
-//
-//   ///Get 操作
-//   static Future<T> get<T> ({
-//     required String url,
-//     Map<String,dynamic>? params,
-//     Options? options,
-//     CancelToken? cancelToken,
-//     bool isLoading = true,
-//   }) async {
-//     final response = await request(
-//       url: url,
-//       method: HttpMethod.get,
-//       params: params,
-//       options: options,
-//       cancelToken: cancelToken,
-//       isLoading: isLoading
-//     );
-//     return response;
-//   }
-//
-//   ///Post 操作
-//   static Future<T> post<T> ({
-//     required String url,
-//     dynamic data,
-//     Map<String,dynamic>? params,
-//     Options? options,
-//     CancelToken? cancelToken,
-//     bool isLoading = true,
-//   }) async {
-//     final response = await request(
-//       url: url,
-//       data: data,
-//       method: HttpMethod.post,
-//       params: params,
-//       options: options,
-//       cancelToken: cancelToken,
-//       isLoading: isLoading
-//     );
-//     print("response ==*== $response");
-//     return response;
-//   }
-//
-//   ///Put 操作
-//   static Future<T> put<T> ({
-//     required String url,
-//     dynamic data,
-//     Map<String,dynamic>? params,
-//     Options? options,
-//     CancelToken? cancelToken,
-//     bool isLoading = true,
-//   }) async {
-//     final response = await request(
-//       url: url,
-//       data: data,
-//       method: HttpMethod.put,
-//       params: params,
-//       options: options,
-//       cancelToken: cancelToken,
-//       isLoading: isLoading
-//     );
-//     return response;
-//   }
-//
-//   ///Delete 操作
-//   static Future<T> delete<T> ({
-//     required String url,
-//     dynamic data,
-//     Map<String,dynamic>? params,
-//     Options? options,
-//     CancelToken? cancelToken,
-//     bool isLoading = true,
-//   }) async {
-//     final response = await request(
-//       url: url,
-//       data: data,
-//       method: HttpMethod.delete,
-//       params: params,
-//       options: options,
-//       cancelToken: cancelToken,
-//       isLoading: isLoading
-//     );
-//     return response;
-//   }
-//
-//   /// Request 操作
-//   /// Put、Delete请求之类都请使用Request请求
-//   /// 所有类型请求,都是调用此请求
-//   static Future request({
-//     required String url,
-//     dynamic data,
-//     HttpMethod method = HttpMethod.post,
-//     bool isLoading = true,
-//     Map<String, dynamic>? params,
-//     Options? options,
-//     CancelToken? cancelToken,
-//     ProgressCallback? onSendProgress,
-//     ProgressCallback? onReceiveProgress,
-//   }) async {
-//     print("url === $url, params === $params, method === $method");
-//     var response = await NetUtil.instance.request(
-//       url: url,
-//       data: data,
-//       method: method,
-//       params: params,
-//       options: options,
-//       isLoading: isLoading,
-//       cancelToken: cancelToken,
-//       onSendProgress: onSendProgress,
-//       onReceiveProgress: onReceiveProgress,
-//     );
-//
-//     return response;
-//   }
-//
-//   ///设置请求头
-//   static void setHeaders(Map<String, dynamic> map) {
-//     NetUtil.instance.setHeaders(map);
-//   }
-//
-//   ///设置取消token
-//   static void cancelRequests({CancelToken? cancelToken}) {
-//     NetUtil.instance.cancelRequest(cancelToken: cancelToken);
-//   }
-//
-//   ///添加拦截器
-//   void addInterceptor(Interceptor interceptor) {
-//     //一种类型的拦截器只能添加一次
-//     NetUtil.instance.addInterceptor(interceptor);
-//   }
-//
-//   ///移除拦截器
-//   void removeInterceptor(Interceptor interceptor){
-//     NetUtil.instance.removeInterceptor(interceptor);
-//   }
-//
-//   /// 取消请求
-//   /// 同一个cancel token 可以用于多个请求，当一个cancel token取消时，所有使用该cancel token的请求都会被取消。
-//   /// 所以参数可选
-//   void cancelRequest({CancelToken? cancelToken}){
-//     NetUtil.instance.cancelRequest(cancelToken: cancelToken);
-//   }
-// }
+class Http {
+  void init({
+    required String baseUrl,
+    int? sendTimeout,
+    int? connectTimeout,
+    int? receiveTimeout,
+    List<Interceptor>? interceptors,
+  }){
+    NetUtil.instance.init(
+      baseUrl: baseUrl,
+      sendTimeout: sendTimeout,
+      connectTimeout: connectTimeout,
+      receiveTimeout: receiveTimeout,
+      interceptors: interceptors
+    );
+  }
+
+  ///Get 操作
+  static Future<T> get<T> ({
+    required String url,
+    Map<String,dynamic>? params,
+    Options? options,
+    CancelToken? cancelToken,
+    bool isLoading = true,
+  }) async {
+    final response = await request(
+      url: url,
+      method: HttpMethod.get,
+      params: params,
+      options: options,
+      cancelToken: cancelToken,
+      isLoading: isLoading
+    );
+    return response;
+  }
+
+  ///Post 操作
+  static Future<T> post<T> ({
+    required String url,
+    dynamic data,
+    Map<String,dynamic>? params,
+    Options? options,
+    CancelToken? cancelToken,
+    bool isLoading = true,
+  }) async {
+    final response = await request(
+      url: url,
+      data: data,
+      method: HttpMethod.post,
+      params: params,
+      options: options,
+      cancelToken: cancelToken,
+      isLoading: isLoading
+    );
+    print("response ==*== $response");
+    return response;
+  }
+
+  ///Put 操作
+  static Future<T> put<T> ({
+    required String url,
+    dynamic data,
+    Map<String,dynamic>? params,
+    Options? options,
+    CancelToken? cancelToken,
+    bool isLoading = true,
+  }) async {
+    final response = await request(
+      url: url,
+      data: data,
+      method: HttpMethod.put,
+      params: params,
+      options: options,
+      cancelToken: cancelToken,
+      isLoading: isLoading
+    );
+    return response;
+  }
+
+  ///Delete 操作
+  static Future<T> delete<T> ({
+    required String url,
+    dynamic data,
+    Map<String,dynamic>? params,
+    Options? options,
+    CancelToken? cancelToken,
+    bool isLoading = true,
+  }) async {
+    final response = await request(
+      url: url,
+      data: data,
+      method: HttpMethod.delete,
+      params: params,
+      options: options,
+      cancelToken: cancelToken,
+      isLoading: isLoading
+    );
+    return response;
+  }
+
+  /// Request 操作
+  /// Put、Delete请求之类都请使用Request请求
+  /// 所有类型请求,都是调用此请求
+  static Future request({
+    required String url,
+    dynamic data,
+    HttpMethod method = HttpMethod.post,
+    bool isLoading = true,
+    Map<String, dynamic>? params,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    print("url === $url, params === $params, method === $method");
+    var response = await NetUtil.instance.request(
+      url: url,
+      data: data,
+      method: method,
+      params: params,
+      options: options,
+      isLoading: isLoading,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
+
+    return response;
+  }
+
+  ///设置请求头
+  static void setHeaders(Map<String, dynamic> map) {
+    NetUtil.instance.setHeaders(map);
+  }
+
+  ///设置取消token
+  static void cancelRequests({CancelToken? cancelToken}) {
+    NetUtil.instance.cancelRequest(cancelToken: cancelToken);
+  }
+
+  ///添加拦截器
+  void addInterceptor(Interceptor interceptor) {
+    //一种类型的拦截器只能添加一次
+    NetUtil.instance.addInterceptor(interceptor);
+  }
+
+  ///移除拦截器
+  void removeInterceptor(Interceptor interceptor){
+    NetUtil.instance.removeInterceptor(interceptor);
+  }
+
+  /// 取消请求
+  /// 同一个cancel token 可以用于多个请求，当一个cancel token取消时，所有使用该cancel token的请求都会被取消。
+  /// 所以参数可选
+  void cancelRequest({CancelToken? cancelToken}){
+    NetUtil.instance.cancelRequest(cancelToken: cancelToken);
+  }
+}
 
 
 
