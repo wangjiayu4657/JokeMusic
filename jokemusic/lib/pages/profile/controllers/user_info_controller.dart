@@ -9,7 +9,7 @@ import '../../login/login_model.dart';
 import '../../../tools/share/user_manager.dart';
 import '../../../tools/extension/int_extension.dart';
 import '../../../tools/extension/object_extension.dart';
-import '../../../services/http/http_client.dart';
+import '../../../services/http/http.dart';
 
 class UserInfoController extends GetxController {
   AssetEntity? imageFile;

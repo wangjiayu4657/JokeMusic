@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../services/storage/storage.dart';
-import '../../services/http/http_client.dart';
+import '../../services/http/http.dart';
 import '../../tools/share/user_manager.dart';
 import '../../tools/extension/object_extension.dart';
 import 'login_model.dart';

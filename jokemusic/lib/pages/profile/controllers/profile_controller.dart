@@ -6,7 +6,7 @@ import '../feedback_page.dart';
 import '../models/social_info.dart';
 import '../../login/login_view.dart';
 import '../../Profile/setting_page.dart';
-import '../../../services/http/http_client.dart';
+import '../../../services/http/http.dart';
 import '../../../tools/share/user_manager.dart';
 import '../../login/login_model.dart';
 import '../../../pages/profile/user_editor_page.dart';

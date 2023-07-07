@@ -1,13 +1,8 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
-import 'package:extended_image/extended_image.dart';
-
 import 'net_config.dart';
-import '../interceptors/loading_interceptor.dart';
-import '../interceptors/err_interceptor.dart';
+
 import '../interceptors/response_interceptor.dart';
-import '../../../tools/share/device_manager.dart';
-import '../../../services/storage/storage.dart';
 
 enum HttpMethod {
   ///Get
@@ -31,22 +26,15 @@ class NetUtil {
 
   Dio dio = Dio();
   final CancelToken _cancelToken = CancelToken();
-  static final LoadingInterceptor _loadingInterceptor = LoadingInterceptor();
-
-  Map<String,dynamic> headers = {
-    "project_token":"BBA5BF6858194BCCA6EE6EA5903E8878",
-    "uk": DeviceManager.uk,
-    "channel":"cretin_open_api",
-    "app": DeviceManager.app,
-    "device": DeviceManager.device
-  };
+  static final ResponseInterceptor _responseInterceptor = ResponseInterceptor();
 
   NetUtil._internal() {
     dio.options = BaseOptions(
       //设置base url
       baseUrl: NetConfig.baseUrl,
       //设置请求头
-      // headers: NetConfig.headers,
+      headers: NetConfig.headers,
+      //设置请求类型
       contentType: NetConfig.contentType,
       //发送超时
       sendTimeout: const Duration(seconds: NetConfig.sendTimeout),
@@ -56,19 +44,10 @@ class NetUtil {
       receiveTimeout: const Duration(seconds: NetConfig.receiveTimeout),
     );
 
-    Storage.fetchString("token").then((token) {
-      headers["token"] = token;
-      setHeaders(headers);
-    });
-
-    //添加异常拦截
-    dio.interceptors.add(ErrInterceptor());
-    //添加日志拦截
-    dio.interceptors.add(LogInterceptor());
-    //处理全局loading
-    dio.interceptors.add(_loadingInterceptor);
-    //处理通用实体
-    dio.interceptors.add(ResponseInterceptor());
+    // //添加日志拦截
+    // dio.interceptors.add(LogInterceptor());
+    // //处理通用实体
+    dio.interceptors.add(_responseInterceptor);
   }
 
   void init({
@@ -102,7 +81,7 @@ class NetUtil {
     ProgressCallback? onReceiveProgress,
     bool isLoading = true
   }) async {
-    _loadingInterceptor.isLoading = isLoading;
+    _responseInterceptor.isLoading = isLoading;
 
     //处理网络类型
     if(method == HttpMethod.get){
@@ -114,11 +93,6 @@ class NetUtil {
     } else if(method == HttpMethod.delete){
       dio.options.method = "DELETE";
     }
-
-    // String? token = await Storage.fetchString("token");
-    // headers["token"] = token;
-    // print("headers == $headers");
-    // options?.headers?.addAll(headers);
 
     options = options ??  Options();
     Completer<T> completer = Completer();

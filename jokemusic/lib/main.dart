@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:sp_util/sp_util.dart';
 
 import 'pages/main/main_page.dart';
-import 'services/http/http_client.dart';
+import 'services/http/http.dart';
 import 'services/routes/router_config.dart' as config;
 import 'services/theme/theme_config.dart';
 import 'tools/share/device_manager.dart';

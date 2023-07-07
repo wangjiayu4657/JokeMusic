@@ -1,20 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-
-class ErrInterceptor extends Interceptor {
-  @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {
-    //统一处理 error
-    AppException appException = AppException.init(err);
-    //错误提示
-    debugPrint("dio error == ${appException.toString()}");
-
-    err.copyWith(error: {err: appException});
-    handler.next(err);
-
-    // super.onError(err, handler);
-  }
-}
 
 class AppException implements Exception {
   AppException({
