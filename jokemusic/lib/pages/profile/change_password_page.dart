@@ -16,10 +16,31 @@ class ChangePasswordPage extends GetView<ChangePasswordController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: buildAppBar(),
-      body: buildBody(),
-      bottomNavigationBar: const UserNotice(),
+    return InkWell(
+      onTap: () => Get.focusScope?.unfocus(),
+      child: Scaffold(
+        appBar: buildAppBar(),
+        body: buildBody(children: [
+          //标题
+          _titleView(),
+
+          //原始密码
+          _originalPasswordView(),
+
+          //期望密码
+          _targetPasswordView(),
+
+          //确认密码
+          _confirmPasswordView(),
+
+          //重置按钮
+          _resetButton(),
+
+          //问题按钮
+          _questionButton()
+        ]),
+        bottomNavigationBar: const UserNotice(),
+      ),
     );
   }
 
@@ -38,33 +59,29 @@ class ChangePasswordPage extends GetView<ChangePasswordController> {
   }
 
   ///构建内容组件内
-  Widget buildBody() {
+  Widget buildBody({required List<Widget> children}) {
     return Container(
       padding: EdgeInsets.all(15.px),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("修改密码", style: ThemeConfig.normalTextTheme.displayLarge),
-          SizedBox(height: 30.px),
-          buildOldPassword(),
-          SizedBox(height: 15.px),
-          buildNewPassword(),
-          SizedBox(height: 15.px),
-          buildSureNewPassword(),
-          SizedBox(height: 25.px),
-          buildResetButton(),
-          SizedBox(height: 5.px),
-          buildQuestionButton()
-        ],
+        children: children,
       ),
     );
   }
 
+  Widget _titleView() {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 30.px),
+      child: Text("修改密码", style: ThemeConfig.normalTextTheme.displayLarge),
+    );
+  }
+
   ///构建账号输入组件
-  Widget buildOldPassword() {
+  Widget _originalPasswordView() {
     return Container(
       height: 44.px,
       padding: EdgeInsets.only(left: 15.px),
+      margin: EdgeInsets.only(bottom: 15.px),
       decoration: BoxDecoration(
         color: ColorExtension.bgColor,
         borderRadius: BorderRadius.circular(22.px)
@@ -81,10 +98,11 @@ class ChangePasswordPage extends GetView<ChangePasswordController> {
   }
 
   ///构建新密码组件
-  Widget buildNewPassword() {
+  Widget _targetPasswordView() {
     return Container(
       height: 44.px,
       padding: EdgeInsets.only(left: 15.px),
+      margin: EdgeInsets.only(bottom: 15.px),
       decoration: BoxDecoration(
         color: ColorExtension.bgColor,
         borderRadius: BorderRadius.circular(22.px)
@@ -100,10 +118,11 @@ class ChangePasswordPage extends GetView<ChangePasswordController> {
   }
 
   ///构建确认新密码组件
-  Widget buildSureNewPassword() {
+  Widget _confirmPasswordView() {
     return Container(
       height: 44.px,
       padding: EdgeInsets.only(left: 15.px),
+      margin: EdgeInsets.only(bottom: 25.px),
       decoration: BoxDecoration(
         color: ColorExtension.bgColor,
         borderRadius: BorderRadius.circular(22.px)
@@ -134,10 +153,11 @@ class ChangePasswordPage extends GetView<ChangePasswordController> {
   }
 
   ///构建修改按钮组件
-  Widget buildResetButton() {
+  Widget _resetButton() {
     return Container(
-      height: 44.px,
+      height: 49.px,
       width: double.infinity,
+      padding: EdgeInsets.only(bottom: 5.px),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(22.px)),
       child: ElevatedButton(
         onPressed: controller.isChangeBtnEnable ? controller.changeRequest : null,
@@ -154,12 +174,15 @@ class ChangePasswordPage extends GetView<ChangePasswordController> {
   }
 
   ///构建遇到问题按钮组件
-  Widget buildQuestionButton() {
+  Widget _questionButton() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         TextButton(
-          onPressed: () => Get.bottomSheet(buildBottomSheet()),
+          onPressed: () {
+            Get.focusScope?.unfocus();
+            Get.bottomSheet(buildBottomSheet());
+          },
           child: const Text("遇到问题?", style: TextStyle(color: Colors.orangeAccent))
         ),
       ],
