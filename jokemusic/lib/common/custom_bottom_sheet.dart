@@ -26,11 +26,15 @@ class CustomBottomSheet extends StatefulWidget {
   const CustomBottomSheet({
     Key? key,
     this.title,
-    this.items
+    this.items,
+    this.cancelCallBack,
+    this.selectedCallBack
   }) : super(key: key);
 
   final String? title;
   final List<SheetItem>? items;
+  final VoidCallback? cancelCallBack;
+  final ValueChanged<SheetItemType>? selectedCallBack;
 
   @override
   State<CustomBottomSheet> createState() => _CustomBottomSheetState();
@@ -40,27 +44,32 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
 
   void handlerItemSelected(int idx) {
     final item = widget.items?[idx];
-
-    if(item?.type == SheetItemType.forgot) {            //忘记密码
-
-    } else if(item?.type == SheetItemType.report){      //举报用户
-
-    } else if(item?.type == SheetItemType.customer){    //联系客服
-
-    } else {                                            //我要反馈
-
-    }
-
-    Navigator.pop(context);
+    if(item == null) return;
+    widget.selectedCallBack?.call(item.type);
   }
 
   @override
   Widget build(BuildContext context) {
-    return buildSheet();
+    return buildSheet(vChildren: [
+      //头部
+      buildSheetHeader(),
+
+      //内容
+      buildSheetContent(),
+
+      //尾部
+      buildSheetFooter(children: [
+        //分割线
+        Divider(thickness: 10.px, color: ColorExtension.lineColor),
+
+        //取消
+        _cancelView()
+      ])
+    ]);
   }
 
   ///构建sheet组件
-  Widget buildSheet() {
+  Widget buildSheet({required List<Widget> vChildren}) {
     return Container(
       padding: EdgeInsets.only(top: 20.px, bottom: 15.px),
       decoration: BoxDecoration(
@@ -69,13 +78,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
-          buildSheetHeader(),
-          SizedBox(height: 15.px),
-          buildSheetContent(),
-          Divider(thickness: 10.px, color: ColorExtension.lineColor),
-          buildSheetFooter()
-        ],
+        children: vChildren,
       ),
     );
   }
@@ -84,6 +87,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
   Widget buildSheetHeader() {
     return Container(
       alignment: Alignment.center,
+      padding: EdgeInsets.only(bottom: 15.px),
       color: Colors.white,
       child: Text(widget.title ?? "选择您遇到的问题",
         style: TextStyle(
@@ -121,9 +125,16 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
   }
 
   ///构建sheet-尾部组件
-  Widget buildSheetFooter() {
+  Widget buildSheetFooter({required List<Widget> children}) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: children,
+    );
+  }
+
+  Widget _cancelView() {
     return InkWell(
-      onTap: () => Navigator.pop(context),
+      onTap: widget.cancelCallBack,
       child: Container(
         alignment: Alignment.center,
         padding: EdgeInsets.symmetric(vertical: 15.px),

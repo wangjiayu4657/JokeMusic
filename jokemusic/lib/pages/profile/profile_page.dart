@@ -20,15 +20,15 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: buildAppBarTitle(),
+        title: _buildAppBarTitle(),
         backgroundColor: ColorExtension.lineColor,
       ),
-      body: buildBody(),
+      body: _buildBody(),
     );
   }
 
-  //构建AppBar标题
-  Widget buildAppBarTitle() {
+  ///构建AppBar标题
+  Widget _buildAppBarTitle() {
     return Padding(
       padding: EdgeInsets.all(8.px),
       child: GetBuilder<ProfileController>(
@@ -54,8 +54,8 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  //构建内容
-  Widget buildBody() {
+  ///构建内容
+  Widget _buildBody() {
     return Container(
       color: ColorExtension.lineColor,
       child: ListView.separated(

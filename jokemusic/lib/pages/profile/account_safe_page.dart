@@ -129,11 +129,9 @@ class _AccountSafePageState extends State<AccountSafePage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   buildAlertHeader(),
-                  Container(color: ColorExtension.lineColor, height: 1.px),
+                  Divider(color: ColorExtension.lineColor, height: 1.px),
                   buildAlertContent(),
-                  SizedBox(height: 10.px),
                   buildAlertInput(),
-                  SizedBox(height: 10.px),
                   buildAlertCancellationButton()
                 ],
               ),
@@ -168,7 +166,7 @@ class _AccountSafePageState extends State<AccountSafePage> {
   ///构建弹窗-内容组件
   Widget buildAlertContent() {
     return Padding(
-      padding: EdgeInsets.only(top: 15.px, left: 20.px, bottom: 5.px, right: 20.px),
+      padding: EdgeInsets.only(top: 15.px, left: 20.px, bottom: 15.px, right: 20.px),
       child: Text("警告: 账户一旦被注销, 将无法在使用此账号进行登录与注册, 且此账号下的所有数据将会变成僵尸数据, 无法找回, 您只能使用新的账号进行注册使用! 请谨慎操作~",
         style: TextStyle(color: Colors.redAccent, fontSize: 14.px),
       ),
@@ -179,7 +177,7 @@ class _AccountSafePageState extends State<AccountSafePage> {
   Widget buildAlertInput() {
     return Container(
       height: 48.px,
-      margin: EdgeInsets.symmetric(horizontal: 20.px),
+      margin: EdgeInsets.only(left: 20.px, bottom: 5.px, right: 20.px),
       padding: EdgeInsets.symmetric(horizontal: 15.px),
       decoration: BoxDecoration(
         color: ColorExtension.bgColor,

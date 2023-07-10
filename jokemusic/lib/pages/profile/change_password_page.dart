@@ -1,46 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import 'controllers/change_password_controller.dart';
 import '../../common/input.dart';
 import '../../common/user_notice.dart';
 import '../../common/custom_bottom_sheet.dart';
 import '../../services/theme/theme_config.dart';
-import '../../services/http/http.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
-import '../../tools/extension/object_extension.dart';
 
-class ChangePasswordPage extends StatefulWidget {
+class ChangePasswordPage extends GetView<ChangePasswordController> {
   static const String routeName = "/change_password";
+
   const ChangePasswordPage({Key? key}) : super(key: key);
-
-  @override
-  State<ChangePasswordPage> createState() => _ChangePasswordPageState();
-}
-
-class _ChangePasswordPageState extends State<ChangePasswordPage> {
-
-  String? _oldPwd;
-  String? _newPwd;
-  String? _surePwd;
-  bool _obscureText = false;
-
-  bool get isChangeBtnEnable {
-    return _oldPwd?.isNotEmpty == true &&
-           _newPwd?.isNotEmpty == true &&
-           _surePwd?.isNotEmpty == true;
-  }
-
-  ///修改密码
-  void changeBtnClick() async {
-    const url = "/user/psw/change";
-    final param = {"old_psw":_oldPwd, "password":_newPwd, "new_psw":_surePwd};
-    final result = await Http.post(url: url, params: param);
-    final code = result["code"];
-    final msg = result["msg"].toString();
-
-    showToast(msg);
-    if(mounted && code == 200) Navigator.pop(context);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +28,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     return AppBar(
       toolbarHeight: 40.px,
       leading: IconButton(
-        onPressed: () => Navigator.pop(context),
+        onPressed: Get.back,
         iconSize: 30.px,
-        icon: const Icon(Icons.close,color: Colors.black26),
+        icon: const Icon(Icons.close, color: Colors.black26),
       ),
       backgroundColor: Colors.white,
       shadowColor: Colors.transparent,
@@ -97,15 +69,14 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         color: ColorExtension.bgColor,
         borderRadius: BorderRadius.circular(22.px)
       ),
-      child: Input(
-        placeholder: "请输入旧密码",
-        textOffset: 0.05,
-        maxLength: 11,
-        valueChanged: (oldPwd) {
-          _oldPwd = oldPwd;
-          setState(() {});
-        },
-      ),
+      child: GetBuilder<ChangePasswordController>(builder: (logic) {
+        return Input(
+          placeholder: "请输入原始密码",
+          textOffset: 0.05,
+          maxLength: 11,
+          valueChanged: logic.original,
+        );
+      }),
     );
   }
 
@@ -118,14 +89,13 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         color: ColorExtension.bgColor,
         borderRadius: BorderRadius.circular(22.px)
       ),
-      child: Input(
-        placeholder: "请输入新密码(6~18)",
-        textOffset: 0.05,
-        valueChanged: (newPwd) {
-          _newPwd = newPwd;
-          setState(() {});
-        },
-      ),
+      child: GetBuilder<ChangePasswordController>(builder: (logic) {
+        return Input(
+          placeholder: "请输入新密码(6~18)",
+          textOffset: 0.05,
+          valueChanged: logic.target,
+        );
+      }),
     );
   }
 
@@ -144,26 +114,23 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
   ///构建确认新密码输入组件
   Widget buildSureNewPasswordInput() {
-    return Input(
-      placeholder: "请输入新密码(长度6~18)",
-      textOffset: 0.05,
-      obscureText: _obscureText,
-      suffixIcon: IconButton(
-        onPressed: (){
-          setState(() => _obscureText = !_obscureText);
-        },
-        icon: SizedBox(
-          width: 20.px,
-          height: 20.px,
-          child: Image.asset("assets/images/normal/${_obscureText ? "eye_off.png" : "eye_on.png"}")
-        )
-      ),
-      valueChanged: (surePwd) {
-        print("surePwd == $surePwd");
-        _surePwd = surePwd;
-        setState(() {});
-      },
-    );
+    return GetBuilder<ChangePasswordController>(
+      builder: (logic) {
+        return Input(
+          placeholder: "请输入新密码(长度6~18)",
+          textOffset: 0.05,
+          obscureText: logic.obscureText,
+          suffixIcon: IconButton(
+            onPressed: logic.toggle,
+            icon: SizedBox(
+              width: 20.px,
+              height: 20.px,
+              child: Image.asset("assets/images/normal/${logic.obscureText ? "eye_off.png" : "eye_on.png"}")
+            )
+          ),
+          valueChanged: logic.confirm,
+        );
+      });
   }
 
   ///构建修改按钮组件
@@ -171,18 +138,17 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     return Container(
       height: 44.px,
       width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(22.px)
-      ),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(22.px)),
       child: ElevatedButton(
-        onPressed: isChangeBtnEnable ? changeBtnClick : null,
+        onPressed: controller.isChangeBtnEnable ? controller.changeRequest : null,
         style: ButtonStyle(
           shape: MaterialStateProperty.all(const StadiumBorder()), //设置圆角弧度
           backgroundColor: MaterialStateProperty.resolveWith((states) {
             return states.contains(MaterialState.disabled) ? Colors.black12 : Colors.orangeAccent;
           })
         ),
-        child: Text("确认修改", style: ThemeConfig.normalTextTheme.displaySmall?.copyWith(color: Colors.white))
+        child: Text("确认修改",
+          style: ThemeConfig.normalTextTheme.displaySmall?.copyWith(color: Colors.white))
       ),
     );
   }
@@ -193,10 +159,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         TextButton(
-          onPressed: (){
-            showModalBottomSheet(context: context, builder: (context) => buildBottomSheet());
-          },
-          child: const Text("遇到问题?",style: TextStyle(color: Colors.orangeAccent))
+          onPressed: () => Get.bottomSheet(buildBottomSheet()),
+          child: const Text("遇到问题?", style: TextStyle(color: Colors.orangeAccent))
         ),
       ],
     );
@@ -208,6 +172,13 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       SheetItem(title: '联系客服', type: SheetItemType.customer),
       SheetItem(title: '我要反馈', type: SheetItemType.feedback),
     ];
-    return CustomBottomSheet(items: items);
+    return CustomBottomSheet(
+      items: items,
+      cancelCallBack: Get.back,
+      selectedCallBack: (idx){
+        debugPrint("idx === $idx");
+        Get.back();
+      },
+    );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jokemusic/pages/login/login_binding.dart';
+import 'package:jokemusic/pages/profile/controllers/change_password_controller.dart';
 import 'package:jokemusic/pages/profile/controllers/user_editor_controller.dart';
 import 'package:jokemusic/pages/profile/controllers/user_info_controller.dart';
 
@@ -85,7 +86,11 @@ class RouterConfigs {
     ),
     GetPage(name:  AccountSafePage.routeName, page: () => const AccountSafePage()),
     GetPage(name:  ResetPasswordPage.routeName, page: () => const ResetPasswordPage()),
-    GetPage(name:  ChangePasswordPage.routeName, page: () => const ChangePasswordPage()),
+    GetPage(
+      binding: ChangePasswordBinding(),
+      name: ChangePasswordPage.routeName,
+      page: () => const ChangePasswordPage()
+    ),
     GetPage(name:  FeedbackPage.routeName, page: () => const FeedbackPage()),
     GetPage(name:  AuditResultPage.routeName, page: () => const AuditResultPage()),
     GetPage(

@@ -62,30 +62,15 @@ class ProfileController extends GetxController {
   }
 
   ///用户信息获取
-  // void _userInfoRequest() async {
-  //   String url = "/user/info";
-  //   final response = await HttpClient.request(url: url);
-  //   final result = response["data"];
-  //   if(result == null) return;
-  //   final info = result["info"];
-  //   socialInfo.value = SocialInfo.fromJson(info);
-  //
-  //   final user = result["user"];
-  //   final userModel = UserInfoModel.fromJson(user);
-  //   UserManager.instance.saveUserInfo(userModel);
-  // }
-
-  ///用户信息获取
   void _userInfoRequest() async {
     String url = "/user/info";
     final response = await Http.post(url: url);
     if(response == null) return;
-    final result = response["data"];
-    if(result == null) return;
-    final info = result["info"];
+
+    final info = response["info"];
     socialInfo.value = SocialInfo.fromJson(info);
 
-    final user = result["user"];
+    final user = response["user"];
     final userModel = UserInfoModel.fromJson(user);
     UserManager.instance.saveUserInfo(userModel);
   }
