@@ -14,7 +14,6 @@ import '../../tools/extension/color_extension.dart';
 
 class LoginPage extends GetView<LoginController> {
   static const String routeName = "/login";
-
   const LoginPage({Key? key}) : super(key: key);
 
   @override

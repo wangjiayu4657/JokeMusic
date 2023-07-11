@@ -160,3 +160,10 @@ class UserInfoController extends GetxController {
     ).showModal(Get.context!);
   }
 }
+
+class UserInfoBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<UserInfoController>(() => UserInfoController());
+  }
+}

@@ -15,7 +15,7 @@ enum EditType {
 
 ///用户信息编辑页
 class UserInfoEditorPage extends StatefulWidget {
-  static const String routeName = "/user_info_editor";
+  static const String routeName = "/profile/user_info/user_info_editor";
 
   const UserInfoEditorPage({
     Key? key,

@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:get/get.dart';
 
-import 'controllers/user_info_controller.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
-
+import '../profile/controllers/user_info_controller.dart';
 
 ///我的-设置-用户信息页
 class UserInfoPage extends GetView<UserInfoController> {
-  static const String routeName = "/user_info";
+  static const String routeName = "/profile/user_info";
   const UserInfoPage({Key? key}):super(key:key);
 
   @override
@@ -92,18 +91,10 @@ class UserInfoPage extends GetView<UserInfoController> {
 
   Widget buildAvatar() {
     return controller.userModel?.avatar == null ?
-           const SizedBox() :
-           GetBuilder<UserInfoController>(
-             init: controller,
-             builder:(_) => CircleAvatar(child: Image.network(controller.userModel?.avatar ?? ""))
-           );
+       const SizedBox() :
+       GetBuilder<UserInfoController>(
+         init: controller,
+         builder:(_) => CircleAvatar(child: Image.network(controller.userModel?.avatar ?? ""))
+       );
   }
 }
-
-class UserInfoBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut<UserInfoController>(() => UserInfoController());
-  }
-}
-

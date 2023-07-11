@@ -8,7 +8,7 @@ import '../../tools/extension/int_extension.dart';
 
 ///我的-审核结果页
 class AuditResultPage extends GetView<AuditResultController> {
-  static const String routeName = "/audit_result";
+  static const String routeName = "/profile/audit_result";
   const AuditResultPage({Key? key}) : super(key: key);
 
   @override

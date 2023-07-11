@@ -11,7 +11,7 @@ import '../../tools/extension/color_extension.dart';
 import '../../tools/extension/object_extension.dart';
 
 class ResetPasswordPage extends StatefulWidget {
-  static const String routeName = "/reset_password";
+  static const String routeName = "/profile/setting/account_safe/reset_password";
   const ResetPasswordPage({Key? key}) : super(key: key);
 
 

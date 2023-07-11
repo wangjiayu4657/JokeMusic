@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'widgets/home_search.dart';
+import '../../services/routes/route_name_config.dart';
 import '../../common/keep_alive_wrapper.dart';
 import '../../common/navigation_item_bar.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../pages/home/widgets/home_item_page.dart';
-
 
 
 class HomePage extends StatefulWidget {
@@ -72,7 +71,7 @@ class _HomePageState extends State<HomePage> {
   Widget navigationBarItemSearch() {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, HomeSearch.routeName);
+        Navigator.pushNamed(context, RouteName.search);
       },
       child: Container(
         width: 50.px,

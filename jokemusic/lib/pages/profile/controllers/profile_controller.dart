@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../../services/routes/route_name_config.dart';
 import '../audit_result_page.dart';
 import '../feedback_page.dart';
 import '../models/social_info.dart';
@@ -39,16 +40,16 @@ class ProfileController extends GetxController {
   void handlerItemClick({int tag = 0}) {
     switch (tag) {
       case 1:
-        Get.toNamed(AuditResultPage.routeName);
+        Get.toNamed(RouteName.auditResult);
         break;
       case 2:
         _share(); //分享给朋友
         break;
       case 3:
-        Get.toNamed(FeedbackPage.routeName); //意见反馈
+        Get.toNamed(RouteName.feedback); //意见反馈
         break;
       case 4:
-        Get.toNamed(SettingPage.routeName); //设置
+        Get.toNamed(RouteName.setting); //设置
         break;
       default: //我的客服
         break;
@@ -58,7 +59,7 @@ class ProfileController extends GetxController {
   ///如果没有登录则先登录, 如果已登录则跳转用户资料编辑页
   void gotoLogin() async {
     bool isLogin = await UserManager.instance.isLogin;
-    Get.toNamed(isLogin ? UserEditorPage.routeName : LoginPage.routeName);
+    Get.toNamed(isLogin ? RouteName.userEditor : RouteName.login);
   }
 
   ///用户信息获取

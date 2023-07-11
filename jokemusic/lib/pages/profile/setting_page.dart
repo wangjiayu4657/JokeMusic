@@ -13,7 +13,7 @@ import '../../pages/profile/account_safe_page.dart';
 
 ///我的-设置页
 class SettingPage extends StatefulWidget {
-  static const String routeName = "/setting";
+  static const String routeName = "/profile/setting";
   const SettingPage({Key? key}) : super(key: key);
 
   @override

@@ -12,7 +12,7 @@ import '../../pages/profile/views/picker_method.dart';
 
 ///我的-意见反馈页
 class FeedbackPage extends StatefulWidget {
-  static const String routeName = "/feedback";
+  static const String routeName = "/profile/feedback";
   const FeedbackPage({Key? key}) : super(key: key);
 
   @override

@@ -17,7 +17,7 @@ import '../../tools/extension/int_extension.dart';
 
 
 class VideoPage extends StatefulWidget {
-  static const String routeName = "/video_page";
+  static const String routeName = "/video";
   const VideoPage({Key? key}) : super(key: key);
 
   @override

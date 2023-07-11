@@ -24,7 +24,7 @@ import 'controllers/user_editor_controller.dart';
 */
 
 class UserEditorPage extends GetView<UserEditorController> {
-  static const String routeName = "/user_editor";
+  static const String routeName = "/profile/user_editor";
   const UserEditorPage({Key? key}) : super(key: key);
 
   @override

@@ -1,48 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'controllers/account_safe_controller.dart';
 
-import 'reset_password_page.dart';
 import '../../common/input.dart';
 import '../../common/custom_button.dart';
-import '../../pages/profile/change_password_page.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
 
 ///我的-设置-账号与安全页
-class AccountSafePage extends StatefulWidget {
-  static const String routeName = "/account_safe";
+class AccountSafePage extends GetView<AccountSafeController> {
+  static const String routeName = "/profile/setting/account_safe";
   const AccountSafePage({Key? key}) : super(key: key);
-
-  @override
-  State<AccountSafePage> createState() => _AccountSafePageState();
-}
-
-class _AccountSafePageState extends State<AccountSafePage> {
-
- final  List<String> _list = ["当前绑定手机号","重置密码","修改密码","绑定QQ","绑定新浪微博","注销账号"];
-
-
-  void handlerItemSelected(int idx) {
-    List<String> routeNames = [
-      "",
-      ResetPasswordPage.routeName,
-      ChangePasswordPage.routeName,
-      "",
-      "",
-      ""
-    ];
-
-    if(idx == 5){
-      showDialog(
-        context: context,
-        builder: (context) => buildAlert()
-      );
-      return;
-    }
-
-    if(idx < routeNames.length){
-      Navigator.pushNamed(context, routeNames[idx]);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +26,7 @@ class _AccountSafePageState extends State<AccountSafePage> {
       color: ColorExtension.bgColor,
       child: ListView.separated(
         padding: EdgeInsets.only(top: 10.px),
-        itemCount: _list.length,
+        itemCount: controller.list.length,
         itemBuilder: (context,idx) => buildListItem(idx),
         separatorBuilder: (context,idx) {
           double thickness = (idx == 0 || idx == 2 || idx == 5) ? 10.px : 1.px;
@@ -73,8 +41,8 @@ class _AccountSafePageState extends State<AccountSafePage> {
     return Container(
       color: Colors.white,
       child: ListTile(
-        onTap: () => handlerItemSelected(idx),
-        title:Text(_list[idx],style: TextStyle(fontSize: 16.px, fontWeight: FontWeight.normal)),
+        onTap: () => controller.handlerItemSelected(idx),
+        title: Text(controller.list[idx], style: TextStyle(fontSize: 16.px, fontWeight: FontWeight.normal)),
         trailing: buildListItemTrailing(idx)
       ),
     );
@@ -105,14 +73,39 @@ class _AccountSafePageState extends State<AccountSafePage> {
       ],
     );
   }
+}
+
+///注销弹窗
+class CancelOutAlertView extends StatelessWidget {
+  const CancelOutAlertView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return _buildAlert(children: [
+      //头
+      _alertHeader(),
+
+      //分割线
+      Divider(color: ColorExtension.lineColor, height: 1.px),
+
+      //内容
+      _alertContent(),
+
+      //输入框
+      _alertInput(),
+
+      //注销按钮
+      _alertCancellationButton()
+    ]);
+  }
 
   ///构建弹窗组件
-  Widget buildAlert() {
+  Widget _buildAlert({required List<Widget> children}) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: (){
-        Navigator.pop(context);
-        FocusScope.of(context).requestFocus(FocusNode());
+        Get.back();
+        Get.focusScope?.unfocus();
       },
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -121,19 +114,14 @@ class _AccountSafePageState extends State<AccountSafePage> {
           child: Center(
             child: Container(
               padding: EdgeInsets.only(bottom: 15.px),
+              margin: EdgeInsets.symmetric(horizontal: 20.px),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(Radius.circular(8.px))
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: [
-                  buildAlertHeader(),
-                  Divider(color: ColorExtension.lineColor, height: 1.px),
-                  buildAlertContent(),
-                  buildAlertInput(),
-                  buildAlertCancellationButton()
-                ],
+                children: children,
               ),
             ),
           ),
@@ -143,7 +131,7 @@ class _AccountSafePageState extends State<AccountSafePage> {
   }
 
   ///构建弹窗-头部组件
-  Widget buildAlertHeader() {
+  Widget _alertHeader() {
     return Container(
       height: 64.px,
       padding: EdgeInsets.symmetric(horizontal: 20.px),
@@ -156,7 +144,7 @@ class _AccountSafePageState extends State<AccountSafePage> {
           ),
           Align(
             alignment: Alignment.centerRight,
-            child: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.close))
+            child: IconButton(onPressed: Get.back, icon: const Icon(Icons.close))
           )
         ],
       ),
@@ -164,7 +152,7 @@ class _AccountSafePageState extends State<AccountSafePage> {
   }
 
   ///构建弹窗-内容组件
-  Widget buildAlertContent() {
+  Widget _alertContent() {
     return Padding(
       padding: EdgeInsets.only(top: 15.px, left: 20.px, bottom: 15.px, right: 20.px),
       child: Text("警告: 账户一旦被注销, 将无法在使用此账号进行登录与注册, 且此账号下的所有数据将会变成僵尸数据, 无法找回, 您只能使用新的账号进行注册使用! 请谨慎操作~",
@@ -174,9 +162,9 @@ class _AccountSafePageState extends State<AccountSafePage> {
   }
 
   ///构建弹窗-输入组件
-  Widget buildAlertInput() {
+  Widget _alertInput() {
     return Container(
-      height: 48.px,
+      height: 44.px,
       margin: EdgeInsets.only(left: 20.px, bottom: 5.px, right: 20.px),
       padding: EdgeInsets.symmetric(horizontal: 15.px),
       decoration: BoxDecoration(
@@ -186,15 +174,15 @@ class _AccountSafePageState extends State<AccountSafePage> {
       child: Input(
         placeholder: "请输入当前账号的密码",
         textOffset: 0.1,
-        valueChanged: (text){},
+        valueChanged: (text){ },
       ),
     );
   }
 
   ///构建弹窗-注销按钮组件
-  Widget buildAlertCancellationButton() {
+  Widget _alertCancellationButton() {
     return Container(
-      height: 68.px,
+      height: 64.px,
       width: double.infinity,
       padding: EdgeInsets.symmetric(vertical: 10.px,horizontal: 20.px),
       child: CustomButton(
