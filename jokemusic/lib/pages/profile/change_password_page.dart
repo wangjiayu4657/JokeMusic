@@ -11,7 +11,6 @@ import '../../tools/extension/color_extension.dart';
 
 class ChangePasswordPage extends GetView<ChangePasswordController> {
   static const String routeName = "/change_password";
-
   const ChangePasswordPage({Key? key}) : super(key: key);
 
   @override

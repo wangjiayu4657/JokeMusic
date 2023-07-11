@@ -54,5 +54,4 @@ class ChangePasswordBinding extends Bindings {
   void dependencies() {
     Get.lazyPut<ChangePasswordController>(() => ChangePasswordController());
   }
-
 }
