@@ -75,8 +75,10 @@ abstract class RouterConfig {
     GetPage(
       name: RouteName.photoBrowser,
       binding: RouteBinding.photoBrowser,
-      page: () => PhotoBrowserPage(),
-      transition: Transition.fadeIn
+      page: () => const PhotoBrowserPage(),
+      transition: Transition.fadeIn,
+      curve: Curves.elasticInOut,
+      // transitionDuration: const Duration(milliseconds: 200)
     )
   ];
 
@@ -84,10 +86,6 @@ abstract class RouterConfig {
     return MaterialPageRoute(builder: (ctx) => const UnknownPage());
   };
 }
-
-
-
-
 
 
 // class RouterConfig {

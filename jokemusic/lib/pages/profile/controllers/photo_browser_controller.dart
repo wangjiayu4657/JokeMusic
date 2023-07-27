@@ -12,8 +12,6 @@ class PhotoBrowserController extends GetxController {
   void onInit() {
     index = Get.arguments["index"] as int;
     images = Get.arguments["images"] as List<AssetEntity>;
-
-    print("index === $index");
     update();
     super.onInit();
   }

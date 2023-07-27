@@ -73,6 +73,7 @@ class PhotoBrowserPage extends GetView<PhotoBrowserController> {
         builder: buildPhotoBrowserGalleryPreViewItem,
         loadingBuilder: loadingBuilder ??buildPhotoBrowserGalleryPreViewLoading,
         pageController: controller.pageCtrl,
+        backgroundDecoration: const BoxDecoration(color: Colors.black),
         onPageChanged: controller.changeSelectedIndex
       );
     });
