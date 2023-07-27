@@ -84,12 +84,12 @@ class ProfileController extends GetxController {
   void _userInfoRequest() async {
     String url = "/user/info";
     final response = await Http.post(url: url);
-    if(response == null) return;
+    if(response.data == null) return;
 
-    final info = response["info"];
+    final info = response.data["info"];
     socialInfo.value = SocialInfo.fromJson(info);
 
-    final user = response["user"];
+    final user = response.data["user"];
     final userModel = UserInfoModel.fromJson(user);
     UserManager.instance.saveUserInfo(userModel);
   }

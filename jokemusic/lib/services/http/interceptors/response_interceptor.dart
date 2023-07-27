@@ -38,8 +38,8 @@ class ResponseInterceptor extends InterceptorsWrapper {
 
     //处理最外层数据结构
     BaseResponse bean = BaseResponse.fromJson(response.data);
-    response.data = bean.data;
-    debugPrint("response  ===  ${response.data}");
+    response.data = bean;
+    debugPrint("response  ===  ${bean.data}");
     _handlerResponse(bean);
     handler.next(response);
   }

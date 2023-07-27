@@ -65,7 +65,7 @@ class LoginController extends GetxController {
     final params = {"phone": userName, "psw": password};
     final result = await Http.post(url: url,params: params);
 
-    parseJsonData(result);
+    parseJsonData(result.data);
     callback != null ? callback() : null;
   }
 

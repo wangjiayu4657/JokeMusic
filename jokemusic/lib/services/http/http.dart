@@ -115,7 +115,7 @@ class Http {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    // debugPrint("url === $url, params === $params, method === $method");
+    print("url === $url, params === $params, method === $method");
     var response = await NetUtil.instance.request(
       url: url,
       data: data,

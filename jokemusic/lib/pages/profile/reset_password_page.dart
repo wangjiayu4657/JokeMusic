@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../common/input.dart';
 import '../../common/user_notice.dart';
@@ -9,50 +10,11 @@ import '../../services/http/http.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
 import '../../tools/extension/object_extension.dart';
+import '../profile/controllers/reset_password_controller.dart';
 
-class ResetPasswordPage extends StatefulWidget {
+class ResetPasswordPage extends GetView<ResetPasswordController> {
   static const String routeName = "/profile/setting/account_safe/reset_password";
   const ResetPasswordPage({Key? key}) : super(key: key);
-
-
-  @override
-  State<ResetPasswordPage> createState() => _ResetPasswordPageState();
-}
-
-class _ResetPasswordPageState extends State<ResetPasswordPage> {
-
-  String? _code;
-  String? _phone;
-  String? _password;
-  bool _obscureText = false;
-
-  bool get isCodeBtnEnable {
-    return (_phone != null) && (_phone?.length == 11);
-  }
-
-  bool get isResetBtnEnable {
-    return _phone?.isNotEmpty == true &&
-           _code?.isNotEmpty == true &&
-           _password?.isNotEmpty == true;
-  }
-
-  ///获取验证码
-  void codeBtnClick() {
-    const url = "/user/psw/reset/get_code";
-    final params = {"phone": _phone};
-    Http.post(url: url, params: params);
-  }
-
-  ///重置密码
-  void resetBtnClick() async {
-    const url = "/user/psw/reset";
-    final params = {"code":_code, "password":_password, "phone":_phone };
-    final result = await Http.post(url: url, params: params);
-    final code = mapToInt(result["code"]);
-    final msg = result["msg"].toString();
-    showToast(msg);
-    if(mounted && code == 200) Navigator.pop(context);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,9 +30,9 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
     return AppBar(
       toolbarHeight: 40.px,
       leading: IconButton(
-        onPressed: () => Navigator.pop(context),
+        onPressed: Get.back,
         iconSize: 30.px,
-        icon: const Icon(Icons.close,color: Colors.black26),
+        icon: const Icon(Icons.close, color: Colors.black26),
       ),
       backgroundColor: Colors.white,
       shadowColor: Colors.transparent,
@@ -113,10 +75,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
         placeholder: "请输入手机号码",
         textOffset: 0.05,
         maxLength: 11,
-        valueChanged: (phoneNum) {
-          _phone = phoneNum;
-          setState(() {});
-        },
+        valueChanged: controller.inputPhoneNum,
       ),
     );
   }
@@ -145,10 +104,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
     return Input(
       placeholder: "请输入验证码",
       textOffset: 0.05,
-      valueChanged: (code) {
-        _code = code;
-        setState(() {});
-      },
+      valueChanged: controller.inputCode,
     );
   }
 
@@ -164,12 +120,14 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
         ),
         SizedBox(
           width: 130.px,
-          child: CodeButton(
-            second: 5,
-            phone: _phone,
-            style: TextStyle(fontSize: 15.px,color: Colors.black26),
-            callback: isCodeBtnEnable ? codeBtnClick : null
-          )
+          child: GetBuilder<ResetPasswordController>(builder: (logic) {
+            return CodeButton(
+              second: 5,
+              phone: logic.phone,
+              style: TextStyle(fontSize: 15.px, color: Colors.black26),
+              callback: logic.codeBtnClick
+            );
+          })
         )
       ],
     );
@@ -190,23 +148,21 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
 
   ///构建新密码输入组件
   Widget buildNewPasswordInput() {
-    return Input(
-      placeholder: "请输入新密码(长度6~18)",
-      textOffset: 0.05,
-      obscureText: _obscureText,
-      suffixIcon: IconButton(
-        onPressed: (){
-          setState(() => _obscureText = !_obscureText);
-        },
-        icon: SizedBox(
-          width: 20.px,
-          height: 20.px,
-          child: Image.asset("assets/images/normal/${_obscureText ? "eye_off.png" : "eye_on.png"}")
-        )
-      ),
-      valueChanged: (password) {
-        _password = password;
-        setState(() {});
+    return GetBuilder<ResetPasswordController>(builder: (logic){
+        return Input(
+          placeholder: "请输入新密码(长度6~18)",
+          textOffset: 0.05,
+          obscureText: logic.obscureText,
+          suffixIcon: IconButton(
+            onPressed: logic.reverseObscureText,
+            icon: SizedBox(
+              width: 20.px,
+              height: 20.px,
+              child: Image.asset("assets/images/normal/${logic.obscureText ? "eye_off.png" : "eye_on.png"}")
+            )
+          ),
+          valueChanged: logic.inputPassword,
+        );
       },
     );
   }
@@ -216,11 +172,9 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
     return Container(
       height: 44.px,
       width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(22.px)
-      ),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(22.px)),
       child: ElevatedButton(
-        onPressed: isResetBtnEnable ? resetBtnClick : null,
+        onPressed: controller.resetBtnClick,
         style: ButtonStyle(
           shape: MaterialStateProperty.all(const StadiumBorder()), //设置圆角弧度
           backgroundColor: MaterialStateProperty.resolveWith((states) {
@@ -238,10 +192,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         TextButton(
-          onPressed: (){
-            showModalBottomSheet(context: context, builder: (context) => buildBottomSheet());
-          },
-          child: const Text("遇到问题?",style: TextStyle(color: Colors.orangeAccent))
+          onPressed: () => Get.bottomSheet(buildBottomSheet()),
+          child: const Text("遇到问题?", style: TextStyle(color: Colors.orangeAccent))
         ),
       ],
     );

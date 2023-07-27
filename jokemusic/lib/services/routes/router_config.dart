@@ -50,7 +50,11 @@ abstract class RouterConfig {
       binding: RouteBinding.accountSafe,
       page: () => const AccountSafePage()
     ),
-    GetPage(name: RouteName.resetPassword, page: () => const ResetPasswordPage()),
+    GetPage(
+      name: RouteName.resetPassword,
+      binding: RouteBinding.resetPassword,
+      page: () => const ResetPasswordPage()
+    ),
     GetPage(
       name: RouteName.changePassword,
       binding: RouteBinding.changePassword,
@@ -78,8 +82,7 @@ abstract class RouterConfig {
       page: () => const PhotoBrowserPage(),
       transition: Transition.fadeIn,
       curve: Curves.elasticInOut,
-      // transitionDuration: const Duration(milliseconds: 200)
-    )
+    ),
   ];
 
   static RouteFactory onUnknownRoute = (setting){

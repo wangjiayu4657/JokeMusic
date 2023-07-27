@@ -1,4 +1,3 @@
-import 'package:jokemusic/pages/profile/photo_browser_page.dart';
 
 import '../../pages/main/main_page.dart';
 import '../../pages/login/login_view.dart';
@@ -17,6 +16,7 @@ import '../../pages/profile/profile_page.dart';
 import '../../pages/profile/reset_password_page.dart';
 import '../../pages/profile/setting_page.dart';
 import '../../pages/profile/user_editor_page.dart';
+import '../../pages/profile/photo_browser_page.dart';
 
 abstract class RouteName {
   static const main = MainPage.routeName;
