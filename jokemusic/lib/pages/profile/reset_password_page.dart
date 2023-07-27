@@ -6,10 +6,8 @@ import '../../common/user_notice.dart';
 import '../../common/code_button.dart';
 import '../../common/custom_bottom_sheet.dart';
 import '../../services/theme/theme_config.dart';
-import '../../services/http/http.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
-import '../../tools/extension/object_extension.dart';
 import '../profile/controllers/reset_password_controller.dart';
 
 class ResetPasswordPage extends GetView<ResetPasswordController> {
@@ -19,14 +17,38 @@ class ResetPasswordPage extends GetView<ResetPasswordController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(),
-      body: buildBody(),
+      appBar: _appBar(),
+      body: buildBody(children: [
+        //标题
+        _titleView(),
+
+        //账号输入组件
+        _accountInputView(),
+
+        //验证码输入组件
+        _codeInputView(children: [
+          //验证码输入框
+          _codeInput(),
+
+          //验证码按钮
+          _codeButtonView()
+        ]),
+        
+        //密码输入框
+        _passwordInputView(),
+        
+        //重置按钮
+        _resetButton(),
+
+        //遇到问题按钮
+        _questionButton()
+      ]),
       bottomNavigationBar: const UserNotice(),
     );
   }
 
   ///构建导航组件
-  PreferredSizeWidget buildAppBar() {
+  PreferredSizeWidget _appBar() {
     return AppBar(
       toolbarHeight: 40.px,
       leading: IconButton(
@@ -40,33 +62,30 @@ class ResetPasswordPage extends GetView<ResetPasswordController> {
   }
 
   ///构建内容组件内
-  Widget buildBody() {
+  Widget buildBody({required List<Widget> children}) {
     return Container(
       padding: EdgeInsets.all(15.px),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("重置密码", style: ThemeConfig.normalTextTheme.displayLarge),
-          SizedBox(height: 30.px),
-          buildAccount(),
-          SizedBox(height: 15.px),
-          buildCode(),
-          SizedBox(height: 15.px),
-          buildNewPassword(),
-          SizedBox(height: 25.px),
-          buildResetButton(),
-          SizedBox(height: 5.px),
-          buildQuestionButton()
-        ],
+        children: children,
       ),
     );
   }
 
+  ///标题
+  Widget _titleView() {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 30.px),
+      child: Text("重置密码", style: ThemeConfig.normalTextTheme.displayLarge),
+    );
+  }
+
   ///构建账号输入组件
-  Widget buildAccount() {
+  Widget _accountInputView() {
     return Container(
       height: 44.px,
       padding: EdgeInsets.only(left: 15.px),
+      margin: EdgeInsets.only(bottom: 15.px),
       decoration: BoxDecoration(
         color: ColorExtension.bgColor,
         borderRadius: BorderRadius.circular(22.px)
@@ -81,63 +100,77 @@ class ResetPasswordPage extends GetView<ResetPasswordController> {
   }
 
   ///构建验证码组件
-  Widget buildCode() {
+  Widget _codeInputView({required List<Widget> children}) {
     return Container(
       height: 44.px,
       padding: EdgeInsets.only(left: 15.px),
+      margin: EdgeInsets.only(bottom: 15.px),
       decoration: BoxDecoration(
         color: ColorExtension.bgColor,
         borderRadius: BorderRadius.circular(22.px)
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(child: buildCodeInput()),
-          buildCodeButton()
-        ],
+        children: children,
       ),
     );
   }
 
   ///构建验证码输入组件
-  Widget buildCodeInput() {
-    return Input(
-      placeholder: "请输入验证码",
-      textOffset: 0.05,
-      valueChanged: controller.inputCode,
+  Widget _codeInput() {
+    return Expanded(
+      child: Input(
+        placeholder: "请输入验证码",
+        textOffset: 0.05,
+        valueChanged: controller.inputCode,
+      ),
     );
   }
 
   ///构建验证码按钮组件
-  Widget buildCodeButton() {
+  Widget _codeButtonView() {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          width: 2.px,
-          height: 15.px,
-          color: Colors.black12,
-        ),
-        SizedBox(
-          width: 130.px,
-          child: GetBuilder<ResetPasswordController>(builder: (logic) {
-            return CodeButton(
-              second: 5,
-              phone: logic.phone,
-              style: TextStyle(fontSize: 15.px, color: Colors.black26),
-              callback: logic.codeBtnClick
-            );
-          })
-        )
+        //竖直分割线
+        _verticalLine(),
+
+        //验证码按钮
+        _codeButton()
       ],
     );
   }
 
+  ///竖直分割线
+  Widget _verticalLine() {
+    return Container(
+      width: 2.px,
+      height: 15.px,
+      color: Colors.black12,
+    );
+  }
+
+  ///验证码按钮
+  Widget _codeButton() {
+    return SizedBox(
+      width: 130.px,
+      child: GetBuilder<ResetPasswordController>(builder: (logic) {
+        return CodeButton(
+          second: 5,
+          phone: logic.phone,
+          style: TextStyle(fontSize: 15.px, color: Colors.black26),
+          callback: logic.codeBtnClick
+        );
+      })
+    );
+  }
+
   ///构建新密码组件
-  Widget buildNewPassword() {
+  Widget _passwordInputView() {
     return Container(
       height: 44.px,
       padding: EdgeInsets.only(left: 15.px),
+      margin: EdgeInsets.only(bottom: 25.px),
       decoration: BoxDecoration(
         color: ColorExtension.bgColor,
         borderRadius: BorderRadius.circular(22.px)
@@ -168,10 +201,11 @@ class ResetPasswordPage extends GetView<ResetPasswordController> {
   }
 
   ///构建登录按钮组件
-  Widget buildResetButton() {
+  Widget _resetButton() {
     return Container(
       height: 44.px,
       width: double.infinity,
+      margin: EdgeInsets.only(bottom: 5.px),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(22.px)),
       child: ElevatedButton(
         onPressed: controller.resetBtnClick,
@@ -187,7 +221,7 @@ class ResetPasswordPage extends GetView<ResetPasswordController> {
   }
 
   ///构建遇到问题按钮组件
-  Widget buildQuestionButton() {
+  Widget _questionButton() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
