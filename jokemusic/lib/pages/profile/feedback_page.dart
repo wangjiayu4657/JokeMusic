@@ -194,23 +194,7 @@ class FeedbackPage extends GetView<FeedbackController> {
     return (controller.images.isEmpty || idx == controller.images.length) ?
     Image.asset("assets/images/sources/add_image.png") :
     InkWell(
-      onTap: () {
-        print("tag1 === ${controller.images[idx]}");
-        controller.openPhotoBrowser(idx);
-      },
-      // Navigator.of(context).push(
-      //     PageRouteBuilder(pageBuilder: (context, anim1, anim2) {
-      //       return FadeTransition(
-      //         opacity: anim1,
-      //         child: PhotoBrowserPage(
-      //           images: _images,
-      //           initialIndex: idx,
-      //           backgroundDecoration: const BoxDecoration(color: Colors.black),
-      //         ),
-      //       );
-      //     })
-      //   );
-      // },
+      onTap: () => controller.openPhotoBrowser(idx),
       child: Hero(
         tag: controller.images[idx],
         child: AssetEntityImage(controller.images[idx], isOriginal: false, fit: BoxFit.cover)

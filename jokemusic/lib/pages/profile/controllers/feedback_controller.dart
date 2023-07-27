@@ -60,13 +60,15 @@ class FeedbackController extends GetxController {
 
   ///打开图片浏览器
   void openPhotoBrowser(int idx) {
-    Get.to(
-      PhotoBrowserPage(
-        images: images,
-        initialIndex: idx,
-      ),
-      transition: Transition.fadeIn,
-    );
+    print("idx  ===  $idx");
+    Get.toNamed(PhotoBrowserPage.routeName, arguments: {
+      'index':idx,
+      'images':images
+    });
+    // Get.to(
+    //   PhotoBrowserPage(images: images, initialIndex: idx),
+    //   transition: Transition.fadeIn,
+    // );
   }
 
   @override

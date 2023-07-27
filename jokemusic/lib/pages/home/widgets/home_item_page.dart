@@ -48,7 +48,10 @@ class _HomeItemPageState extends State<HomeItemPage> {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
-      slivers: [_recommendCard(), _focusList(false)],
+      slivers: [
+        _recommendCard(),
+        _focusList(false)
+      ],
     );
   }
 

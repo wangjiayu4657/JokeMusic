@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+
 import 'route_name_config.dart';
 import 'route_binding_config.dart';
 
@@ -22,6 +23,7 @@ import '../../pages/profile/reset_password_page.dart';
 import '../../pages/profile/change_password_page.dart';
 import '../../pages/profile/feedback_page.dart';
 import '../../pages/profile/audit_result_page.dart';
+import '../../pages/profile/photo_browser_page.dart';
 
 abstract class RouterConfig {
   static List<GetPage> routePages = [
@@ -33,43 +35,49 @@ abstract class RouterConfig {
     GetPage(name: RouteName.message, page: () => const MessagePage()),
     GetPage(name: RouteName.profile, page: () => const ProfilePage()),
     GetPage(
-      binding: RouteBinding.login,
       name: RouteName.login,
+      binding: RouteBinding.login,
       page: () => const LoginPage()
     ),
     GetPage(name: RouteName.setting, page: () => const SettingPage()),
     GetPage(
-      binding: RouteBinding.userInfo,
       name: RouteName.userInfo,
+      binding: RouteBinding.userInfo,
       page: () => const UserInfoPage()
     ),
     GetPage(
-      binding: RouteBinding.accountSafe,
       name: RouteName.accountSafe,
+      binding: RouteBinding.accountSafe,
       page: () => const AccountSafePage()
     ),
     GetPage(name: RouteName.resetPassword, page: () => const ResetPasswordPage()),
     GetPage(
-      binding: RouteBinding.changePassword,
       name: RouteName.changePassword,
+      binding: RouteBinding.changePassword,
       page: () => const ChangePasswordPage()
     ),
     GetPage(
-      binding: RouteBinding.feedback,
       name: RouteName.feedback,
+      binding: RouteBinding.feedback,
       page: () => const FeedbackPage()
     ),
     GetPage(
-      binding: RouteBinding.auditResult,
       name: RouteName.auditResult,
+      binding: RouteBinding.auditResult,
       page: () => const AuditResultPage()
     ),
     GetPage(
-      binding: RouteBinding.userEditor,
       name: RouteName.userEditor,
+      binding: RouteBinding.userEditor,
       page: () => const UserEditorPage()
     ),
     GetPage(name: RouteName.userInfoEditor, page: () => const UserInfoEditorPage()),
+    GetPage(
+      name: RouteName.photoBrowser,
+      binding: RouteBinding.photoBrowser,
+      page: () => PhotoBrowserPage(),
+      transition: Transition.fadeIn
+    )
   ];
 
   static RouteFactory onUnknownRoute = (setting){
