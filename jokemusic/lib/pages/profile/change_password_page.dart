@@ -18,7 +18,10 @@ class ChangePasswordPage extends GetView<ChangePasswordController> {
     return InkWell(
       onTap: () => Get.focusScope?.unfocus(),
       child: Scaffold(
-        appBar: buildAppBar(),
+        //导航
+        appBar: _appBar(),
+
+        //内容
         body: buildBody(children: [
           //标题
           _titleView(),
@@ -38,13 +41,15 @@ class ChangePasswordPage extends GetView<ChangePasswordController> {
           //问题按钮
           _questionButton()
         ]),
+
+        //用户须知
         bottomNavigationBar: const UserNotice(),
       ),
     );
   }
 
   ///构建导航组件
-  PreferredSizeWidget buildAppBar() {
+  PreferredSizeWidget _appBar() {
     return AppBar(
       toolbarHeight: 40.px,
       leading: IconButton(

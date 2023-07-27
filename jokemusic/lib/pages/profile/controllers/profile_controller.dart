@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -8,6 +10,7 @@ import '../models/social_info.dart';
 import '../../login/login_view.dart';
 import '../../Profile/setting_page.dart';
 import '../../../services/http/http.dart';
+import '../../../tools/event_bus/event_bus.dart';
 import '../../../tools/share/user_manager.dart';
 import '../../login/login_model.dart';
 import '../../../pages/profile/user_editor_page.dart';
@@ -15,6 +18,7 @@ import '../../../pages/profile/user_editor_page.dart';
 class ProfileController extends GetxController {
   final socialInfo = SocialInfo().obs;
   UserInfoModel? userInfo = UserInfoModel();
+  StreamSubscription? _subscription;
 
   ProfileController() {
     _initUserInfo();
@@ -22,6 +26,20 @@ class ProfileController extends GetxController {
   }
 
   static ProfileController get to => Get.find();
+
+  @override
+  void onInit() {
+   _subscription = bus.on<LoginEvent>().listen((event) {
+      _userInfoRequest();
+    });
+    super.onInit();
+  }
+
+  @override
+  void onClose() {
+    _subscription?.cancel();
+    super.onClose();
+  }
 
   ///获取用户信息
   void _initUserInfo() async {

@@ -1,3 +1,5 @@
+import 'package:jokemusic/pages/profile/photo_browser_page.dart';
+
 import '../../pages/main/main_page.dart';
 import '../../pages/login/login_view.dart';
 import '../../pages/Home/home_page.dart';
@@ -34,4 +36,5 @@ abstract class RouteName {
   static const accountSafe = AccountSafePage.routeName;
   static const resetPassword = ResetPasswordPage.routeName;
   static const changePassword = ChangePasswordPage.routeName;
+  static const photoBrowser = PhotoBrowserPage.routeName;
 }

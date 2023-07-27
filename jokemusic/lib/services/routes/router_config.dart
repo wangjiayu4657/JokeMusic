@@ -54,7 +54,11 @@ abstract class RouterConfig {
       name: RouteName.changePassword,
       page: () => const ChangePasswordPage()
     ),
-    GetPage(name: RouteName.feedback, page: () => const FeedbackPage()),
+    GetPage(
+      binding: RouteBinding.feedback,
+      name: RouteName.feedback,
+      page: () => const FeedbackPage()
+    ),
     GetPage(
       binding: RouteBinding.auditResult,
       name: RouteName.auditResult,

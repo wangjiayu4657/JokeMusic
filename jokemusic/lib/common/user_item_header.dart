@@ -71,15 +71,15 @@ class UserItemHeader extends StatelessWidget {
   ///构建图标组件
   Widget buildUserItemHeaderIcon() {
     return SizedBox(
-        width: iconSize,
-        height: iconSize,
-        child: avatar == null ?
-         const CircleAvatar(backgroundImage: AssetImage("assets/images/sources/avatar.png")) :
-         FadeInImage.assetNetwork(
-           image: avatar!,
-           placeholder: "assets/images/sources/avatar.png",
-           fit: BoxFit.cover,
-         )
+      width: iconSize,
+      height: iconSize,
+      child: avatar == null || avatar?.isEmpty == true ?
+       const CircleAvatar(backgroundImage: AssetImage("assets/images/sources/avatar.png")) :
+       FadeInImage.assetNetwork(
+         image: avatar!,
+         placeholder: "assets/images/sources/avatar.png",
+         fit: BoxFit.cover,
+       )
     );
   }
 

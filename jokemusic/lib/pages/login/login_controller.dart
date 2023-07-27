@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../services/storage/storage.dart';
 import '../../services/http/http.dart';
+import '../../tools/event_bus/event_bus.dart';
 import '../../tools/share/user_manager.dart';
 import '../../tools/extension/object_extension.dart';
 import 'login_model.dart';
@@ -64,7 +65,7 @@ class LoginController extends GetxController {
     final params = {"phone": userName, "psw": password};
     final result = await Http.post(url: url,params: params);
 
-    parseJsonData(result["data"]);
+    parseJsonData(result);
     callback != null ? callback() : null;
   }
 
@@ -84,7 +85,7 @@ class LoginController extends GetxController {
     final params = {"phone": userName, "code": code};
     final result = await Http.post(url: url, params: params);
 
-    parseJsonData(result["data"]);
+    parseJsonData(result);
     callback != null ? callback() : null;
   }
 
@@ -116,5 +117,7 @@ class LoginController extends GetxController {
     UserManager.instance.saveUserInfo(userModel);
 
     userInfoModel = userModel;
+
+    bus.fire(LoginEvent());
   }
 }

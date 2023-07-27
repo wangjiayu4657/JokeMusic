@@ -8,7 +8,7 @@ import '../../tools/extension/int_extension.dart';
 
 ///查看大图
 class PhotoBrowserPage extends StatefulWidget {
-  static const routeName = "/photo_browser";
+  static const routeName = "/profile/feedback/photo_browser";
 
   PhotoBrowserPage({
     Key? key,
@@ -37,6 +37,12 @@ class PhotoBrowserPage extends StatefulWidget {
 
 class _PhotoBrowserPageState extends State<PhotoBrowserPage> {
   late int idx = widget.initialIndex;
+
+  @override
+  void dispose() {
+    widget.pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +103,7 @@ class _PhotoBrowserPageState extends State<PhotoBrowserPage> {
   }
 
   ///构建图片浏览页-loading组件
-  Widget buildPhotoBrowserGalleryPreViewLoading( BuildContext context,ImageChunkEvent? event) {
+  Widget buildPhotoBrowserGalleryPreViewLoading(BuildContext context,ImageChunkEvent? event) {
     return Center(
       child: SizedBox(
         width: 20.px,

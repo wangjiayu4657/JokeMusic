@@ -78,7 +78,12 @@ class _InputState extends State<Input> {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      style: const TextStyle(textBaseline: TextBaseline.alphabetic,height: 1.25),
+      style: const TextStyle(
+        textBaseline: TextBaseline.alphabetic,
+        height: 1.25,
+        color: Colors.black87,
+        fontWeight: FontWeight.normal
+      ),
       keyboardType: widget.keyboardType,
       obscureText: widget.obscureText ?? false,
       onChanged: widget.valueChanged,
