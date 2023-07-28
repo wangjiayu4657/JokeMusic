@@ -133,6 +133,7 @@ class ResetPasswordPage extends GetView<ResetPasswordController> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
+
         //竖直分割线
         _verticalLine(),
 
@@ -155,17 +156,14 @@ class ResetPasswordPage extends GetView<ResetPasswordController> {
   Widget _codeButton() {
     return SizedBox(
       width: 130.px,
-      child: GetBuilder<ResetPasswordController>(
-        id: 'code',
-        builder: (logic) {
-          return CodeButton(
-            second: 5,
-            phone: logic.phone,
-            style: TextStyle(fontSize: 15.px, color: Colors.black26),
-            callback: logic.codeBtnClick
-          );
-        }
-      )
+      child: GetBuilder<ResetPasswordController>(builder: (logic) {
+        return CodeButton(
+          second: 5,
+          phone: logic.phone,
+          style: TextStyle(fontSize: 15.px, color: Colors.black26),
+          callback: logic.codeBtnClick
+        );
+      })
     );
   }
 
@@ -185,25 +183,22 @@ class ResetPasswordPage extends GetView<ResetPasswordController> {
 
   ///构建新密码输入组件
   Widget buildNewPasswordInput() {
-    return GetBuilder<ResetPasswordController>(
-      id: 'password',
-      builder: (logic){
-        return Input(
-          placeholder: "请输入新密码(长度6~18)",
-          textOffset: 0.05,
-          obscureText: logic.obscureText,
-          suffixIcon: IconButton(
-            onPressed: logic.reverseObscureText,
-            icon: SizedBox(
-              width: 20.px,
-              height: 20.px,
-              child: Image.asset("assets/images/normal/${logic.obscureText ? "eye_off.png" : "eye_on.png"}")
-            )
-          ),
-          valueChanged: logic.inputPassword,
-        );
-      },
-    );
+    return GetBuilder<ResetPasswordController>(builder: (logic){
+      return Input(
+        placeholder: "请输入新密码(长度6~18)",
+        textOffset: 0.05,
+        obscureText: logic.obscureText,
+        valueChanged: logic.inputPassword,
+        suffixIcon: IconButton(
+          onPressed: logic.reverseObscureText,
+          icon: SizedBox(
+            width: 20.px,
+            height: 20.px,
+            child: Image.asset("assets/images/normal/${logic.obscureText ? "eye_off.png" : "eye_on.png"}")
+          )
+        ),
+      );
+    });
   }
 
   ///构建登录按钮组件

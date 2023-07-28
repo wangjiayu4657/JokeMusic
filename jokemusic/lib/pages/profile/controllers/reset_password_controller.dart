@@ -21,22 +21,22 @@ class ResetPasswordController extends GetxController {
 
   void inputPhoneNum(dynamic phone){
     this.phone = phone;
-    update(['phone']);
+    update();
   }
 
   void inputCode(dynamic code){
     this.code = code;
-    update(['code']);
+    update();
   }
 
   void inputPassword(dynamic password){
     this.password = password;
-    update(['password']);
+    update();
   }
 
   void reverseObscureText() {
     obscureText = !obscureText;
-    update(['obscureText']);
+    update();
   }
 
   ///获取验证码

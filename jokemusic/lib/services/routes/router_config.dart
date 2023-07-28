@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 import 'route_name_config.dart';
 import 'route_binding_config.dart';
 
@@ -43,7 +42,11 @@ abstract class RouterConfig {
       binding: RouteBinding.login,
       page: () => const LoginPage()
     ),
-    GetPage(name: RouteName.setting, page: () => const SettingPage()),
+    GetPage(
+      name: RouteName.setting,
+      binding: RouteBinding.setting,
+      page: () => const SettingPage()
+    ),
     GetPage(
       name: RouteName.userInfo,
       binding: RouteBinding.userInfo,
