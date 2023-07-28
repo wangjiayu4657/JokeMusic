@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jokemusic/pages/Profile/controllers/user_info_controller.dart';
 
 import '../../common/custom_button.dart';
 import '../../common/keep_alive_wrapper.dart';
@@ -31,8 +30,36 @@ class UserEditorPage extends GetView<UserEditorController> {
   Widget build(BuildContext context) {
     return Material(
       child: NestedScrollView(
-        headerSliverBuilder: (context, isInnerScroll) =>[
-          _sliverHeader(),
+        headerSliverBuilder: (context, isInnerScroll) => [
+          //头部组件
+          _sliverHeader(
+             onPress: (){} ,
+             children: [
+               //头部背景图片
+               _sliverHeaderImage(),
+
+               //头部内容组件
+               _sliverHeaderBody(children: [
+
+                 //头部内容中的用户信息内容
+                 _sliverHeaderUserInfoView(children: [
+                   //用户信息标题
+                   _sliverHeaderBodyContentTitle(),
+                   //分割线
+                   Divider(color: ColorExtension.lineColor, height: 30.px, thickness: 1.px),
+                   //用户签名
+                   _sliverHeaderBodyContentSign()
+                 ]),
+
+                 //用户头像
+                _sliverHeaderBodyIcon(),
+
+                //编辑资料按钮
+                _sliverHeaderBodyEditButton(),
+             ])
+          ]),
+
+          //二级头部组件
           _sliverSubHeader()
         ],
         body: PageView(
@@ -45,7 +72,9 @@ class UserEditorPage extends GetView<UserEditorController> {
   }
 
   ///一级悬停组件
-  Widget _sliverHeader() {
+  Widget _sliverHeader({
+    required void Function() onPress,
+    required List<Widget> children}) {
     return SliverAppBar(
       pinned: true,
       elevation: 0,
@@ -54,16 +83,11 @@ class UserEditorPage extends GetView<UserEditorController> {
       titleSpacing: 0,
       centerTitle: false,
       actions: [
-        IconButton(onPressed: () {}, icon: const Icon(Icons.more_horiz))
+        IconButton(onPressed: onPress, icon: const Icon(Icons.more_horiz))
       ],
       flexibleSpace: FlexibleSpaceBar(
-        collapseMode: CollapseMode.pin,
-        background: Column(
-          children: [
-            _sliverHeaderImage(),
-            Expanded(child: _sliverHeaderBody())
-          ],
-        ),
+        // collapseMode: CollapseMode.pin,
+        background: Column(children: children),
       ),
       bottom: _sliverHeaderBottom(),
     );
@@ -79,85 +103,81 @@ class UserEditorPage extends GetView<UserEditorController> {
   }
 
   ///导航-内容
-  Widget _sliverHeaderBody() {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        _sliverHeaderBodyContent(),
-        Positioned(
-          top: -25.px,
-          left: 15.px,
-          child: _sliverHeaderBodyIcon()
-        ),
-        Positioned(
-          top: 8.px,
-          right: 15.px,
-          child: _sliverHeaderBodyEditButton()
-        ),
-      ],
+  Widget _sliverHeaderBody({required List<Widget> children}) {
+    return Expanded(
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: children,
+      ),
     );
   }
 
   ///导航-内容-图标
   Widget _sliverHeaderBodyIcon() {
-    return SizedBox(
-      width: 80.px,
-      height: 80.px,
-      child: const CircleAvatar(backgroundImage: AssetImage("assets/images/sources/joke_logo.png")),
+    return Positioned(
+      top: -25.px,
+      left: 15.px,
+      child: SizedBox(
+        width: 80.px,
+        height: 80.px,
+        child: const CircleAvatar(backgroundImage: AssetImage("assets/images/sources/joke_logo.png")),
+      ),
     );
   }
 
   ///导航-内容-编辑按钮
   Widget _sliverHeaderBodyEditButton() {
-    return CustomButton(
-      radius: 17.px,
-      backgroundColor: Colors.white,
-      bordColor: Colors.orangeAccent,
-      enableColor: Colors.transparent,
-      style: const TextStyle(color: Colors.orangeAccent),
-      onPressed: () => Get.toNamed(UserInfoPage.routeName),
-      title: "编辑资料"
+    return Positioned(
+      top: 8.px,
+      right: 15.px,
+      child: CustomButton(
+        radius: 17.px,
+        backgroundColor: Colors.white,
+        bordColor: Colors.orangeAccent,
+        enableColor: Colors.transparent,
+        style: const TextStyle(color: Colors.orangeAccent),
+        onPressed: () => Get.toNamed(UserInfoPage.routeName),
+        title: "编辑资料"
+      ),
     );
   }
 
   ///导航-内容-内容
-  Widget _sliverHeaderBodyContent() {
+  Widget _sliverHeaderUserInfoView({required List<Widget> children}) {
     return Container(
       color: Colors.white,
       padding: EdgeInsets.symmetric(horizontal: 15.px),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 80.px),
-          _sliverHeaderBodyContentTitle(),
-          Divider(color: ColorExtension.lineColor, height: 30.px, thickness: 1.px),
-          _sliverHeaderBodyContentSign()
-        ],
+        children: children,
       ),
     );
   }
 
   ///导航-内容-内容-标题
   Widget _sliverHeaderBodyContentTitle() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text("乐-D7",
-          style: TextStyle(
-            fontSize: 18.px,
-            color: Colors.black87,
-            fontWeight: FontWeight.bold
+    return Padding(
+      padding: EdgeInsets.only(top: 80.px),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("乐-D7",
+            style: TextStyle(
+              fontSize: 18.px,
+              color: Colors.black87,
+              fontWeight: FontWeight.bold
+            ),
           ),
-        ),
-        SizedBox(height: 6.px),
-        Text("入住段子乐: 1个月",
-          style: TextStyle(
-            fontSize: 12.px,
-            color: Colors.black54,
-            fontWeight: FontWeight.normal
-          ),
-        )
-      ],
+          SizedBox(height: 6.px),
+          Text("入住段子乐: 1个月",
+            style: TextStyle(
+              fontSize: 12.px,
+              color: Colors.black54,
+              fontWeight: FontWeight.normal
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -167,8 +187,7 @@ class UserEditorPage extends GetView<UserEditorController> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("他正在想一个爆炸的签名...",
-            style: TextStyle(fontSize: 14.px, color: Colors.black87)),
+        Text("他正在想一个爆炸的签名...", style: TextStyle(fontSize: 14.px, color: Colors.black87)),
         SizedBox(height: 15.px),
         Row(
           children: [
@@ -238,17 +257,17 @@ class UserEditorPage extends GetView<UserEditorController> {
         delegate: SliverHeaderDelegate.fixedHeight(
           height: 58,
           isNeedRebuild: true,
-          child: GetBuilder<UserEditorController>(builder: (_) {
+          child: GetBuilder<UserEditorController>(builder: (logic) {
             return NavigationItemBar(
               mainAxisAlignment: MainAxisAlignment.start,
               bottomLineMargin: 0,
               horizontalMargin: 16.px,
-              currentIndex: controller.subPage,
+              currentIndex: logic.subPage,
               dividerColor: ColorExtension.lineColor,
               padding: EdgeInsets.only(top: 18.px, left: 15.px),
               normalStyle: TextStyle(fontSize: 14.px),
               selectedStyle: TextStyle(fontSize: 14.px, color: Colors.orangeAccent),
-              callBack: controller.subItemChanged,
+              callBack: logic.subItemChanged,
               items: tabs.map((e) => BarItem(title: e)).toList(),
             );
           })
