@@ -33,7 +33,11 @@ abstract class RouterConfig {
     GetPage(name: RouteName.video, page: () => const VideoPage()),
     GetPage(name: RouteName.publish, page: () => const PublishPage()),
     GetPage(name: RouteName.message, page: () => const MessagePage()),
-    GetPage(name: RouteName.profile, page: () => const ProfilePage()),
+    GetPage(
+      name: RouteName.profile,
+      binding: RouteBinding.profile,
+      page: () => const ProfilePage()
+    ),
     GetPage(
       name: RouteName.login,
       binding: RouteBinding.login,

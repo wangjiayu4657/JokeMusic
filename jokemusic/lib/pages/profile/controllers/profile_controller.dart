@@ -3,35 +3,31 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../../services/routes/route_name_config.dart';
-import '../audit_result_page.dart';
-import '../feedback_page.dart';
 import '../models/social_info.dart';
-import '../../login/login_view.dart';
-import '../../Profile/setting_page.dart';
 import '../../../services/http/http.dart';
+import '../../../services/routes/route_name_config.dart';
 import '../../../tools/event_bus/event_bus.dart';
 import '../../../tools/share/user_manager.dart';
 import '../../login/login_model.dart';
-import '../../../pages/profile/user_editor_page.dart';
 
 class ProfileController extends GetxController {
-  final socialInfo = SocialInfo().obs;
-  UserInfoModel? userInfo = UserInfoModel();
-  StreamSubscription? _subscription;
+  late SocialInfo? socialInfo = SocialInfo();
+  late UserInfoModel? userInfo = UserInfoModel();
+  late StreamSubscription? _subscription;
 
-  ProfileController() {
-    _initUserInfo();
-    _userInfoRequest();
-  }
-
-  static ProfileController get to => Get.find();
+  final List<String> titles = const ["我的客服","审核结果","分享给朋友","意见反馈","设置"];
+  final List<String> images = const ["customer","auditing","share","feedback","setting"];
 
   @override
   void onInit() {
    _subscription = bus.on<LoginEvent>().listen((event) {
       _userInfoRequest();
     });
+
+   _initUserInfo();
+
+   _userInfoRequest();
+
     super.onInit();
   }
 
@@ -87,10 +83,19 @@ class ProfileController extends GetxController {
     if(response.data == null) return;
 
     final info = response.data["info"];
-    socialInfo.value = SocialInfo.fromJson(info);
+    socialInfo = SocialInfo.fromJson(info);
 
     final user = response.data["user"];
     final userModel = UserInfoModel.fromJson(user);
     UserManager.instance.saveUserInfo(userModel);
+
+    update(['profile_user_info']);
+  }
+}
+
+class ProfileBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<ProfileController>(() => ProfileController());
   }
 }

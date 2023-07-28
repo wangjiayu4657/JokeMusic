@@ -27,6 +27,7 @@ class ResetPasswordPage extends GetView<ResetPasswordController> {
 
         //验证码输入组件
         _codeInputView(children: [
+
           //验证码输入框
           _codeInput(),
 
@@ -154,14 +155,17 @@ class ResetPasswordPage extends GetView<ResetPasswordController> {
   Widget _codeButton() {
     return SizedBox(
       width: 130.px,
-      child: GetBuilder<ResetPasswordController>(builder: (logic) {
-        return CodeButton(
-          second: 5,
-          phone: logic.phone,
-          style: TextStyle(fontSize: 15.px, color: Colors.black26),
-          callback: logic.codeBtnClick
-        );
-      })
+      child: GetBuilder<ResetPasswordController>(
+        id: 'code',
+        builder: (logic) {
+          return CodeButton(
+            second: 5,
+            phone: logic.phone,
+            style: TextStyle(fontSize: 15.px, color: Colors.black26),
+            callback: logic.codeBtnClick
+          );
+        }
+      )
     );
   }
 
@@ -181,7 +185,9 @@ class ResetPasswordPage extends GetView<ResetPasswordController> {
 
   ///构建新密码输入组件
   Widget buildNewPasswordInput() {
-    return GetBuilder<ResetPasswordController>(builder: (logic){
+    return GetBuilder<ResetPasswordController>(
+      id: 'password',
+      builder: (logic){
         return Input(
           placeholder: "请输入新密码(长度6~18)",
           textOffset: 0.05,
