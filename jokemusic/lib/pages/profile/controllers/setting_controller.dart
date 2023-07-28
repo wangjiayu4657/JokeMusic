@@ -51,7 +51,6 @@ class SettingController extends GetxController {
     update();
   }
 
-
   void changeValue({int idx = 0, bool val = false}){
     idx == 1 ? autoPlay = val : dataPlay = val;
     update();

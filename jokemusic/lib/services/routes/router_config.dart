@@ -82,7 +82,11 @@ abstract class RouterConfig {
       binding: RouteBinding.userEditor,
       page: () => const UserEditorPage()
     ),
-    GetPage(name: RouteName.userInfoEditor, page: () => const UserInfoEditorPage()),
+    GetPage(
+      name: RouteName.userInfoEditor,
+      binding: RouteBinding.userInfoEditor,
+      page: () => const UserInfoEditorPage()
+    ),
     GetPage(
       name: RouteName.photoBrowser,
       binding: RouteBinding.photoBrowser,

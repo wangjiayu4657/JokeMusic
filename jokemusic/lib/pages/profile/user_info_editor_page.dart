@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../common/input.dart';
 import '../../common/custom_button.dart';
 import '../../tools/share/const_config.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../tools/extension/color_extension.dart';
+import '../profile/controllers/user_info_editor_controller.dart';
 
 enum EditType {
   ///昵称
@@ -13,41 +15,22 @@ enum EditType {
   signature
 }
 
+
 ///用户信息编辑页
-class UserInfoEditorPage extends StatefulWidget {
+class UserInfoEditorPage extends GetView<UserInfoEditorController> {
   static const String routeName = "/profile/user_info/user_info_editor";
 
-  const UserInfoEditorPage({
-    Key? key,
-    this.arguments
-  }) : super(key: key);
-
-  final Map<String,dynamic>? arguments;
-
-  @override
-  State<UserInfoEditorPage> createState() => _UserInfoEditorPageState();
-}
-
-class _UserInfoEditorPageState extends State<UserInfoEditorPage> {
-  late final editType = widget.arguments?["type"];
-  late final String? nickname = widget.arguments?["nickname"];
-  late final String? signature = widget.arguments?["signature"];
-
-  String get title => editType == EditType.nickname ?"修改昵称" : "修改签名";
-  String get placeholder => editType == EditType.nickname ? nickname ?? "请输入昵称" : signature ?? "请输入签名";
-
-  String? _desc;
+  const UserInfoEditorPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: AppBar(title: Text(controller.title)),
       body: Container(
         color: ColorExtension.bgColor,
         child: Column(
           children: [
             _inputView(),
-            SizedBox(height: 15.px),
             _saveButton()
           ],
         ),
@@ -55,10 +38,11 @@ class _UserInfoEditorPageState extends State<UserInfoEditorPage> {
     );
   }
 
+  ///内容输入框
   Widget _inputView() {
     return Container(
       height: 120.px,
-      margin: EdgeInsets.only(top: 15.px),
+      margin: EdgeInsets.only(top: 15.px, bottom: 15.px),
       padding: EdgeInsets.symmetric(horizontal: 15.px),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -66,8 +50,9 @@ class _UserInfoEditorPageState extends State<UserInfoEditorPage> {
       ),
       child: Input(
         maxLines: null,
-        placeholder: placeholder,
-        valueChanged: (text) => _desc = text
+        controller: controller.textCtrl,
+        placeholder: controller.placeholder,
+        valueChanged: controller.inputText
       )
     );
   }
@@ -81,7 +66,7 @@ class _UserInfoEditorPageState extends State<UserInfoEditorPage> {
       radius: 8.px,
       style: const TextStyle(color: Colors.white),
       backgroundColor: Colors.orangeAccent,
-      onPressed: () => Navigator.pop(context, _desc),
+      onPressed: () => Get.back<String>(result: controller.desc),
     );
   }
 }

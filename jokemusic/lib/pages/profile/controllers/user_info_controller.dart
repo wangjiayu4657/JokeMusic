@@ -3,13 +3,14 @@ import 'package:flutter_picker/picker.dart';
 import 'package:get/get.dart';
 import 'package:photo_manager/photo_manager.dart';
 
+import '../../Profile/user_info_editor_page.dart';
 import '../views/picker_method.dart';
-import '../user_info_editor_page.dart';
 import '../../login/login_model.dart';
 import '../../../tools/share/user_manager.dart';
 import '../../../tools/extension/int_extension.dart';
 import '../../../tools/extension/object_extension.dart';
 import '../../../services/http/http.dart';
+
 
 class UserInfoController extends GetxController {
   AssetEntity? imageFile;
@@ -17,12 +18,10 @@ class UserInfoController extends GetxController {
   List<String> items = const ["头像","昵称","签名","性别","生日","我的邀请码","绑定邀请码"];
 
   @override
-  void onInit() {
+  void onReady() {
     _initUserInfoModel();
-    super.onInit();
+    super.onReady();
   }
-
-  // static UserInfoController get to => Get.find();
 
   ///处理选择的图片
   Future<void> handlerImageSelected(PickerMethod pickerMethod) async {
@@ -47,18 +46,16 @@ class UserInfoController extends GetxController {
         break;
       case 1:   //昵称
         final arguments = {"type":EditType.nickname, "nickname":userModel?.nickname};
-        final nickname = await Get.toNamed(UserInfoEditorPage.routeName,arguments: arguments);
-        userModel?.nickname = nickname.toString();
-
+        final nickname = await Get.toNamed(UserInfoEditorPage.routeName, arguments: arguments);
         if(nickname == null) return;
+        userModel?.nickname = nickname.toString();
         updateUserInfoRequest(type: idx, content: nickname.toString());
         break;
       case 2:   //签名
         final arguments = {"type":EditType.nickname, "nickname":userModel?.signature};
-        final signature = await Get.toNamed(UserInfoEditorPage.routeName,arguments: arguments);
-        userModel?.signature = signature.toString();
-
+        final signature = await Get.toNamed(UserInfoEditorPage.routeName, arguments: arguments);
         if(signature == null) return;
+        userModel?.signature = signature.toString();
         updateUserInfoRequest(type: idx, content: signature.toString());
         break;
       case 3:   //性别
