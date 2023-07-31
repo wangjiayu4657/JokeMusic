@@ -27,7 +27,11 @@ import '../../pages/profile/photo_browser_page.dart';
 abstract class RouterConfig {
   static List<GetPage> routePages = [
     GetPage(name: RouteName.main, page: () => const MainPage()),
-    GetPage(name: RouteName.home, page: () => const HomePage()),
+    GetPage(
+      name: RouteName.home,
+      binding: RouteBinding.home,
+      page: () => const HomePage()
+    ),
     GetPage(name: RouteName.search, page: () => const HomeSearch()),
     GetPage(name: RouteName.video, page: () => const VideoPage()),
     GetPage(name: RouteName.publish, page: () => const PublishPage()),

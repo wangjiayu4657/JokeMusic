@@ -19,21 +19,28 @@ enum EditType {
 ///用户信息编辑页
 class UserInfoEditorPage extends GetView<UserInfoEditorController> {
   static const String routeName = "/profile/user_info/user_info_editor";
-
   const UserInfoEditorPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(controller.title)),
-      body: Container(
-        color: ColorExtension.bgColor,
-        child: Column(
-          children: [
-            _inputView(),
-            _saveButton()
-          ],
-        ),
+      body: _bodyView(children: [
+
+        //文本输入视图
+        _inputView(),
+
+        //保存按钮
+        _saveButton()
+      ]),
+    );
+  }
+
+  Widget _bodyView({required List<Widget> children}) {
+    return Container(
+      color: ColorExtension.bgColor,
+      child: Column(
+        children: children,
       ),
     );
   }

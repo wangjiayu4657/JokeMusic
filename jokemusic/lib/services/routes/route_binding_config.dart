@@ -1,5 +1,5 @@
-
 import '../../pages/login/login_binding.dart';
+import '../../pages/home/controllers/home_controller.dart';
 import '../../pages/profile/controllers/user_info_controller.dart';
 import '../../pages/profile/controllers/feedback_controller.dart';
 import '../../pages/profile/controllers/account_safe_controller.dart';
@@ -14,6 +14,7 @@ import '../../pages/profile/controllers/user_info_editor_controller.dart';
 
 abstract class RouteBinding {
   static final login = LoginBinding();
+  static final home = HomeBinding();
   static final auditResult = AuditResultBinding();
   static final userEditor = UserEditorBinding();
   static final userInfo = UserInfoBinding();

@@ -43,10 +43,13 @@ class UserEditorPage extends GetView<UserEditorController> {
 
                  //头部内容中的用户信息内容
                  _sliverHeaderUserInfoView(children: [
+
                    //用户信息标题
                    _sliverHeaderBodyContentTitle(),
+
                    //分割线
                    Divider(color: ColorExtension.lineColor, height: 30.px, thickness: 1.px),
+
                    //用户签名
                    _sliverHeaderBodyContentSign()
                  ]),

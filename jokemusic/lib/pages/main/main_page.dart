@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'main_config.dart';
 
-class MainPage extends StatefulWidget {
+class MainPage extends StatefulWidget   {
   static const String routeName = "/MainPage";
   const MainPage({Key? key}) : super(key: key);
 

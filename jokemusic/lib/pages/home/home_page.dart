@@ -1,82 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../services/routes/route_name_config.dart';
 import '../../common/keep_alive_wrapper.dart';
-import '../../common/navigation_item_bar.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../pages/home/widgets/home_item_page.dart';
+import '../../pages/home/controllers/home_controller.dart';
 
 
-class HomePage extends StatefulWidget {
+class HomePage extends GetView<HomeController>  {
   static const String routeName = "/home";
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  int _currentIndex = 0;
-  late final PageController _pageController = PageController(initialPage: _currentIndex);
-  final List<BarItem> _items = const [
-    BarItem(title: "关注"),
-    BarItem(title: "推荐"),
-    BarItem(title: "新鲜"),
-    BarItem(title: "纯文"),
-    BarItem(title: "趣图")
-  ];
-
-  void onPageChanged(int idx){
-    setState(() {
-      _currentIndex = idx;
-      _pageController.jumpToPage(idx);
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
+    Get.lazyPut<HomeController>(() => HomeController());
+
     return Scaffold(
       appBar: AppBar(
-        title: NavigationItemBar(
-          items: _items,
-          isShowBottomLine: false,
-          currentIndex: _currentIndex,
-          bottomLineColor: Colors.redAccent,
-          callBack: onPageChanged
-        ),
+        title: GetBuilder<HomeController>(builder: (logic) {
+          return TabBar(
+            controller: logic.tabCtrl,
+            indicatorColor: Colors.red,
+            indicatorPadding: EdgeInsets.only(bottom: 2.px),
+            labelColor: Colors.red,
+            labelPadding: EdgeInsets.symmetric(horizontal: 8.px),
+            labelStyle: TextStyle(fontSize: 18.px, fontWeight: FontWeight.w600),
+            unselectedLabelColor: Colors.black54,
+            unselectedLabelStyle: TextStyle(fontSize: 18.px, fontWeight: FontWeight.w600),
+            tabs: logic.items.map((e) => Tab(text: e.title)).toList()
+          );
+        }),
         actions: [ navigationBarItemSearch() ],
         backgroundColor: Colors.white,
         shadowColor: Colors.transparent,
       ),
-      body: buildBodyWidget(),
-    );
-  }
-
-  Widget buildBodyWidget() {
-    const List<HomeItemType> itemTypes = [
-      HomeItemType.focus,
-      HomeItemType.recommend,
-      HomeItemType.refresh,
-      HomeItemType.text,
-      HomeItemType.picture
-    ];
-
-    return PageView(
-      controller: _pageController,
-      onPageChanged: onPageChanged,
-      children: itemTypes.map((e) => KeepAliveWrapper(child: HomeItemPage(homeItemType: e))).toList(),
+      body: TabBarView(
+        controller: controller.tabCtrl,
+        children: controller.itemTypes.map((e) => KeepAliveWrapper(child: HomeItemPage(homeItemType: e))).toList()
+      ),
     );
   }
 
   Widget navigationBarItemSearch() {
     return InkWell(
-      onTap: () {
-        Navigator.pushNamed(context, RouteName.search);
-      },
+      onTap: () => Get.toNamed(RouteName.search),
       child: Container(
         width: 50.px,
         height: 30.px,
-        padding: EdgeInsets.only(right: 20.px,bottom: 12.px),
+        padding: EdgeInsets.only(right: 20.px),
         child: Image.asset("assets/images/sources/search.png"),
       )
     );

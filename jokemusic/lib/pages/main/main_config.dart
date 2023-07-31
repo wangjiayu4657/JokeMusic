@@ -11,7 +11,7 @@ class MainConfig {
     const VideoPage(),
     const PublishPage(),
     const MessagePage(),
-    ProfilePage()
+    const ProfilePage()
   ];
 
   static List<BottomNavigationBarItem> items = [
@@ -21,6 +21,4 @@ class MainConfig {
     const BottomNavigationBarItem(icon: Icon(Icons.message),label: "消息"),
     const BottomNavigationBarItem(icon: Icon(Icons.person),label: "我的"),
   ];
-
-
 }
