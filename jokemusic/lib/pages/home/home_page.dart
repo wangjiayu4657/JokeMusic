@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../services/storage/storage.dart';
 import '../../services/routes/route_name_config.dart';
 import '../../common/keep_alive_wrapper.dart';
+import '../../tools/event_bus/event_bus.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../pages/home/widgets/home_item_page.dart';
 import '../../pages/home/controllers/home_controller.dart';
@@ -18,11 +20,15 @@ class HomePage extends GetView<HomeController>  {
 
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
+        titleSpacing: 0,
         title: GetBuilder<HomeController>(builder: (logic) {
           return TabBar(
             controller: logic.tabCtrl,
+            dividerColor: Colors.transparent,
             indicatorColor: Colors.red,
-            indicatorPadding: EdgeInsets.only(bottom: 2.px),
+            indicatorWeight: 3,
+            padding: EdgeInsets.all(8.px),
             labelColor: Colors.red,
             labelPadding: EdgeInsets.symmetric(horizontal: 8.px),
             labelStyle: TextStyle(fontSize: 18.px, fontWeight: FontWeight.w600),
@@ -37,7 +43,10 @@ class HomePage extends GetView<HomeController>  {
       ),
       body: TabBarView(
         controller: controller.tabCtrl,
-        children: controller.itemTypes.map((e) => KeepAliveWrapper(child: HomeItemPage(homeItemType: e))).toList()
+        children: controller.itemTypes.map((e) {
+          bus.fire(VideoRequestEvent(homeItemType: e));
+          return KeepAliveWrapper(child: HomeItemPage(homeItemType: e));
+        }).toList()
       ),
     );
   }

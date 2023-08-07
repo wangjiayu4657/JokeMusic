@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:jokemusic/pages/home/controllers/home_item_controller.dart';
+import 'package:jokemusic/pages/home/models/video_item.dart';
 
 import '../../../common/video_item.dart';
 import '../../../common/no_data_prompt.dart';
@@ -24,32 +27,24 @@ enum HomeItemType {
 }
 
 //首页 - 关注
-class HomeItemPage extends StatefulWidget {
-  const HomeItemPage({Key? key, this.homeItemType = HomeItemType.focus})
-      : super(key: key);
+class HomeItemPage extends GetView<HomeItemController> {
+  const HomeItemPage({
+    Key? key,
+    this.homeItemType = HomeItemType.focus
+  }) : super(key: key);
 
   final HomeItemType homeItemType;
 
   @override
-  State<HomeItemPage> createState() => _HomeItemPageState();
-}
-
-class _HomeItemPageState extends State<HomeItemPage> {
-  ItemType get itemType {
-    if (widget.homeItemType.index == 3) {
-      return ItemType.text;
-    } else if (widget.homeItemType.index == 4) {
-      return ItemType.picture;
-    } else {
-      return ItemType.video;
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
+    Get.lazyPut<HomeItemController>(() => HomeItemController());
+
     return CustomScrollView(
       slivers: [
+        //用户推荐
         _recommendCard(),
+
+        //关注
         _focusList(false)
       ],
     );
@@ -57,7 +52,7 @@ class _HomeItemPageState extends State<HomeItemPage> {
 
   ///用户推荐
   Widget _recommendCard() {
-    return widget.homeItemType.index == 0
+    return homeItemType.index == 0
         ? const SliverToBoxAdapter(child: HomeRecommendCard())
         : const SliverToBoxAdapter(child: SizedBox());
   }
@@ -65,26 +60,43 @@ class _HomeItemPageState extends State<HomeItemPage> {
   ///关注列表
   Widget _focusList(bool isEmpty) {
     return isEmpty
-        ? const SliverFillRemaining(hasScrollBody: false, child: NoDataPrompt())
-        : SliverList.separated(
-            itemCount: 20,
-            itemBuilder: (context, idx) => _focusListItem(),
-            separatorBuilder: (context, idx) => Divider(
+      ? const SliverFillRemaining(hasScrollBody: false, child: NoDataPrompt())
+      : GetBuilder<HomeItemController>(builder: (logic) {
+          return SliverList.separated(
+            itemCount: logic.items.length,
+            itemBuilder: (context, idx) => _focusListItem(item: logic.items[idx]),
+            separatorBuilder: (context, idx) {
+              return Divider(
                 color: ColorExtension.lineColor,
                 height: 24.px,
-                thickness: 8.px));
+                thickness: 8.px
+              );
+            }
+          );
+        }
+      );
   }
 
   ///关注列表-item
-  Widget _focusListItem() {
-    return VideoItem(itemType: itemType, actions: [
-      InkWell(
+  Widget _focusListItem({VideoItem? item}) {
+    return VideoItemView(
+      title: item?.user?.nickName,
+      subTitle: item?.user?.signature,
+      avatar: item?.user?.avatar,
+      text: item?.joke?.content,
+      itemType: controller.itemType,
+      imgUrl: item?.joke?.imageUrl,
+      videoUrl: item?.joke?.videoUrl,
+      actions: [
+        InkWell(
           onTap: () {},
-          child:
-              const Text("+ 关注", style: TextStyle(color: Colors.orangeAccent))),
-      IconButton(
+          child: const Text("+ 关注", style: TextStyle(color: Colors.orangeAccent))
+        ),
+        IconButton(
           onPressed: () {},
-          icon: const Icon(Icons.more_horiz, color: Colors.black45)),
-    ]);
+          icon: const Icon(Icons.more_horiz, color: Colors.black45)
+        ),
+      ]
+    );
   }
 }

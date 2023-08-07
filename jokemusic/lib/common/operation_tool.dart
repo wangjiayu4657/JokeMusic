@@ -4,15 +4,31 @@ import '../../../tools/extension/int_extension.dart';
 class OperationTool extends StatelessWidget {
   const OperationTool({
     Key? key,
+    this.like,
+    this.unLike,
+    this.comments,
+    this.share,
     this.color,
     this.height = 40,
     this.iconSize = 40,
     this.callBack
   }) : super(key: key);
 
+  ///喜欢
+  final String? like;
+  ///不喜欢
+  final String? unLike;
+  ///评论
+  final String? comments;
+  ///分享
+  final String? share;
+  ///背景颜色
   final Color? color;
+  ///高度
   final double? height;
+  ///图标尺寸
   final double? iconSize;
+  ///回调
   final ValueChanged? callBack;
 
   @override
@@ -28,10 +44,10 @@ class OperationTool extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        buildUserItemFooterItem(icon: "smile.png", title: "82",tag: 0),
-        buildUserItemFooterItem(icon: "cry.png", title: "12",tag: 1),
-        buildUserItemFooterItem(icon: "message.png", title: "30",tag: 2),
-        buildUserItemFooterItem(icon: "share.png", title: "17",tag: 3),
+        buildUserItemFooterItem(icon: "smile.png", title: like,tag: 0),
+        buildUserItemFooterItem(icon: "cry.png", title: unLike,tag: 1),
+        buildUserItemFooterItem(icon: "message.png", title: comments,tag: 2),
+        buildUserItemFooterItem(icon: "share.png", title: share,tag: 3),
       ],
     );
   }

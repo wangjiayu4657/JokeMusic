@@ -16,6 +16,7 @@ class UserItemHeader extends StatelessWidget {
     this.subTitle,
     this.avatar,
     this.padding,
+    this.margin,
     this.titleStyle,
     this.subTitleStyle,
     this.onTap,
@@ -29,6 +30,7 @@ class UserItemHeader extends StatelessWidget {
   final String? subTitle;
   final String? avatar;
   final EdgeInsets? padding;
+  final EdgeInsets? margin;
   final TextStyle? titleStyle;
   final TextStyle? subTitleStyle;
   final GestureTapCallback? onTap;
@@ -37,39 +39,32 @@ class UserItemHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return _buildUserItemHeader(children: [
+
+      _itemLeading(),
+
+      _itemContent(),
+
+      _itemTrailing(),
+    ]);
+  }
+
+  Widget _buildUserItemHeader({required List<Widget> children}) {
     return Container(
       height: height,
       padding: padding,
+      margin: margin,
       color: backgroundColor,
-      child: buildUserItemHeader(),
-    );
-  }
-
-  ///构建用户信息头组件
-  Widget buildUserItemHeader() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children:  [
-        buildUserItemHeaderIconAndInfo(),
-        buildUserItemHeaderMore()
-      ],
-    );
-  }
-
-  ///构建图标和信息组件
-  Widget buildUserItemHeaderIconAndInfo() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        buildUserItemHeaderIcon(),
-        SizedBox(width: 10.px),
-        buildUserItemHeaderInfo()
-      ],
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: children,
+      ),
     );
   }
 
   ///构建图标组件
-  Widget buildUserItemHeaderIcon() {
+  Widget _itemLeading() {
     return SizedBox(
       width: iconSize,
       height: iconSize,
@@ -84,29 +79,37 @@ class UserItemHeader extends StatelessWidget {
   }
 
   ///构建信息组件
-  Widget buildUserItemHeaderInfo() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Obx(() => Text(loginViewModel.nickname, style: titleStyle)),
-        Text(title ?? "丛林中的仙子",style: titleStyle),
-        SizedBox(height: 4.px),
-        Text(subTitle ?? "不是我不笑, 一笑粉就掉!",style: subTitleStyle)
-        // Obx(() => Text(subTitle ?? loginViewModel.signature, style: subTitleStyle)),
-      ],
+  Widget _itemContent() {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title ?? "丛林中的仙子",style: titleStyle),
+            SizedBox(height: 4.px),
+            Text(subTitle ?? "不是我不笑, 一笑粉就掉!",
+              maxLines: 1,
+              style: subTitleStyle,
+              overflow: TextOverflow.ellipsis,
+            )
+          ],
+        ),
+      ),
     );
   }
 
   ///构建右侧组件
-  Widget buildUserItemHeaderMore() {
-    return (actions == null || actions?.isEmpty == true) ?
-      const SizedBox() :
-      Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: actions!
-      );
+  Widget _itemTrailing() {
+    return (actions == null || actions?.isEmpty == true)
+      ? const SizedBox()
+      : Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: actions!
+        );
   }
 }
 
