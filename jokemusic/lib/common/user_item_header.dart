@@ -68,13 +68,15 @@ class UserItemHeader extends StatelessWidget {
     return SizedBox(
       width: iconSize,
       height: iconSize,
-      child: avatar == null || avatar?.isEmpty == true ?
-       const CircleAvatar(backgroundImage: AssetImage("assets/images/sources/avatar.png")) :
-       FadeInImage.assetNetwork(
-         image: avatar!,
-         placeholder: "assets/images/sources/avatar.png",
-         fit: BoxFit.cover,
-       )
+      child: avatar == null || avatar?.isEmpty == true
+        ? const CircleAvatar(backgroundImage: AssetImage("assets/images/sources/avatar.png"))
+        : ClipOval(
+          child: FadeInImage.assetNetwork(
+            image: avatar!,
+            placeholder: "assets/images/sources/avatar.png",
+            fit: BoxFit.cover,
+          ),
+        )
     );
   }
 

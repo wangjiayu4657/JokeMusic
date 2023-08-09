@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jokemusic/pages/home/controllers/home_item_controller.dart';
-import 'package:jokemusic/pages/home/models/video_item.dart';
 
 import '../../../common/video_item.dart';
 import '../../../common/no_data_prompt.dart';
 import '../../../tools/extension/int_extension.dart';
 import '../../../tools/extension/color_extension.dart';
+import '../../../pages/home/models/video_item.dart';
 import '../../../pages/home/widgets/home_recommend_card.dart';
+import '../../../pages/home/controllers/home_item_controller.dart';
 
 enum HomeItemType {
   ///关注
@@ -37,15 +37,15 @@ class HomeItemPage extends GetView<HomeItemController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut<HomeItemController>(() => HomeItemController());
+    Get.lazyPut<HomeItemController>(() => HomeItemController(homeItemType: homeItemType), tag: "$homeItemType");
 
     return CustomScrollView(
       slivers: [
         //用户推荐
         _recommendCard(),
 
-        //关注
-        _focusList(false)
+        //列表
+        _listView(false)
       ],
     );
   }
@@ -58,33 +58,39 @@ class HomeItemPage extends GetView<HomeItemController> {
   }
 
   ///关注列表
-  Widget _focusList(bool isEmpty) {
-    return isEmpty
-      ? const SliverFillRemaining(hasScrollBody: false, child: NoDataPrompt())
-      : GetBuilder<HomeItemController>(builder: (logic) {
-          return SliverList.separated(
-            itemCount: logic.items.length,
-            itemBuilder: (context, idx) => _focusListItem(item: logic.items[idx]),
-            separatorBuilder: (context, idx) {
-              return Divider(
-                color: ColorExtension.lineColor,
-                height: 24.px,
-                thickness: 8.px
-              );
-            }
-          );
+  Widget _listView(bool isEmpty) {
+    return GetBuilder<HomeItemController>(
+        tag: '$homeItemType',
+        builder: (logic) {
+          print("logic.items.isEmpty == ${logic.items.isEmpty}, logic.isLoading == ${logic.isLoading}");
+          return logic.items.isEmpty
+            ? logic.isLoading
+              ? const SliverFillRemaining(child: SizedBox())
+              : const SliverFillRemaining(hasScrollBody: false, child: NoDataPrompt())
+            : SliverList.separated(
+              itemCount: logic.items.length,
+              itemBuilder: (context, idx) => _focusListItem(item: logic.items[idx]),
+              separatorBuilder: (context, idx) {
+                return Divider(
+                  color: ColorExtension.lineColor,
+                  height: 24.px,
+                  thickness: 8.px
+                );
+              });
         }
       );
   }
 
   ///关注列表-item
   Widget _focusListItem({VideoItem? item}) {
+    print("imgsize == ${item?.joke?.imageSize}  videoSize == ${item?.joke?.videoSize}");
+
     return VideoItemView(
       title: item?.user?.nickName,
       subTitle: item?.user?.signature,
       avatar: item?.user?.avatar,
       text: item?.joke?.content,
-      itemType: controller.itemType,
+      itemType: item?.joke?.type,
       imgUrl: item?.joke?.imageUrl,
       videoUrl: item?.joke?.videoUrl,
       actions: [

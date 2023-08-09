@@ -1,6 +1,8 @@
 // To parse this JSON data, do
 //
 //     final videoItem = videoItemFromJson(jsonString);
+import 'package:flutter/material.dart';
+
 import 'package:encrypt/encrypt.dart';
 
 
@@ -84,6 +86,9 @@ class Joke {
   String? videoSize;
   int? videoTime;
   String? videoUrl;
+
+  //添加额外字段
+  // Size? imgSize;
 
   Joke({
     this.addTime,

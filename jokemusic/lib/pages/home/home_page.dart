@@ -43,13 +43,12 @@ class HomePage extends GetView<HomeController>  {
       ),
       body: TabBarView(
         controller: controller.tabCtrl,
-        children: controller.itemTypes.map((e) {
-          bus.fire(VideoRequestEvent(homeItemType: e));
-          return KeepAliveWrapper(child: HomeItemPage(homeItemType: e));
-        }).toList()
+        children: controller.itemTypes.map((e) => KeepAliveWrapper(child: HomeItemPage(homeItemType: e))).toList()
       ),
     );
   }
+
+  //controller.itemTypes.map((e) => KeepAliveWrapper(child: HomeItemPage(homeItemType: e))).toList()
 
   Widget navigationBarItemSearch() {
     return InkWell(

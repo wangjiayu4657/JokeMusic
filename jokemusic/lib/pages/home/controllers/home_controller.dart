@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../common/navigation_item_bar.dart';
+import '../../../tools/event_bus/event_bus.dart';
 import '../widgets/home_item_page.dart';
 
 class HomeController extends GetxController with GetSingleTickerProviderStateMixin {
@@ -23,12 +24,7 @@ class HomeController extends GetxController with GetSingleTickerProviderStateMix
     HomeItemType.text,
     HomeItemType.picture
   ];
-
-  void onPageChanged(int idx){
-    currentIndex = idx;
-    update();
-  }
-
+  
   @override
   void dispose() {
     tabCtrl.dispose();

@@ -4,14 +4,14 @@ import 'user_item_header.dart';
 import 'operation_tool.dart';
 import '/tools/extension/int_extension.dart';
 
-enum ItemType {
-  ///纯文
-  text,
-  ///趣图
-  picture,
-  ///视频
-  video
-}
+// enum ItemType {
+//   ///纯文
+//   text,
+//   ///趣图
+//   picture,
+//   ///视频
+//   video
+// }
 
 class VideoItemView extends StatelessWidget {
   VideoItemView({
@@ -24,7 +24,7 @@ class VideoItemView extends StatelessWidget {
     this.videoUrl,
     this.actions,
     EdgeInsets? padding,
-    this.itemType = ItemType.video
+    this.itemType
   }) : padding = padding ?? EdgeInsets.symmetric(horizontal: 15.px),
        super(key: key);
 
@@ -33,7 +33,7 @@ class VideoItemView extends StatelessWidget {
   ///操作
   final List<Widget>? actions;
   ///item类型
-  final ItemType itemType;
+  final int? itemType;
   ///内容
   final String? text;
   ///主标题
@@ -95,14 +95,16 @@ class VideoItemView extends StatelessWidget {
 
   ///item 视频
   Widget _itemVideo() {
-    if(itemType.index == 1) {             //趣图
+    if(itemType == 1) {                    //纯文
+      return const SizedBox();
+    } else if(itemType == 2) {             //趣图
       return Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.all(5.0),
         child: imgUrl == null
-            ? Center(child: Image.asset("assets/images/sources/profile_post_tip.png"))
-            : Center(child: Image.network(imgUrl!)),
+          ? Center(child: Image.asset("assets/images/sources/profile_post_tip.png"))
+          : Center(child: Image.network(imgUrl!, fit: BoxFit.fill)),
       );
-    } else if(itemType.index == 2){       //视频
+    } else {                               //视频
       return Container(
         height: 180.px,
         margin: EdgeInsets.symmetric(vertical: 10.px),
@@ -111,8 +113,6 @@ class VideoItemView extends StatelessWidget {
           borderRadius: BorderRadius.circular(8.px)
         ),
       );
-    } else {                              //纯文
-      return const SizedBox();
     }
   }
 
