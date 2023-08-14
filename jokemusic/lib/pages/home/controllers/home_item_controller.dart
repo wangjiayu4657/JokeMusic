@@ -30,6 +30,12 @@ class HomeItemController extends GetxController {
   }
 
   @override
+  void onReady() {
+    refreshCtrl.callRefresh();
+    super.onReady();
+  }
+
+  @override
   void onClose() {
     refreshCtrl.dispose();
     super.onClose();

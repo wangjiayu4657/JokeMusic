@@ -1,13 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:easy_refresh/easy_refresh.dart';
-import 'package:jokemusic/common/custom/custom_single_child_scroll_view.dart';
-import 'package:jokemusic/tools/refresh/refresh_footer.dart';
-import 'package:jokemusic/tools/refresh/refresh_header.dart';
 
 import '../../../common/video_item.dart';
 import '../../../common/no_data_prompt.dart';
+import '../../../tools/refresh/refresh_footer.dart';
+import '../../../tools/refresh/refresh_header.dart';
 import '../../../tools/extension/int_extension.dart';
 import '../../../tools/extension/color_extension.dart';
 import '../../../pages/home/models/video_item.dart';
@@ -44,11 +42,11 @@ class HomeItemPage extends GetView<HomeItemController> {
   @override
   Widget build(BuildContext context) {
     return EasyRefresh(
+      triggerAxis: Axis.vertical,
       header: const RefreshHeader(),
       footer: const RefreshFooter(),
       onRefresh: ctrl.onRefresh,
       onLoad: ctrl.onLoad,
-      refreshOnStart: true,
       controller: ctrl.refreshCtrl,
       child: CustomScrollView(
         slivers: [
@@ -57,40 +55,39 @@ class HomeItemPage extends GetView<HomeItemController> {
 
           //列表
           _listView()
-        ],
-      ),
+      ]),
     );
   }
 
   ///用户推荐
   Widget _recommendCard() {
     return homeItemType.index == 0
-        ? const SliverToBoxAdapter(child: HomeRecommendCard())
-        : const SliverToBoxAdapter(child: SizedBox());
+      ? const SliverToBoxAdapter(child: HomeRecommendCard())
+      : const SliverToBoxAdapter(child: SizedBox());
   }
 
   ///关注列表
   Widget _listView() {
     return GetBuilder<HomeItemController>(
-        id: '$homeItemType',
-        tag: '$homeItemType',
-        builder: (logic) {
-          return logic.items.isEmpty
-            ? logic.isLoading
-              ? const SliverFillRemaining(child: SizedBox())
-              : const SliverFillRemaining(hasScrollBody: false, child: NoDataPrompt())
-            : SliverList.separated(
-              itemCount: logic.items.length,
-              itemBuilder: (context, idx) => _focusListItem(item: logic.items[idx]),
-              separatorBuilder: (context, idx) {
-                return Divider(
-                  color: ColorExtension.lineColor,
-                  height: 24.px,
-                  thickness: 8.px
-                );
-              });
-        }
-      );
+      id: '$homeItemType',
+      tag: '$homeItemType',
+      builder: (logic) {
+        return logic.items.isEmpty
+          ? logic.isLoading
+            ? const SliverFillRemaining(child: SizedBox())
+            : const SliverFillRemaining(hasScrollBody: false, child: NoDataPrompt())
+          : SliverList.separated(
+            itemCount: logic.items.length,
+            itemBuilder: (context, idx) => _focusListItem(item: logic.items[idx]),
+            separatorBuilder: (context, idx) {
+              return Divider(
+                color: ColorExtension.lineColor,
+                height: 24.px,
+                thickness: 8.px
+              );
+            });
+      }
+    );
   }
 
   ///关注列表-item

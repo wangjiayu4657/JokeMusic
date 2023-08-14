@@ -4,15 +4,6 @@ import 'user_item_header.dart';
 import 'operation_tool.dart';
 import '/tools/extension/int_extension.dart';
 
-// enum ItemType {
-//   ///纯文
-//   text,
-//   ///趣图
-//   picture,
-//   ///视频
-//   video
-// }
-
 class VideoItemView extends StatelessWidget {
   VideoItemView({
     Key? key,
@@ -102,7 +93,7 @@ class VideoItemView extends StatelessWidget {
         padding: const EdgeInsets.all(5.0),
         child: imgUrl == null
           ? Center(child: Image.asset("assets/images/sources/profile_post_tip.png"))
-          : Center(child: Image.network(imgUrl!, fit: BoxFit.fill)),
+          : Image.network(imgUrl!, fit: BoxFit.fill),
       );
     } else {                               //视频
       return Container(
