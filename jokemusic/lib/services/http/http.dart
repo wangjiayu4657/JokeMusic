@@ -104,7 +104,7 @@ class Http {
   /// Request 操作
   /// Put、Delete请求之类都请使用Request请求
   /// 所有类型请求,都是调用此请求
-  static Future request({
+  static Future<T> request<T>({
     required String url,
     dynamic data,
     HttpMethod method = HttpMethod.post,
@@ -115,7 +115,6 @@ class Http {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    print("url === $url, params === $params, method === $method");
     var response = await NetUtil.instance.request(
       url: url,
       data: data,

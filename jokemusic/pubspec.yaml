@@ -56,6 +56,8 @@ dependencies:
   logger: ^1.4.0                                    #日志输出
   encrypt: ^5.0.1                                   #加解密
   pointycastle: ^3.7.3
+  easy_refresh: ^3.3.1                              #下拉刷新/上拉加载
+  synchronized: ^3.1.0                              #线程锁
 dev_dependencies:
   flutter_test:
     sdk: flutter

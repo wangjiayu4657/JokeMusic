@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../services/storage/storage.dart';
 import '../../services/routes/route_name_config.dart';
 import '../../common/keep_alive_wrapper.dart';
-import '../../tools/event_bus/event_bus.dart';
 import '../../tools/extension/int_extension.dart';
 import '../../pages/home/widgets/home_item_page.dart';
 import '../../pages/home/controllers/home_controller.dart';
@@ -47,8 +45,6 @@ class HomePage extends GetView<HomeController>  {
       ),
     );
   }
-
-  //controller.itemTypes.map((e) => KeepAliveWrapper(child: HomeItemPage(homeItemType: e))).toList()
 
   Widget navigationBarItemSearch() {
     return InkWell(

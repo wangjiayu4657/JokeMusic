@@ -1,5 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:easy_refresh/easy_refresh.dart';
+import 'package:jokemusic/common/custom/custom_single_child_scroll_view.dart';
+import 'package:jokemusic/tools/refresh/refresh_footer.dart';
+import 'package:jokemusic/tools/refresh/refresh_header.dart';
 
 import '../../../common/video_item.dart';
 import '../../../common/no_data_prompt.dart';
@@ -28,25 +33,32 @@ enum HomeItemType {
 
 //首页 - 关注
 class HomeItemPage extends GetView<HomeItemController> {
-  const HomeItemPage({
+  HomeItemPage({
     Key? key,
     this.homeItemType = HomeItemType.focus
   }) : super(key: key);
 
   final HomeItemType homeItemType;
+  late final ctrl = Get.put<HomeItemController>(HomeItemController(homeItemType: homeItemType), tag: "$homeItemType");
 
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut<HomeItemController>(() => HomeItemController(homeItemType: homeItemType), tag: "$homeItemType");
+    return EasyRefresh(
+      header: const RefreshHeader(),
+      footer: const RefreshFooter(),
+      onRefresh: ctrl.onRefresh,
+      onLoad: ctrl.onLoad,
+      refreshOnStart: true,
+      controller: ctrl.refreshCtrl,
+      child: CustomScrollView(
+        slivers: [
+          //用户推荐
+          _recommendCard(),
 
-    return CustomScrollView(
-      slivers: [
-        //用户推荐
-        _recommendCard(),
-
-        //列表
-        _listView(false)
-      ],
+          //列表
+          _listView()
+        ],
+      ),
     );
   }
 
@@ -58,11 +70,11 @@ class HomeItemPage extends GetView<HomeItemController> {
   }
 
   ///关注列表
-  Widget _listView(bool isEmpty) {
+  Widget _listView() {
     return GetBuilder<HomeItemController>(
+        id: '$homeItemType',
         tag: '$homeItemType',
         builder: (logic) {
-          print("logic.items.isEmpty == ${logic.items.isEmpty}, logic.isLoading == ${logic.isLoading}");
           return logic.items.isEmpty
             ? logic.isLoading
               ? const SliverFillRemaining(child: SizedBox())
@@ -83,8 +95,6 @@ class HomeItemPage extends GetView<HomeItemController> {
 
   ///关注列表-item
   Widget _focusListItem({VideoItem? item}) {
-    print("imgsize == ${item?.joke?.imageSize}  videoSize == ${item?.joke?.videoSize}");
-
     return VideoItemView(
       title: item?.user?.nickName,
       subTitle: item?.user?.signature,

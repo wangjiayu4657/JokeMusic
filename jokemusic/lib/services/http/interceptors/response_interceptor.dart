@@ -37,7 +37,7 @@ class ResponseInterceptor extends InterceptorsWrapper {
     }
 
     //处理最外层数据结构
-    BaseResponse bean = BaseResponse.fromJson(response.data);
+    JYBaseResponse bean = JYBaseResponse.fromJson(response.data);
     response.data = bean;
     // debugPrint("response  ===  ${bean.data}");
     _handlerResponse(bean);
@@ -59,7 +59,7 @@ class ResponseInterceptor extends InterceptorsWrapper {
   }
 
   ///处理token失效的问题
-  void _handlerResponse(BaseResponse result){
+  void _handlerResponse(JYBaseResponse result){
     final msg = result.msg ?? "";
     if(result.code == 0) {
       Fluttertoast.showToast(gravity: ToastGravity.CENTER, msg: msg);

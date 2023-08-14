@@ -1,5 +1,5 @@
-class BaseResponse {
-  BaseResponse._({
+class JYBaseResponse {
+  JYBaseResponse._({
     this.code,
     this.data,
     this.msg,
@@ -9,8 +9,8 @@ class BaseResponse {
   String? msg;
   dynamic data;
 
-  static BaseResponse fromJson(Map<String, dynamic> map) {
-    return BaseResponse._(
+  static JYBaseResponse fromJson(Map<String, dynamic> map) {
+    return JYBaseResponse._(
       data: map['data'],
       code: map['code'],
       msg: map['msg'],
